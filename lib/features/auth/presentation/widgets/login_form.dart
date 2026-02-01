@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibiapabaapp/services/api_service.dart';
-import 'package:ibiapabaapp/theme/theme.dart';
+import 'package:ibiapabaapp/features/auth/presentation/login_controller.dart';
+import 'package:ibiapabaapp/app/theme/theme.dart';
+import 'package:ibiapabaapp/features/auth/presentation/login_state.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final LoginController controller;
+  const LoginForm({super.key, required this.controller});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -13,9 +15,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final _apiService = ApiService();
 
-  bool _isLoading = false;
   String _email = '';
   String _password = '';
 
@@ -29,37 +29,46 @@ class _LoginFormState extends State<LoginForm> {
     _passwordControl = FTextFieldControl.managed(
       onChange: (v) => _password = v.text,
     );
+    widget.controller.addListener(_controllerListener);
   }
 
-  Future<void> _login() async {
-    if (!_formKey.currentState!.validate()) return;
+  void _controllerListener() {
+    final state = widget.controller.state;
 
-    setState(() => _isLoading = true);
-
-    try {
-      await _apiService.login(_email.trim(), _password);
-      if (!mounted) return;
+    if (state is LoginSuccess) {
       context.go('/app/home');
-    } catch (e) {
-      if (!mounted) return;
+    }
 
+    if (state is LoginError) {
       showFToast(
         context: context,
         icon: const Icon(FIcons.triangleAlert),
         title: const Text('Erro ao fazer login'),
-        description: Text(e.toString()),
+        description: Text(state.message),
         alignment: FToastAlignment.bottomCenter,
         duration: const Duration(seconds: 4),
       );
-    } finally {
-      if (mounted) {
-        setState(() => _isLoading = false);
-      }
     }
+
+    // força rebuild para refletir loading
+    setState(() {});
+  }
+
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+    widget.controller.login(email: _email, password: _password);
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_controllerListener);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = widget.controller.state is LoginLoading;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -72,9 +81,9 @@ class _LoginFormState extends State<LoginForm> {
             style: (style) => style
                 .withForeground(FTheme.of(context).colors)
                 .withLabelPadding(bottom: 8),
-            label: Text("Email"),
+            label: const Text("Email"),
             hint: "exemplo@email.com",
-            enabled: !_isLoading,
+            enabled: !isLoading,
             autovalidateMode: .onUnfocus,
             validator: (v) {
               if (v == null || v.isEmpty) return 'Informe o email';
@@ -88,9 +97,9 @@ class _LoginFormState extends State<LoginForm> {
             style: (style) => style
                 .withForeground(FTheme.of(context).colors)
                 .withLabelPadding(bottom: 8),
-            label: Text("Senha"),
+            label: const Text("Senha"),
             hint: 'Senha',
-            enabled: !_isLoading,
+            enabled: !isLoading,
             autovalidateMode: .onUnfocus,
             validator: (v) {
               if (v == null || v.isEmpty) return 'Informe a senha';
@@ -104,10 +113,10 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             width: double.infinity,
             child: FButton(
-              onPress: _isLoading ? null : _login,
+              onPress: isLoading ? null : _submit,
               child: Text(
-                _isLoading ? 'Entrando…' : 'Entrar',
-                style: TextStyle(fontWeight: .bold),
+                isLoading ? 'Entrando…' : 'Entrar',
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
           ),

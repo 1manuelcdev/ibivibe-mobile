@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:forui/forui.dart';
+
+class LoginHeader extends StatelessWidget {
+  const LoginHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
+      children: [
+        Text(
+          'Login',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        ),
+        Text(
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+          style: TextStyle(fontSize: 14),
+        ),
+        SizedBox(height: 12),
+        FButton(
+          onPress: () {},
+          style: FButtonStyle.outline(),
+          prefix: Image.asset('assets/images/google-g-logo.webp', width: 24),
+          child: Text("Entrar com Google", style: TextStyle(fontSize: 14)),
+        ),
+      ],
+    );
+  }
+}

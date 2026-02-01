@@ -5,7 +5,10 @@ import 'package:http/http.dart' as http;
 class ApiService {
   final String _baseUrl = dotenv.env['API_BASE_URL']!;
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
     if (email == 'teste@admin.com' && password == 'adminadmin') {
       return {"message": "Welcome"};
     }
@@ -23,11 +26,11 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> register(
-    String name,
-    String email,
-    String password,
-  ) async {
+  Future<Map<String, dynamic>> register({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
     final response = await http.post(
       Uri.parse('$_baseUrl/register'),
       headers: {'Content-Type': 'application/json'},

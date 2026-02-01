@@ -1,39 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:forui/forui.dart';
-import 'package:ibiapabaapp/screens/home/widgets/navbar.dart';
-import 'package:ibiapabaapp/screens/home/widgets/now_happening_section.dart';
-import 'package:ibiapabaapp/screens/home/widgets/quick_categories.dart';
-import 'package:ibiapabaapp/screens/home/widgets/sponsored_highlights.dart';
-import 'package:ibiapabaapp/shared/sheet_drag_indicator.dart';
+import 'package:ibiapabaapp/features/home/widgets/now_happening_section.dart';
+import 'package:ibiapabaapp/features/home/widgets/quick_categories.dart';
+import 'package:ibiapabaapp/features/home/widgets/sponsored_highlights.dart';
+import 'package:ibiapabaapp/shared/ui/sheet_drag_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return FScaffold(
-      child: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const PageScrollPhysics(),
-                child: Column(
-                  spacing: 16,
-                  children: [
-                    _HomeHeader(),
-                    QuickCategoriesList(),
-                    _MainWrapper(
-                      children: [SponsoredHighlights(), NowHappeningSection()],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Navbar(), // fixo
-          ],
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        spacing: 16,
+        children: [
+          _HomeHeader(),
+          QuickCategoriesList(),
+          _MainWrapper(
+            children: [SponsoredHighlights(), NowHappeningSection()],
+          ),
+        ],
       ),
     );
   }

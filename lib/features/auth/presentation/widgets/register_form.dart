@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:ibiapabaapp/services/api_service.dart';
-import 'package:ibiapabaapp/theme/theme.dart';
+import 'package:ibiapabaapp/app/theme/theme.dart';
+import 'package:ibiapabaapp/features/auth/presentation/register_controller.dart';
+import 'package:ibiapabaapp/features/auth/presentation/register_state.dart';
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+  final RegisterController controller;
+  const RegisterForm({super.key, required this.controller});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -14,51 +16,56 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  final _apiService = ApiService();
 
   String _name = '';
   String _email = '';
   String _password = '';
 
-  FTextFieldControl get _nameControl =>
-      FTextFieldControl.managed(onChange: (v) => _name = v.text);
+  late final FTextFieldControl _nameControl;
+  late final FTextFieldControl _emailControl;
+  late final FTextFieldControl _passwordControl;
 
-  FTextFieldControl get _emailControl =>
-      FTextFieldControl.managed(onChange: (v) => _email = v.text);
+  @override
+  void initState() {
+    super.initState();
+    _nameControl = FTextFieldControl.managed(onChange: (v) => _name = v.text);
+    _emailControl = FTextFieldControl.managed(onChange: (v) => _email = v.text);
+    _passwordControl = FTextFieldControl.managed(
+      onChange: (v) => _password = v.text,
+    );
+    widget.controller.addListener(_controllerListener);
+  }
 
-  FTextFieldControl get _passwordControl =>
-      FTextFieldControl.managed(onChange: (v) => _password = v.text);
+  void _controllerListener() {
+    final state = widget.controller.state;
 
-  bool _isLoading = false;
+    if (state is RegisterSuccess) {
+      context.go('/app/home');
+    }
 
-  Future<void> _register() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() => _isLoading = true);
-
-    try {
-      await _apiService.register(_name.trim(), _email.trim(), _password);
-
-      if (!mounted) return;
-      context.go('/home');
-    } catch (e) {
-      if (!mounted) return;
-
+    if (state is RegisterError) {
       showFToast(
         context: context,
         icon: const Icon(FIcons.triangleAlert),
-        title: const Text('Erro ao criar conta'),
-        description: Text(e.toString()),
+        title: const Text('Erro ao fazer registro'),
+        description: Text(state.message),
         alignment: FToastAlignment.bottomCenter,
         duration: const Duration(seconds: 4),
       );
-    } finally {
-      if (mounted) setState(() => _isLoading = false);
     }
+
+    setState(() {});
+  }
+
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+    widget.controller.register(name: _name, email: _email, password: _password);
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = widget.controller.state is RegisterLoading;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -72,7 +79,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 .withLabelPadding(bottom: 8),
             label: Text("Nome completo"),
             hint: 'Nome completo',
-            enabled: !_isLoading,
+            enabled: !isLoading,
             autovalidateMode: .onUnfocus,
             validator: (v) =>
                 (v == null || v.isEmpty) ? 'Informe seu nome' : null,
@@ -85,7 +92,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 .withLabelPadding(bottom: 8),
             label: Text("Email"),
             hint: 'exemplo@email.com',
-            enabled: !_isLoading,
+            enabled: !isLoading,
             autovalidateMode: .onUnfocus,
             validator: (v) {
               if (v == null || v.isEmpty) return 'Informe o email';
@@ -101,7 +108,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 .withLabelPadding(bottom: 8),
             label: Text("Senha"),
             hint: 'Senha',
-            enabled: !_isLoading,
+            enabled: !isLoading,
             autovalidateMode: .onUnfocus,
             validator: (v) {
               if (v == null || v.isEmpty) return 'Informe a senha';
@@ -115,9 +122,9 @@ class _RegisterFormState extends State<RegisterForm> {
           SizedBox(
             width: double.infinity,
             child: FButton(
-              onPress: _isLoading ? null : _register,
+              onPress: isLoading ? null : _submit,
               child: Text(
-                _isLoading ? 'Registrando…' : 'Registrar',
+                isLoading ? 'Registrando…' : 'Registrar',
                 style: TextStyle(fontWeight: .bold),
               ),
             ),
