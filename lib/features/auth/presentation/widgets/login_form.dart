@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibiapabaapp/features/auth/presentation/login_controller.dart';
+import 'package:ibiapabaapp/features/auth/presentation/controllers/login_controller.dart';
 import 'package:ibiapabaapp/app/theme/theme.dart';
-import 'package:ibiapabaapp/features/auth/presentation/login_state.dart';
+import 'package:ibiapabaapp/features/auth/presentation/states/login_state.dart';
 
 class LoginForm extends StatefulWidget {
   final LoginController controller;

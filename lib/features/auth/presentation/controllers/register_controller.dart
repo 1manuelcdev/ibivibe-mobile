@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/register_with_email.dart';
-import 'package:ibiapabaapp/features/auth/presentation/register_state.dart';
+import 'package:ibiapabaapp/features/auth/presentation/states/register_state.dart';
 
 class RegisterController extends ChangeNotifier {
   final RegisterWithEmail registerWithEmail;

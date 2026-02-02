@@ -5,7 +5,7 @@ import 'package:ibiapabaapp/core/services/api_service.dart';
 import 'package:ibiapabaapp/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:ibiapabaapp/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/login_with_email.dart';
-import 'package:ibiapabaapp/features/auth/presentation/login_controller.dart';
+import 'package:ibiapabaapp/features/auth/presentation/controllers/login_controller.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/login_form.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/login_header.dart';
 

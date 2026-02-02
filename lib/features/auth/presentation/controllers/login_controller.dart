@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/login_with_email.dart';
-import 'package:ibiapabaapp/features/auth/presentation/login_state.dart';
+import 'package:ibiapabaapp/features/auth/presentation/states/login_state.dart';
 
 class LoginController extends ChangeNotifier {
   final LoginWithEmail loginWithEmail;

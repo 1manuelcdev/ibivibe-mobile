@@ -3,8 +3,8 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ibiapabaapp/app/theme/theme.dart';
-import 'package:ibiapabaapp/features/auth/presentation/register_controller.dart';
-import 'package:ibiapabaapp/features/auth/presentation/register_state.dart';
+import 'package:ibiapabaapp/features/auth/presentation/controllers/register_controller.dart';
+import 'package:ibiapabaapp/features/auth/presentation/states/register_state.dart';
 
 class RegisterForm extends StatefulWidget {
   final RegisterController controller;
