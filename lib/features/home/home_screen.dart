@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:ibiapabaapp/features/home/widgets/explore_cities_section.dart';
 import 'package:ibiapabaapp/features/home/widgets/sheets/change_location_sheet.dart';
 import 'package:ibiapabaapp/features/home/widgets/now_happening_section.dart';
 import 'package:ibiapabaapp/features/home/widgets/quick_categories.dart';
@@ -17,7 +18,12 @@ class HomeScreen extends StatelessWidget {
           _HomeHeader(),
           QuickCategoriesList(),
           _MainWrapper(
-            children: [SponsoredHighlights(), NowHappeningSection()],
+            children: [
+              SponsoredHighlights(),
+              const SizedBox(),
+              NowHappeningSection(),
+              ExploreCitiesSection(),
+            ],
           ),
         ],
       ),
@@ -51,17 +57,17 @@ class _HomeHeader extends StatelessWidget {
             crossAxisAlignment: .start,
             spacing: 8,
             children: [
-              FButton.raw(
-                onPress: () => showChangeLocationSheet(context: context),
-                style: FButtonStyle.ghost(),
-                child: FTooltip(
-                  tipAnchor: Alignment.topLeft,
-                  spacing: FPortalSpacing(12),
-                  childAnchor: Alignment.bottomLeft,
-                  hover: true,
-                  longPress: true,
-                  tipBuilder: (context, _) =>
-                      const Text('Localização atual, toque para mudar'),
+              FTooltip(
+                tipAnchor: Alignment.topLeft,
+                spacing: FPortalSpacing(12),
+                childAnchor: Alignment.bottomLeft,
+                hover: true,
+                longPress: true,
+                tipBuilder: (context, _) =>
+                    const Text('Localização atual, toque para mudar'),
+                child: FButton.raw(
+                  onPress: () => showChangeLocationSheet(context: context),
+                  style: FButtonStyle.ghost(),
                   child: Row(
                     mainAxisAlignment: .center,
                     crossAxisAlignment: .center,
