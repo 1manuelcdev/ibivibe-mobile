@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/app/router/app_shell.dart';
 
-import 'package:ibiapabaapp/features/home/home_screen.dart';
+import 'package:ibiapabaapp/features/home/presentation/screens/home_screen.dart';
 import 'package:ibiapabaapp/features/auth/presentation/screens/login_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/company_onboarding_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/user_onboarding_screen.dart';
@@ -13,7 +13,7 @@ class AppRouter {
   final _router = GoRouter(
     routes: [
       // Welcome & Onboarding
-      GoRoute(path: '/', redirect: (_, _) => '/welcome'),
+      GoRoute(path: '/', redirect: (_, _) => '/app/home'),
       GoRoute(
         path: '/welcome',
         builder: (context, state) => const WelcomeScreen(),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:ibiapabaapp/features/home/widgets/explore_cities_section.dart';
-import 'package:ibiapabaapp/features/home/widgets/sheets/change_location_sheet.dart';
-import 'package:ibiapabaapp/features/home/widgets/now_happening_section.dart';
-import 'package:ibiapabaapp/features/home/widgets/quick_categories.dart';
-import 'package:ibiapabaapp/features/home/widgets/sponsored_highlights.dart';
+import 'package:ibiapabaapp/features/home/presentation/widgets/explore_cities_section.dart';
+import 'package:ibiapabaapp/features/home/presentation/widgets/sheets/change_location_sheet.dart';
+import 'package:ibiapabaapp/features/home/presentation/widgets/now_happening_section.dart';
+import 'package:ibiapabaapp/features/home/presentation/widgets/quick_categories.dart';
+import 'package:ibiapabaapp/features/home/presentation/widgets/sponsored_highlights.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
