@@ -16,7 +16,7 @@ class QuickCategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const .fromLTRB(16, 0, 0, 0),
+      padding: const .fromLTRB(24, 0, 0, 0),
       child: SizedBox(
         height: 44,
         child: ListView.separated(

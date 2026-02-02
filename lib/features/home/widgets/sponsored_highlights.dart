@@ -21,7 +21,7 @@ class _SponsoredHighlightsState extends State<SponsoredHighlights> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 16 / 16,
+      aspectRatio: 1 / 1,
       child: ClipRRect(
         borderRadius: .circular(16),
         child: Stack(
