@@ -2,10 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_logger_interceptor.dart';
-import 'package:ibiapabaapp/data/token_storage.dart';
+import 'package:ibiapabaapp/data/secure_storage/tokens/token_storage.dart';
 
 class DioClient {
-  final Dio _dio = _initDio();
+  DioClient._();
+
+  static final Dio instance = _initDio();
 
   static Dio _initDio() {
     final dio = Dio(
@@ -20,7 +22,7 @@ class DioClient {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await TokenStorageImpl().getAccessToken();
+          final token = await TokenStorageImpl.instance.getAccessToken();
           if (token != null) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -30,9 +32,5 @@ class DioClient {
     );
 
     return dio;
-  }
-
-  Dio get getInstance {
-    return _dio;
   }
 }

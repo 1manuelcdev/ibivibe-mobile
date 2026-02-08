@@ -40,7 +40,7 @@ class SearchScreen extends StatelessWidget {
                 title: "Empresas",
                 items: companiesCategories,
                 onTap: (category) {
-                  DioClient().getInstance.get('/users');
+                  DioClient.instance.get('/users');
                 },
               ),
               ItemsGrid(title: "Eventos", items: eventsCategories),
