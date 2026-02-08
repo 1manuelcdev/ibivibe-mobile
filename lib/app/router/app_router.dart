@@ -4,6 +4,7 @@ import 'package:ibiapabaapp/app/router/app_shell.dart';
 
 import 'package:ibiapabaapp/features/home/presentation/screens/home_screen.dart';
 import 'package:ibiapabaapp/features/auth/presentation/screens/login_screen.dart';
+import 'package:ibiapabaapp/features/home/presentation/screens/search_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/company_onboarding_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/user_onboarding_screen.dart';
 import 'package:ibiapabaapp/features/auth/presentation/screens/register_screen.dart';
@@ -13,7 +14,7 @@ class AppRouter {
   final _router = GoRouter(
     routes: [
       // Welcome & Onboarding
-      GoRoute(path: '/', redirect: (_, _) => '/app/home'),
+      GoRoute(path: '/', redirect: (_, _) => '/welcome'),
       GoRoute(
         path: '/welcome',
         builder: (context, state) => const WelcomeScreen(),
@@ -53,10 +54,7 @@ class AppRouter {
               ),
             ],
           ),
-          GoRoute(
-            path: '/app/search',
-            builder: (_, _) => const Placeholder(child: Text("Search")),
-          ),
+          GoRoute(path: '/app/search', builder: (_, _) => const SearchScreen()),
           GoRoute(
             path: '/app/favorites',
             builder: (_, _) => const Placeholder(child: Text("Favorites")),
