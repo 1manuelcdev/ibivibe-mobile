@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibiapabaapp/data/secure_storage/tokens/token_storage.dart';
+import 'package:ibiapabaapp/shared/ui/sheet_drag_indicator.dart';
 
 void showChangeLocationSheet({required BuildContext context}) {
   showModalBottomSheet(
     context: context,
     barrierColor: Colors.black45,
     isDismissible: true,
-    showDragHandle: true,
     builder: (context) => Container(
       height: MediaQuery.of(context).size.height * 0.72,
       decoration: BoxDecoration(
@@ -20,13 +21,18 @@ void showChangeLocationSheet({required BuildContext context}) {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 16,
           children: [
+            SheetDragIndicator(),
+            const SizedBox(),
             const Text(
               'Alternar cidade atual',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
 
             FButton(
-              onPress: () => context.go('/welcome'),
+              onPress: () async {
+                TokenStorageImpl().clearTokens();
+                context.go('/welcome');
+              },
               style: FButtonStyle.destructive(),
               prefix: const Icon(Icons.logout),
               child: const Text('Logout'),
