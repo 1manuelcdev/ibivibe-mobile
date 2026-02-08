@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
+import 'package:ibiapabaapp/app/theme/text_field_style.dart';
 
 const brandPrimaryLight = Color.fromARGB(255, 55, 98, 8);
 const brandPrimaryDark = Color(0xFFB9FF70);
@@ -28,7 +29,16 @@ FThemeData customZincLight() {
   final typography = _typography(colors: colors);
   final style = _style(colors: colors, typography: typography);
 
-  return FThemeData(colors: colors, typography: typography, style: style);
+  return FThemeData(
+    colors: colors,
+    typography: typography,
+    style: style,
+    textFieldStyle: textFieldStyle(
+      colors: colors,
+      style: style,
+      typography: typography,
+    ),
+  );
 }
 
 /// Tema dark baseado no zinc
@@ -55,12 +65,21 @@ FThemeData customZincDark() {
   final typography = _typography(colors: colors);
   final style = _style(colors: colors, typography: typography);
 
-  return FThemeData(colors: colors, typography: typography, style: style);
+  return FThemeData(
+    colors: colors,
+    typography: typography,
+    style: style,
+    textFieldStyle: textFieldStyle(
+      colors: colors,
+      style: style,
+      typography: typography,
+    ),
+  );
 }
 
 FTypography _typography({
   required FColors colors,
-  String defaultFontFamily = 'packages/forui/DMSans',
+  String defaultFontFamily = 'DMSans',
 }) => FTypography(
   xs: TextStyle(
     color: colors.foreground,
@@ -148,28 +167,80 @@ FStyle _style({
       ),
   focusedOutlineStyle: FFocusedOutlineStyle(
     color: colors.primary,
-    borderRadius: FLerpBorderRadius.circular(24),
+    borderRadius: FLerpBorderRadius.circular(32),
   ),
   iconStyle: IconThemeData(color: colors.primary, size: 20),
   tappableStyle: FTappableStyle(),
-  borderRadius: FLerpBorderRadius.circular(24),
+  borderRadius: FLerpBorderRadius.circular(32),
   borderWidth: 1,
   shadow: const [
     BoxShadow(color: Color(0x0d000000), offset: Offset(0, 1), blurRadius: 2),
   ],
 );
 
-extension AppFormFieldStyle on FTextFieldStyle {
-  FTextFieldStyle withForeground(FColors colors) {
+extension AppTextFieldOverrides on FTextFieldStyle {
+  FTextFieldStyle withAppOverrides({
+    required FColors colors,
+    double? labelBottomPadding,
+  }) {
     return copyWith(
-      contentTextStyle: FWidgetStateMap.all(
-        TextStyle(color: colors.foreground, fontSize: 14),
-      ),
       cursorColor: colors.primary,
+      contentTextStyle: contentTextStyle,
+      hintTextStyle: hintTextStyle,
+      counterTextStyle: counterTextStyle,
+      labelPadding: labelBottomPadding != null
+          ? EdgeInsets.only(bottom: labelBottomPadding)
+          : labelPadding,
     );
   }
 
-  FTextFieldStyle withLabelPadding({required double bottom}) {
-    return copyWith(labelPadding: EdgeInsets.fromLTRB(0, 0, 0, bottom));
+  /// Ajusta o tamanho da fonte do texto dentro do input
+  /// Exemplo: withFontSize(typography: context.theme.typography, size: 'sm')
+  FTextFieldStyle withBaseFontSize({
+    required FTypography typography,
+    String size = 'base', // 'xs', 'sm', 'base', 'lg', 'xl', etc.
+  }) {
+    final TextStyle baseStyle = switch (size) {
+      'xs' => typography.xs,
+      'sm' => typography.sm,
+      'base' => typography.base,
+      'lg' => typography.lg,
+      'xl' => typography.xl,
+      'xl2' => typography.xl2,
+      'xl3' => typography.xl3,
+      'xl4' => typography.xl4,
+      'xl5' => typography.xl5,
+      'xl6' => typography.xl6,
+      'xl7' => typography.xl7,
+      'xl8' => typography.xl8,
+      _ => typography.base,
+    };
+
+    return copyWith(
+      contentTextStyle: FWidgetStateMap({
+        WidgetState.disabled: contentTextStyle
+            .resolve({WidgetState.disabled})
+            .copyWith(fontSize: baseStyle.fontSize, height: baseStyle.height),
+        WidgetState.any: contentTextStyle
+            .resolve({})
+            .copyWith(fontSize: baseStyle.fontSize, height: baseStyle.height),
+      }),
+      hintTextStyle: FWidgetStateMap({
+        WidgetState.disabled: hintTextStyle
+            .resolve({WidgetState.disabled})
+            .copyWith(fontSize: baseStyle.fontSize, height: baseStyle.height),
+        WidgetState.any: hintTextStyle
+            .resolve({})
+            .copyWith(fontSize: baseStyle.fontSize, height: baseStyle.height),
+      }),
+      counterTextStyle: FWidgetStateMap({
+        WidgetState.disabled: counterTextStyle
+            .resolve({WidgetState.disabled})
+            .copyWith(fontSize: baseStyle.fontSize, height: baseStyle.height),
+        WidgetState.any: counterTextStyle
+            .resolve({})
+            .copyWith(fontSize: baseStyle.fontSize, height: baseStyle.height),
+      }),
+    );
   }
 }
