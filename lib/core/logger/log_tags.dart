@@ -17,4 +17,5 @@ class LogTags {
   static const auth = "[AUTH]";
   static const login = "[LOGIN]";
   static const register = "[REGISTER]";
+  static const checkUsername = "[CHECK_USERNAME]";
 }
