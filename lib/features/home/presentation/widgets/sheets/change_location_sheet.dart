@@ -30,7 +30,7 @@ void showChangeLocationSheet({required BuildContext context}) {
 
             FButton(
               onPress: () async {
-                TokenStorageImpl().clearTokens();
+                TokenStorageImpl.instance.clearTokens();
                 context.go('/welcome');
               },
               style: FButtonStyle.destructive(),
