@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibiapabaapp/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:ibiapabaapp/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:ibiapabaapp/features/auth/domain/usecases/login_with_email.dart';
+import 'package:ibiapabaapp/features/auth/presentation/controllers/login_controller.dart';
+import 'package:ibiapabaapp/features/auth/presentation/widgets/login/login_sheet.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -8,9 +13,9 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FScaffold(
       child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Center(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisAlignment: .center,
               spacing: 32,
@@ -53,23 +58,25 @@ class _Heading extends StatelessWidget {
 }
 
 class _Actions extends StatelessWidget {
-  const _Actions();
+  _Actions();
+  final controller = LoginController(
+    LoginWithEmail(AuthRepositoryImpl(AuthRemoteDatasourceImpl())),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Column(
       spacing: 8,
       children: [
         FButton(
-          onPress: () => context.push('/onboarding/user'),
-          child: Text(
-            "Sou turista/morador",
-            style: TextStyle(fontWeight: .bold),
-          ),
+          onPress: () => context.push('/auth/register'),
+          child: Text("Criar conta"),
         ),
         FButton(
-          onPress: () => context.push('/onboarding/company'),
+          onPress: () =>
+              showLoginSheet(context: context, controller: controller),
           style: FButtonStyle.outline(),
-          child: Text("Sou empresa"),
+          child: Text("Entrar"),
         ),
       ],
     );
