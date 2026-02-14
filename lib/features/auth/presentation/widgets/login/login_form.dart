@@ -36,13 +36,23 @@ class _LoginFormState extends State<LoginForm> {
     final state = widget.controller.state;
 
     if (state is LoginSuccess) {
+      showFToast(
+        context: context,
+        icon: Icon(Icons.check),
+        title: Text(
+          "Bem vindo(a) de volta!",
+          style: TextStyle(color: context.theme.colors.foreground),
+        ),
+        alignment: FToastAlignment.bottomCenter,
+        duration: const Duration(seconds: 4),
+      );
       context.go('/app/home');
     }
 
     if (state is LoginError) {
       showFToast(
         context: context,
-        icon: const Icon(FIcons.triangleAlert),
+        icon: const Icon(Icons.gpp_maybe_outlined),
         title: const Text('Erro ao fazer login'),
         description: Text(state.message),
         alignment: FToastAlignment.bottomCenter,
@@ -50,7 +60,6 @@ class _LoginFormState extends State<LoginForm> {
       );
     }
 
-    // força rebuild para refletir loading
     setState(() {});
   }
 
@@ -78,9 +87,8 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           FTextFormField.email(
             control: _emailControl,
-            style: (style) => style
-                .withForeground(FTheme.of(context).colors)
-                .withLabelPadding(bottom: 8),
+            style: (style) =>
+                style.withBaseFontSize(typography: context.theme.typography),
             label: const Text("Email"),
             hint: "exemplo@email.com",
             enabled: !isLoading,
@@ -94,16 +102,15 @@ class _LoginFormState extends State<LoginForm> {
 
           FTextFormField.password(
             control: _passwordControl,
-            style: (style) => style
-                .withForeground(FTheme.of(context).colors)
-                .withLabelPadding(bottom: 8),
+            style: (style) =>
+                style.withBaseFontSize(typography: context.theme.typography),
             label: const Text("Senha"),
             hint: 'Senha',
             enabled: !isLoading,
             autovalidateMode: .onUnfocus,
             validator: (v) {
               if (v == null || v.isEmpty) return 'Informe a senha';
-              if (v.length < 6) return 'Mínimo 6 caracteres';
+              if (v.length < 8) return 'No mínimo 8 caracteres';
               return null;
             },
           ),

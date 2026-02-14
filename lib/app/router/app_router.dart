@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/app/router/app_shell.dart';
 
 import 'package:ibiapabaapp/features/home/presentation/screens/home_screen.dart';
-import 'package:ibiapabaapp/features/auth/presentation/screens/login_screen.dart';
 import 'package:ibiapabaapp/features/home/presentation/screens/search_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/company_onboarding_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/user_onboarding_screen.dart';
@@ -29,10 +28,6 @@ class AppRouter {
       ),
 
       // Authentication
-      GoRoute(
-        path: '/auth/login',
-        builder: (context, state) => const LoginScreen(),
-      ),
       GoRoute(
         path: '/auth/register',
         builder: (context, state) => const RegisterScreen(),
