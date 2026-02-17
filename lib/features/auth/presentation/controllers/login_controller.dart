@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/login_with_email.dart';
+import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
 import 'package:ibiapabaapp/features/auth/presentation/states/login_state.dart';
 
 class LoginController extends ChangeNotifier {
   final LoginWithEmail loginWithEmail;
+  final Session session;
 
-  LoginController(this.loginWithEmail);
+  LoginController(this.loginWithEmail, this.session);
 
   LoginState _state = LoginInitial();
   LoginState get state => _state;
@@ -30,8 +32,9 @@ class LoginController extends ChangeNotifier {
 
         _state = LoginError(failure.message);
       },
-      (_) {
+      (authResult) {
         logger.i('${LogTags.controller}${LogTags.login}${LogTags.success}');
+        session.initSession(authResult);
         _state = LoginSuccess();
       },
     );
