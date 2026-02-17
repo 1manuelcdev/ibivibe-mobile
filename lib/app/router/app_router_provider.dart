@@ -1,19 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibiapabaapp/app/router/app_shell.dart';
+import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+// Imports das suas telas
+import 'package:ibiapabaapp/app/router/app_shell.dart';
 import 'package:ibiapabaapp/features/home/presentation/screens/home_screen.dart';
 import 'package:ibiapabaapp/features/home/presentation/screens/search_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/company_onboarding_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/user_onboarding_screen.dart';
 import 'package:ibiapabaapp/features/auth/presentation/screens/register_screen.dart';
+import 'package:ibiapabaapp/features/profile/presentation/screens/profile_screen.dart';
 import 'package:ibiapabaapp/features/welcome/welcome_screen.dart';
 
-class AppRouter {
-  final _router = GoRouter(
+part 'app_router_provider.g.dart';
+
+@riverpod
+GoRouter appRouter(Ref ref) {
+  final user = ref.watch(sessionProvider);
+
+  return GoRouter(
+    initialLocation: '/app/home',
+    redirect: (context, state) {
+      final isLoggingIn =
+          state.matchedLocation.startsWith('/welcome') ||
+          state.matchedLocation.startsWith('/auth');
+
+      if (user == null) {
+        return isLoggingIn ? null : '/welcome';
+      }
+
+      if (isLoggingIn) {
+        return '/app/home';
+      }
+
+      return null;
+    },
     routes: [
       // Welcome & Onboarding
-      GoRoute(path: '/', redirect: (_, _) => '/welcome'),
       GoRoute(
         path: '/welcome',
         builder: (context, state) => const WelcomeScreen(),
@@ -33,37 +57,36 @@ class AppRouter {
         builder: (context, state) => const RegisterScreen(),
       ),
 
-      // Application
+      // Application Shell
       ShellRoute(
-        builder: (context, state, child) {
-          return AppShell(child: child);
-        },
+        builder: (context, state, child) => AppShell(child: child),
         routes: [
           GoRoute(
             path: '/app/home',
-            builder: (_, _) => const HomeScreen(),
+            builder: (context, state) => const HomeScreen(),
             routes: [
               GoRoute(
                 path: 'details',
-                builder: (_, _) => const Placeholder(child: Text('Details')),
+                builder: (context, state) =>
+                    const Placeholder(child: Text('Details')),
               ),
             ],
           ),
-          GoRoute(path: '/app/search', builder: (_, _) => const SearchScreen()),
+          GoRoute(
+            path: '/app/search',
+            builder: (context, state) => const SearchScreen(),
+          ),
           GoRoute(
             path: '/app/favorites',
-            builder: (_, _) => const Placeholder(child: Text("Favorites")),
+            builder: (context, state) =>
+                const Placeholder(child: Text("Favorites")),
           ),
           GoRoute(
             path: '/app/profile',
-            builder: (_, _) => const Placeholder(child: Text("Profile")),
+            builder: (context, state) => ProfileScreen(),
           ),
         ],
       ),
     ],
   );
-
-  GoRouter get getRouterInstance {
-    return _router;
-  }
 }

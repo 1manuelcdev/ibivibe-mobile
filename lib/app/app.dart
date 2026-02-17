@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
-import 'package:ibiapabaapp/app/router/app_router.dart';
+import 'package:ibiapabaapp/app/router/app_router_provider.dart';
 import 'package:ibiapabaapp/app/theme/theme.dart';
 
-class App extends StatelessWidget {
+class App extends ConsumerWidget {
   const App({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
     final customLightTheme = customZincLight();
     final customDarkTheme = customZincDark();
 
@@ -21,7 +23,7 @@ class App extends StatelessWidget {
       ],
       supportedLocales: [Locale('pt', 'BR')],
       locale: Locale('pt', 'BR'),
-      routerConfig: AppRouter().getRouterInstance,
+      routerConfig: router,
       themeMode: ThemeMode.system,
       theme: customLightTheme.toApproximateMaterialTheme(),
       darkTheme: customDarkTheme.toApproximateMaterialTheme(),
