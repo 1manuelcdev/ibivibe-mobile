@@ -18,48 +18,86 @@ class Navbar extends StatelessWidget {
     final index = _locationToIndex(location);
 
     return FBottomNavigationBar(
-      safeAreaBottom: true,
+      style: (style) => style.copyWith(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+        decoration: style.decoration.copyWith(
+          color: context.theme.colors.background,
+          border: Border(
+            top: BorderSide(color: context.theme.colors.border, width: 0.5),
+          ),
+          borderRadius: BorderRadius.zero,
+        ),
+      ),
       index: index,
       onChange: (i) {
-        switch (i) {
-          case 0:
-            context.go('/app/home');
-            break;
-          case 1:
-            context.push('/app/search');
-            break;
-          case 2:
-            context.push('/app/favorites');
-            break;
-          case 3:
-            context.push('/app/profile');
-            break;
-        }
+        final routes = [
+          '/app/home',
+          '/app/search',
+          '/app/favorites',
+          '/app/profile',
+        ];
+        i == 0 ? context.go(routes[i]) : context.push(routes[i]);
       },
       children: [
-        FBottomNavigationBarItem(
-          icon: Icon(index == 0 ? Icons.home_rounded : Icons.home_outlined),
-          label: Text('Início'),
+        _buildItem(
+          context,
+          0,
+          index,
+          Icons.home_rounded,
+          Icons.home_outlined,
+          'Início',
         ),
-        FBottomNavigationBarItem(
-          icon: Icon(Icons.search_rounded),
-          label: Text('Buscar'),
+        _buildItem(
+          context,
+          1,
+          index,
+          Icons.search_rounded,
+          Icons.search_rounded,
+          'Buscar',
         ),
-        FBottomNavigationBarItem(
-          icon: Icon(
-            index == 2
-                ? Icons.favorite_outlined
-                : Icons.favorite_outline_rounded,
-          ),
-          label: Text('Favoritos'),
+        _buildItem(
+          context,
+          2,
+          index,
+          Icons.favorite_rounded,
+          Icons.favorite_outline_rounded,
+          'Favoritos',
         ),
-        FBottomNavigationBarItem(
-          icon: Icon(
-            index == 3 ? Icons.person_rounded : Icons.person_outline_rounded,
-          ),
-          label: Text('Perfil'),
+        _buildItem(
+          context,
+          3,
+          index,
+          Icons.person_rounded,
+          Icons.person_outline_rounded,
+          'Perfil',
         ),
       ],
+    );
+  }
+
+  FBottomNavigationBarItem _buildItem(
+    BuildContext context,
+    int targetIndex,
+    int currentIndex,
+    IconData activeIcon,
+    IconData inactiveIcon,
+    String label,
+  ) {
+    final bool isActive = currentIndex == targetIndex;
+
+    return FBottomNavigationBarItem(
+      icon: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        decoration: BoxDecoration(
+          color: isActive
+              ? context.theme.colors.primary.withAlpha((255 / 12).toInt())
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Icon(isActive ? activeIcon : inactiveIcon),
+      ),
+      label: Text(label, style: TextStyle(fontSize: 12)),
     );
   }
 }
