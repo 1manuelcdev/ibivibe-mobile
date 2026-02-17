@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
-import 'package:ibiapabaapp/core/network/dio_client.dart';
+import 'package:ibiapabaapp/core/network/dio_provider.dart';
 import 'package:ibiapabaapp/features/home/presentation/widgets/explore_cities_section.dart';
 import 'package:ibiapabaapp/shared/ui/items_grid.dart';
 import 'package:ibiapabaapp/shared/ui/main_wrapper.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const List<String> companiesCategories = [
       "Restaurantes",
       "Hotéis e pousadas",
@@ -18,7 +19,6 @@ class SearchScreen extends StatelessWidget {
       "Comércio",
       "Aventura",
       "Temáticos",
-      "Ver mais",
     ];
     const List<String> eventsCategories = [
       "Religiosos",
@@ -26,8 +26,9 @@ class SearchScreen extends StatelessWidget {
       "Esportivos",
       "Cultura e arte",
       "Palestras",
-      "Ver mais",
     ];
+
+    final dioClient = ref.watch(dioProvider);
 
     return SingleChildScrollView(
       child: Column(
@@ -39,11 +40,16 @@ class SearchScreen extends StatelessWidget {
               ItemsGrid(
                 title: "Empresas",
                 items: companiesCategories,
-                onTap: (category) {
-                  DioClient.instance.get('/users');
+                onItemTap: (category) {
+                  dioClient.get('/users');
                 },
+                onSeeAllTap: () {},
               ),
-              ItemsGrid(title: "Eventos", items: eventsCategories),
+              ItemsGrid(
+                title: "Eventos",
+                items: eventsCategories,
+                onSeeAllTap: () {},
+              ),
               ExploreCitiesSection(),
             ],
           ),
