@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 
@@ -12,7 +11,7 @@ FButtonStyles getButtonStyles({
     typography: typography,
     style: style,
   ).copyWith(
-    /// PRIMARY
+    // PRIMARY
     primary: (base) =>
         buttonStyle(
           colors: colors,
@@ -25,8 +24,83 @@ FButtonStyles getButtonStyles({
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
                   TextStyle(
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: colors.primaryForeground,
+                  ),
+                ),
+              )
+              .call,
+        ),
+    secondary: (base) =>
+        buttonStyle(
+          colors: colors,
+          typography: typography,
+          style: style,
+          color: colors.secondary,
+          foregroundColor: colors.secondaryForeground,
+        ).copyWith(
+          contentStyle: base.contentStyle
+              .copyWith(
+                textStyle: FWidgetStateMap<TextStyle>.all(
+                  TextStyle(fontSize: 14),
+                ),
+              )
+              .call,
+        ),
+    ghost: (base) =>
+        buttonStyle(
+          colors: colors,
+          typography: typography,
+          style: style,
+          color: Colors.transparent,
+          foregroundColor: colors.foreground,
+        ).copyWith(
+          contentStyle: base.contentStyle
+              .copyWith(
+                textStyle: FWidgetStateMap<TextStyle>.all(
+                  TextStyle(fontSize: 14),
+                ),
+              )
+              .call,
+        ),
+    outline: (base) =>
+        buttonStyle(
+          colors: colors,
+          typography: typography,
+          style: style,
+          color: Colors.transparent,
+          foregroundColor: colors.foreground,
+        ).copyWith(
+          decoration: FWidgetStateMap.all(
+            BoxDecoration(
+              border: BoxBorder.all(color: colors.border),
+              borderRadius: .circular(24),
+            ),
+          ),
+          contentStyle: base.contentStyle
+              .copyWith(
+                textStyle: FWidgetStateMap<TextStyle>.all(
+                  TextStyle(fontSize: 14),
+                ),
+              )
+              .call,
+        ),
+    destructive: (base) =>
+        buttonStyle(
+          colors: colors,
+          typography: typography,
+          style: style,
+          color: colors.destructive,
+          foregroundColor: colors.background,
+        ).copyWith(
+          contentStyle: base.contentStyle
+              .copyWith(
+                textStyle: FWidgetStateMap<TextStyle>.all(
+                  TextStyle(
+                    fontSize: 14,
+                    color: colors.destructiveForeground,
+                    fontWeight: .w600,
                   ),
                 ),
               )
@@ -45,17 +119,14 @@ FButtonStyle buttonStyle({
 }) => FButtonStyle(
   decoration: FWidgetStateMap({
     WidgetState.disabled: BoxDecoration(
-      borderRadius: style.borderRadius,
+      borderRadius: .circular(24),
       color: colors.disable(color),
     ),
     WidgetState.hovered | WidgetState.pressed: BoxDecoration(
-      borderRadius: style.borderRadius,
+      borderRadius: .circular(24),
       color: colors.hover(color),
     ),
-    WidgetState.any: BoxDecoration(
-      borderRadius: style.borderRadius,
-      color: color,
-    ),
+    WidgetState.any: BoxDecoration(borderRadius: .circular(24), color: color),
   }),
   focusedOutlineStyle: style.focusedOutlineStyle,
 
