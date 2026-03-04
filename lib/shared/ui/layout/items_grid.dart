@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:ibiapabaapp/shared/ui/tappable_container.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/inputs/tappable_container.dart';
+import 'package:ibiapabaapp/shared/ui/layout/section_header.dart';
 
 class ItemsGrid extends StatelessWidget {
   final String title;
@@ -25,28 +26,9 @@ class ItemsGrid extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            FButton.raw(
-              onPress: () => onSeeAllTap.call(),
-              style: FButtonStyle.ghost(),
-              child: Text(
-                'Ver tudo',
-                style: TextStyle(
-                  color: context.theme.colors.mutedForeground,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
+        SectionHeader(title: title, onSeeAllTap: onSeeAllTap),
         const SizedBox(height: 16),
+        
         LayoutBuilder(
           builder: (context, constraints) {
             const double spacing = 8.0;
