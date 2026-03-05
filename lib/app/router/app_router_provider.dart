@@ -5,11 +5,11 @@ import 'package:ibiapabaapp/app/router/transitions/fade_through_page.dart';
 import 'package:ibiapabaapp/app/router/transitions/shared_axis_page.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
 import 'package:ibiapabaapp/features/cities/presentation/screens/cities_overview_screen.dart';
-import 'package:ibiapabaapp/features/cities/presentation/screens/single_city_screen.dart';
+import 'package:ibiapabaapp/features/cities/presentation/screens/city_detail_screen.dart';
 import 'package:ibiapabaapp/features/company/presentation/screens/companies_overview_screen.dart';
-import 'package:ibiapabaapp/features/company/presentation/screens/single_company_screen.dart';
+import 'package:ibiapabaapp/features/company/presentation/screens/company_detail_screen.dart';
 import 'package:ibiapabaapp/features/events/presentation/screens/events_overview_screen.dart';
-import 'package:ibiapabaapp/features/events/presentation/screens/single_event_screen.dart';
+import 'package:ibiapabaapp/features/events/presentation/screens/event_detail_screen.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:ibiapabaapp/app/router/app_shell.dart';
@@ -109,7 +109,7 @@ GoRouter appRouter(Ref ref) {
                 path: ':id',
                 pageBuilder: (context, state) => SharedAxisPage(
                   key: state.pageKey,
-                  child: SingleCityScreen(
+                  child: CityDetailScreen(
                     id: state.pathParameters['id'].toString(),
                   ),
                   type: SharedAxisTransitionType.scaled,
@@ -131,7 +131,7 @@ GoRouter appRouter(Ref ref) {
                 path: '/:id',
                 pageBuilder: (context, state) => SharedAxisPage(
                   key: state.pageKey,
-                  child: SingleCompanyScreen(
+                  child: CompanyDetailScreen(
                     id: state.pathParameters['id'].toString(),
                   ),
                   type: SharedAxisTransitionType.scaled,
@@ -153,7 +153,7 @@ GoRouter appRouter(Ref ref) {
                 path: '/:id',
                 pageBuilder: (context, state) => SharedAxisPage(
                   key: state.pageKey,
-                  child: SingleEventScreen(
+                  child: EventDetailScreen(
                     id: state.pathParameters['id'].toString(),
                   ),
                   type: SharedAxisTransitionType.scaled,
