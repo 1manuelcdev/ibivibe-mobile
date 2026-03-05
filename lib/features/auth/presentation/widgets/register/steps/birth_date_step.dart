@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:ibiapabaapp/features/auth/presentation/controllers/register_controller.dart';
-import 'package:ibiapabaapp/shared/ui/native_date_input.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/inputs/native_date_input.dart';
 import 'package:intl/intl.dart';
 
 class BirthDateStep extends StatefulWidget {

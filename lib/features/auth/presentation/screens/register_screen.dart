@@ -11,7 +11,7 @@ import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/na
 import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/password_step.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/phone_step/phone_step.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/username_step.dart';
-import 'package:ibiapabaapp/shared/ui/step_dots.dart';
+import 'package:ibiapabaapp/shared/ui/layout/step_dots.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
