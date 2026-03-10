@@ -8,15 +8,22 @@ import 'package:ibiapabaapp/features/auth/presentation/providers/session_provide
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
 
-  await CacheDatabaseService.init();
+  await Future.wait([
+    dotenv.load(fileName: ".env"),
+    CacheDatabaseService.init(),
+  ]);
+
   final container = ProviderContainer();
 
   try {
     await container.read(sessionProvider.notifier).restoreSession();
-  } catch (e) {
-    logger.d('Erro ao restaurar sessão: $e');
+  } catch (e, stack) {
+    logger.e(
+      'Erro fatal ao restaurar sessão na main',
+      error: e,
+      stackTrace: stack,
+    );
   }
 
   runApp(UncontrolledProviderScope(container: container, child: const App()));
