@@ -15,11 +15,11 @@ final citiesLocalDatasourceProvider = CitiesLocalDatasourceProvider._();
 final class CitiesLocalDatasourceProvider
     extends
         $FunctionalProvider<
-          CitiesLocalDatasourceImpl,
-          CitiesLocalDatasourceImpl,
-          CitiesLocalDatasourceImpl
+          CitiesLocalDatasource,
+          CitiesLocalDatasource,
+          CitiesLocalDatasource
         >
-    with $Provider<CitiesLocalDatasourceImpl> {
+    with $Provider<CitiesLocalDatasource> {
   CitiesLocalDatasourceProvider._()
     : super(
         from: null,
@@ -36,26 +36,26 @@ final class CitiesLocalDatasourceProvider
 
   @$internal
   @override
-  $ProviderElement<CitiesLocalDatasourceImpl> $createElement(
+  $ProviderElement<CitiesLocalDatasource> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  CitiesLocalDatasourceImpl create(Ref ref) {
+  CitiesLocalDatasource create(Ref ref) {
     return citiesLocalDatasource(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(CitiesLocalDatasourceImpl value) {
+  Override overrideWithValue(CitiesLocalDatasource value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<CitiesLocalDatasourceImpl>(value),
+      providerOverride: $SyncValueProvider<CitiesLocalDatasource>(value),
     );
   }
 }
 
 String _$citiesLocalDatasourceHash() =>
-    r'9623994ec245a0f6fc1369ffd4972c8a32f4f1a8';
+    r'884cf211472ac45591cd02fb0c807f007202d65e';
 
 @ProviderFor(citiesRemoteDatasource)
 final citiesRemoteDatasourceProvider = CitiesRemoteDatasourceProvider._();
@@ -192,45 +192,112 @@ final class GetAllCitiesProvider
 
 String _$getAllCitiesHash() => r'eb3e8c5629ed3ac335612cc310344c2530c92d14';
 
-@ProviderFor(Cities)
-final citiesProvider = CitiesProvider._();
+@ProviderFor(getCityById)
+final getCityByIdProvider = GetCityByIdProvider._();
 
-final class CitiesProvider extends $AsyncNotifierProvider<Cities, List<City>> {
-  CitiesProvider._()
+final class GetCityByIdProvider
+    extends $FunctionalProvider<GetCityById, GetCityById, GetCityById>
+    with $Provider<GetCityById> {
+  GetCityByIdProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'citiesProvider',
+        name: r'getCityByIdProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$citiesHash();
+  String debugGetCreateSourceHash() => _$getCityByIdHash();
 
   @$internal
   @override
-  Cities create() => Cities();
+  $ProviderElement<GetCityById> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  GetCityById create(Ref ref) {
+    return getCityById(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetCityById value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetCityById>(value),
+    );
+  }
 }
 
-String _$citiesHash() => r'2ab5c7870b82f673d416b0366b8a9437b0e44bd9';
+String _$getCityByIdHash() => r'87f67c58dcaa701fe888eee7d7b1d87ddec178d5';
 
-abstract class _$Cities extends $AsyncNotifier<List<City>> {
-  FutureOr<List<City>> build();
-  @$mustCallSuper
+@ProviderFor(cityById)
+final cityByIdProvider = CityByIdFamily._();
+
+final class CityByIdProvider
+    extends $FunctionalProvider<AsyncValue<City?>, City?, FutureOr<City?>>
+    with $FutureModifier<City?>, $FutureProvider<City?> {
+  CityByIdProvider._({
+    required CityByIdFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'cityByIdProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  void runBuild() {
-    final ref = this.ref as $Ref<AsyncValue<List<City>>, List<City>>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<City>>, List<City>>,
-              AsyncValue<List<City>>,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
+  String debugGetCreateSourceHash() => _$cityByIdHash();
+
+  @override
+  String toString() {
+    return r'cityByIdProvider'
+        ''
+        '($argument)';
   }
+
+  @$internal
+  @override
+  $FutureProviderElement<City?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<City?> create(Ref ref) {
+    final argument = this.argument as String;
+    return cityById(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CityByIdProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$cityByIdHash() => r'a8010c5d845ecd5d080169e62c0391a1aa2724ed';
+
+final class CityByIdFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<City?>, String> {
+  CityByIdFamily._()
+    : super(
+        retry: null,
+        name: r'cityByIdProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  CityByIdProvider call(String id) =>
+      CityByIdProvider._(argument: id, from: this);
+
+  @override
+  String toString() => r'cityByIdProvider';
 }

@@ -35,21 +35,33 @@ class CitiesRepositoryImpl implements CitiesRepository {
   }
 
   @override
-  Future<Either<Failure, List<City>>> getAllCities() async {
+  Future<Either<Failure, List<City>>> getAllCities({
+    bool forceRefresh = false,
+  }) async {
     try {
-      final cachedCities = await localDatasource.getCachedCities();
-      if (cachedCities.isNotEmpty) {
-        logger.d('retrieved cities from cache');
-        return Right(cachedCities);
+      if (!forceRefresh) {
+        final cachedCities = await localDatasource.getCachedCities();
+        if (cachedCities.isNotEmpty) return Right(cachedCities);
       }
 
       final remoteCities = await remoteDatasource.getAllCities();
+
+      await localDatasource.clearCache();
       await localDatasource.cacheCities(remoteCities);
 
-      logger.d('retrieved cities from remote');
       return Right(remoteCities);
     } catch (e, stack) {
       return Left(_handleError(e, stack, LogTags.getAllCities));
+    }
+  }
+
+  @override
+  Future<Either<Failure, City?>> getCityById(String id) async {
+    try {
+      final city = await localDatasource.getCityById(id);
+      return Right(city);
+    } catch (e, stack) {
+      return Left(_handleError(e, stack, LogTags.getCityById));
     }
   }
 }

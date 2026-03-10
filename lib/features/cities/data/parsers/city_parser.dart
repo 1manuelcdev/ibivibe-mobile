@@ -14,9 +14,9 @@ class CityParser {
 
     return City(
       id: json['id'].toString(),
-      name: json['name'],
-      slug: json['slug'],
-      coverImgUrl: json['coverImgUrl'] ?? '',
+      name: json['name'] ?? '',
+      slug: json['slug'] ?? '',
+      coverImgUrl: json['cover_img_url'] ?? json['coverImgUrl'] ?? '',
       description: json['description'] as String?,
       categories:
           (json['categories'] as List<dynamic>?)

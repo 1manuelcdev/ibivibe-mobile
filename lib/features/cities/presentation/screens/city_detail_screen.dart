@@ -1,144 +1,141 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibiapabaapp/features/cities/domain/entities/city_detail_data.dart';
+import 'package:ibiapabaapp/features/cities/presentation/controllers/city_detail_controller.dart';
+import 'package:ibiapabaapp/features/medias/domain/entity/media.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/carousel/content_carousel.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/effects/expandable_text.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/media/sources.dart';
 import 'package:ibiapabaapp/shared/ui/layout/section_header.dart';
 import 'package:ibiapabaapp/shared/ui/layout/wrappers/detail_page_wrapper.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class CityDetailScreen extends StatefulWidget {
+class CityDetailScreen extends ConsumerWidget {
   final String id;
   const CityDetailScreen({super.key, required this.id});
 
   @override
-  State<CityDetailScreen> createState() => _CityDetailScreenState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final detailAsync = ref.watch(cityDetailProvider(id));
+
+    return detailAsync.when(
+      loading: () => const _CityDetailContent(isLoading: true, detail: null),
+      error: (e, _) =>
+          _ErrorView(onRetry: () => ref.invalidate(cityDetailProvider(id))),
+      data: (detail) => _CityDetailContent(isLoading: false, detail: detail),
+    );
+  }
 }
 
-class _CityDetailScreenState extends State<CityDetailScreen> {
-  bool _isLoading = true;
+class _CityDetailContent extends StatelessWidget {
+  final bool isLoading;
+  final CityDetailData? detail;
 
-  late final List<ContentItem> _defaultItems = [
-    ContentItem(
-      type: ContentType.image,
-      source: ContentSource.network,
-      url:
-          'https://imgs.search.brave.com/N4w28VWC72gH2Zi0HYc7q3-sUFkeDmsxHuZtLw7rakc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dmlhamFsaS5jb20u/YnIvd3AtY29udGVu/dC91cGxvYWRzLzIw/MjIvMDQvc2VycmEt/ZGEtaWJpYXBhYmEt/OS5qcGc',
-    ),
-    ContentItem(
-      type: ContentType.image,
-      source: ContentSource.network,
-      url:
-          'https://imgs.search.brave.com/N4w28VWC72gH2Zi0HYc7q3-sUFkeDmsxHuZtLw7rakc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dmlhamFsaS5jb20u/YnIvd3AtY29udGVu/dC91cGxvYWRzLzIw/MjIvMDQvc2VycmEt/ZGEtaWJpYXBhYmEt/OS5qcGc',
-    ),
-    ContentItem(
-      type: ContentType.image,
-      source: ContentSource.network,
-      url:
-          'https://imgs.search.brave.com/N4w28VWC72gH2Zi0HYc7q3-sUFkeDmsxHuZtLw7rakc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/dmlhamFsaS5jb20u/YnIvd3AtY29udGVu/dC91cGxvYWRzLzIw/MjIvMDQvc2VycmEt/ZGEtaWJpYXBhYmEt/OS5qcGc',
-    ),
-  ];
+  const _CityDetailContent({required this.isLoading, required this.detail});
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) setState(() => _isLoading = false);
-    });
+  List<MediaSource> get _carouselItems {
+    if (isLoading || detail == null || detail!.media.isEmpty) {
+      return List.generate(3, (_) => NetworkMedia(url: ''));
+    }
+
+    return detail!.media.map((m) {
+      return NetworkMedia(
+        url: m.url,
+        title: detail?.city.name,
+        isVideo: m.mediaType == MediaType.video,
+      );
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final city = detail?.city;
+
     return Skeletonizer(
       effect: customShimmerEffect(context),
-      enabled: _isLoading,
+      enabled: isLoading,
       child: DetailPageWrapper(
-        carousel: ContentCarousel(items: _defaultItems, isLoading: _isLoading),
+        carousel: ContentCarousel(
+          items: _carouselItems,
+          isLoading: isLoading,
+          aspectRatio: 16 / 18,
+        ),
         headerChildren: FHeader.nested(
           prefixes: [
             FButton.icon(
               style: FButtonStyle.secondary(),
               onPress: () => context.pop(),
-              child: Icon(Icons.arrow_back, size: 24),
+              child: const Icon(Icons.arrow_back, size: 24),
             ),
           ],
-
-          suffixes: [
-            Skeletonizer(
-              effect: customShimmerEffect(context),
-              enabled: _isLoading,
-              child: FavoriteButton(),
-            ),
-          ],
+          suffixes: [const FavoriteButton()],
         ),
-
         bodyChildren: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                widget.id,
+                city?.name ?? 'Carregando cidade',
                 style: context.theme.typography.xl2.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 12),
-
               Wrap(
                 runSpacing: 6,
                 spacing: 6,
-                children: [
-                  FBadge(
-                    style: FBadgeStyle.secondary(),
-                    child: Skeleton.ignore(
-                      child: Text(
-                        widget.id,
-                        style: context.theme.typography.sm.copyWith(
-                          fontWeight: .normal,
+                children: (city?.categories ?? ['Categoria', 'Subcategoria'])
+                    .map(
+                      (cat) => FBadge(
+                        style: FBadgeStyle.secondary(),
+                        child: Text(
+                          cat,
+                          style: context.theme.typography.sm.copyWith(
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  FBadge(
-                    style: FBadgeStyle.secondary(),
-                    child: Skeleton.ignore(
-                      child: Text(
-                        'Cidades',
-                        style: context.theme.typography.sm.copyWith(
-                          fontWeight: .normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                  FBadge(
-                    style: FBadgeStyle.secondary(),
-                    child: Skeleton.ignore(
-                      child: Text(
-                        'Alto da Serra',
-                        style: context.theme.typography.sm.copyWith(
-                          fontWeight: .normal,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                    )
+                    .toList(),
               ),
-
               const SizedBox(height: 16),
-
               ExpandableText(
-                text: _isLoading
-                    ? 'Este é um texto de exemplo para o skeleton ocupar espaço na tela, Este é um texto de exemplo para o skeleton ocupar espaço na tela'
-                    : 'A cidade de Ubajara destaca-se pela rica geologia com grutas calcárias, formações rochosas e cavernas do Parque Nacional de Ubajara. O relevo serrano, aliado às paisagens únicas, torna o destino referência em ecoturismo e geoturismo no Nordeste.',
+                text: isLoading
+                    ? 'Este é um texto de exemplo para o skeleton ocupar espaço...'
+                    : (city?.description ?? 'Sem descrição disponível.'),
               ),
-
               const FDivider(),
               SectionHeader(title: 'Acontecendo agora', onSeeAllTap: () {}),
-
               const SizedBox(height: 48),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ErrorView extends StatelessWidget {
+  final VoidCallback onRetry;
+  const _ErrorView({required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        spacing: 16,
+        children: [
+          Icon(
+            Icons.error_outline,
+            color: context.theme.colors.mutedForeground,
+            size: 64,
+          ),
+          Text('Erro ao carregar cidade', style: context.theme.typography.base),
+          FButton(onPress: onRetry, child: const Text('Tentar novamente')),
         ],
       ),
     );
@@ -153,36 +150,24 @@ class FavoriteButton extends StatefulWidget {
 }
 
 class _FavoriteButtonState extends State<FavoriteButton> {
-  bool userHasFavourited = false;
+  bool _favourited = false;
 
   @override
   Widget build(BuildContext context) {
     return FButton.icon(
       style: FButtonStyle.secondary(),
-
-      onPress: () => setState(() => userHasFavourited = !userHasFavourited),
-
+      onPress: () => setState(() => _favourited = !_favourited),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 150),
-
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return ScaleTransition(
-            scale: CurvedAnimation(parent: animation, curve: Curves.bounceOut),
-
-            child: FadeTransition(opacity: animation, child: child),
-          );
-        },
-
+        transitionBuilder: (child, animation) => ScaleTransition(
+          scale: CurvedAnimation(parent: animation, curve: Curves.bounceOut),
+          child: FadeTransition(opacity: animation, child: child),
+        ),
         child: Icon(
-          userHasFavourited
-              ? Icons.favorite_rounded
-              : Icons.favorite_outline_rounded,
-
-          key: ValueKey<bool>(userHasFavourited),
-
+          _favourited ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+          key: ValueKey<bool>(_favourited),
           size: 24,
-
-          color: userHasFavourited
+          color: _favourited
               ? context.theme.colors.primary
               : context.theme.colors.foreground,
         ),

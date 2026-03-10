@@ -8,16 +8,14 @@ abstract class CitiesRemoteDatasource {
 }
 
 class CitiesRemoteDatasourceImpl implements CitiesRemoteDatasource {
-  final Dio _dio;
-  CitiesRemoteDatasourceImpl(this._dio);
+  final Dio dio;
+  CitiesRemoteDatasourceImpl(this.dio);
 
   @override
   Future<List<City>> getAllCities() async {
     try {
-      final response = await _dio.get('/cities');
-      final List<City> cities = CityParser.fromJsonList(response.data);
-
-      return cities;
+      final response = await dio.get('/cities');
+      return CityParser.fromJsonList(response.data);
     } on DioException catch (e) {
       throw DioErrorToExceptionMapper.map(e);
     }

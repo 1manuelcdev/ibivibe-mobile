@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/media/content_media.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/media/sources.dart';
+import 'package:ibiapabaapp/shared/ui/layout/entity_badge.dart';
 
 class CityCard extends StatelessWidget {
   final City city;
@@ -16,7 +19,7 @@ class CityCard extends StatelessWidget {
       spacing: 12,
       children: [
         GestureDetector(
-          onTap: () => context.push('app/cities/${city.id}'),
+          onTap: () => context.push('/app/cities/${city.id}'),
           child: SizedBox(
             height: 160,
             width: .infinity,
@@ -25,22 +28,7 @@ class CityCard extends StatelessWidget {
               child: Stack(
                 children: [
                   getCityImage(context: context, coverImgUrl: city.coverImgUrl),
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Container(
-                      padding: .all(4),
-                      decoration: BoxDecoration(
-                        borderRadius: .circular(6),
-                        color: context.theme.colors.secondary,
-                      ),
-                      child: Icon(
-                        Icons.location_city,
-                        size: 18,
-                        color: context.theme.colors.secondaryForeground,
-                      ),
-                    ),
-                  ),
+                  Positioned(top: 8, left: 8, child: EntityBadge(type: .city)),
                 ],
               ),
             ),
@@ -74,36 +62,45 @@ class CityCard extends StatelessWidget {
   }
 }
 
-Widget getCityImage({required BuildContext context, String? coverImgUrl}) {
-  if (coverImgUrl == null) {
-    return Container(
-      color: context.theme.colors.muted,
-      width: double.infinity,
-      height: 160,
-    );
+Widget getCityImage({
+  required BuildContext context,
+  String? coverImgUrl,
+  Widget? fallback,
+}) {
+  final errorPlaceholder =
+      fallback ?? const _DefaultErrorPlaceholder(height: 160);
+
+  if (coverImgUrl == null ||
+      coverImgUrl.isEmpty ||
+      !coverImgUrl.startsWith('http')) {
+    return errorPlaceholder;
   }
 
-  return Image.network(
-    coverImgUrl,
-    height: 160,
-    width: double.infinity,
+  return ContentMedia(
+    source: NetworkMedia(url: coverImgUrl),
     fit: BoxFit.cover,
-    loadingBuilder: (context, child, loadingProgress) {
-      if (loadingProgress != null) {
-        return const Bone(
-          width: double.infinity,
-          height: 160,
-          borderRadius: .all(.circular(8)),
-        );
-      }
-      return child;
-    },
-    errorBuilder: (context, error, stackTrace) {
-      return Container(
-        color: context.theme.colors.muted,
-        width: double.infinity,
-        height: 160,
-      );
-    },
+    errorWidget: errorPlaceholder,
   );
+}
+
+class _DefaultErrorPlaceholder extends StatelessWidget {
+  final double height;
+  const _DefaultErrorPlaceholder({required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: context.theme.colors.muted,
+      ),
+      width: double.infinity,
+      height: height,
+      child: Icon(
+        Icons.location_city_rounded,
+        size: 48,
+        color: context.theme.colors.mutedForeground,
+      ),
+    );
+  }
 }

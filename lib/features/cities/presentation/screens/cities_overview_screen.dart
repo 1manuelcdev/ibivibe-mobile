@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
-import 'package:ibiapabaapp/features/cities/presentation/providers/cities_providers.dart';
+import 'package:ibiapabaapp/features/cities/presentation/controllers/cities_controller.dart';
 import 'package:ibiapabaapp/features/cities/presentation/widgets/city_card.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.dart';
 import 'package:ibiapabaapp/shared/ui/layout/section_header.dart';
-import 'package:ibiapabaapp/shared/ui/layout/wrappers/main_wrapper.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 final List<City> _mockCities = List.generate(
@@ -15,17 +14,23 @@ final List<City> _mockCities = List.generate(
   (index) => City(
     id: 'mock-$index',
     slug: 'mock',
-    name: 'Carregando cidade',
-    coverImgUrl: '',
+    name: 'Nome da Cidade',
+    coverImgUrl: 'loading',
     categories: ['Categoria', 'Subcategoria'],
   ),
 );
 
-class CitiesOverviewScreen extends ConsumerWidget {
+class CitiesOverviewScreen extends ConsumerStatefulWidget {
   const CitiesOverviewScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CitiesOverviewScreen> createState() =>
+      _CitiesOverviewScreenState();
+}
+
+class _CitiesOverviewScreenState extends ConsumerState<CitiesOverviewScreen> {
+  @override
+  Widget build(BuildContext context) {
     final citiesAsync = ref.watch(citiesProvider);
 
     return Column(
@@ -59,8 +64,17 @@ class CitiesOverviewScreen extends ConsumerWidget {
         Expanded(
           child: citiesAsync.when(
             skipLoadingOnRefresh: false,
+            loading: () => _Content(
+              cities: _mockCities,
+              isLoading: true,
+              refreshCities: () => ref.read(citiesProvider.notifier).refresh(),
+            ),
             
-            loading: () => _Content(cities: _mockCities, isLoading: true),
+            data: (cities) => _Content(
+              cities: cities,
+              isLoading: citiesAsync.isLoading,
+              refreshCities: () => ref.read(citiesProvider.notifier).refresh(),
+            ),
 
             error: (error, stack) => Center(
               child: Expanded(
@@ -81,8 +95,6 @@ class CitiesOverviewScreen extends ConsumerWidget {
                 ),
               ),
             ),
-
-            data: (cities) => _Content(cities: cities, isLoading: false),
           ),
         ),
       ],
@@ -93,42 +105,61 @@ class CitiesOverviewScreen extends ConsumerWidget {
 class _Content extends StatelessWidget {
   final List<City> cities;
   final bool isLoading;
+  final Future<void> Function() refreshCities;
 
-  const _Content({required this.cities, required this.isLoading});
+  const _Content({
+    required this.cities,
+    required this.isLoading,
+    required this.refreshCities,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MainWrapper(
-      hasTopPadding: false,
-      children: [
-        Row(
-          children: [
-            FittedBox(
-              alignment: Alignment.centerLeft,
-              child: FButton(
-                style: FButtonStyle.secondary(),
-                onPress: () {},
-                child: Row(
-                  spacing: 4,
-                  children: const [
-                    Icon(Icons.keyboard_arrow_down_rounded),
-                    Text('Categoria'),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
+      child: Column(
+        spacing: 16,
+        children: [
+          Row(
+            spacing: 8,
+            children: [
+              FittedBox(
+                alignment: Alignment.centerLeft,
+                child: FButton(
+                  style: FButtonStyle.secondary(),
+                  onPress: () {},
+                  child: Row(
+                    spacing: 4,
+                    children: const [
+                      Icon(Icons.keyboard_arrow_down_rounded),
+                      Text('Categoria'),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-    
-        _Section(
-          cities: cities,
-          isLoading: isLoading,
-          header: const SectionHeader(
-            title: 'Alto da Serra',
-            onSeeAllTap: null,
+              FittedBox(
+                alignment: Alignment.centerLeft,
+                child: FButton(
+                  style: FButtonStyle.secondary(),
+                  onPress: () => refreshCities(),
+                  child: Row(
+                    spacing: 4,
+                    children: const [Icon(Icons.refresh), Text('Atualizar')],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+          _Section(
+            cities: cities,
+            isLoading: isLoading,
+            header: const SectionHeader(
+              title: 'Alto da Serra',
+              onSeeAllTap: null,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -152,10 +183,11 @@ class _Section extends StatelessWidget {
       children: [
         header,
         Skeletonizer(
+          key: ValueKey(isLoading),
           effect: customShimmerEffect(context),
           enabled: isLoading,
           child: SizedBox(
-            height: 270,
+            height: 300,
             child: ListView.separated(
               cacheExtent: 500,
               addRepaintBoundaries: true,
