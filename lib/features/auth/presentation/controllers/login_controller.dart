@@ -6,6 +6,7 @@ import 'package:ibiapabaapp/features/auth/presentation/providers/session_provide
 import 'package:ibiapabaapp/features/auth/presentation/states/login_state.dart';
 
 class LoginController extends ChangeNotifier {
+  // TODO: Refatorar para usar AsyncNotifier e gerar controller via riverpod: padronização com o restante das features
   final LoginWithEmail loginWithEmail;
   final Session session;
 
@@ -32,9 +33,9 @@ class LoginController extends ChangeNotifier {
 
         _state = LoginError(failure.message);
       },
-      (authResult) {
+      (authResult) async {
         logger.i('${LogTags.controller}${LogTags.login}${LogTags.success}');
-        session.initSession(authResult);
+        await session.initSession(authResult);
         _state = LoginSuccess();
       },
     );

@@ -107,6 +107,7 @@ class _LoginFormState extends State<LoginForm> {
             hint: 'Senha',
             enabled: !isLoading,
             autovalidateMode: .onUnfocus,
+            onSubmit: (_) => _submit(),
             validator: (v) {
               if (v == null || v.isEmpty) return 'Informe a senha';
               if (v.length < 8) return 'No mínimo 8 caracteres';

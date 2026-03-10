@@ -5,6 +5,8 @@ import 'package:ibiapabaapp/features/auth/domain/usecases/register_with_email.da
 import 'package:ibiapabaapp/features/auth/presentation/states/register_state.dart';
 
 class RegisterController extends ChangeNotifier {
+  // TODO: Refatorar para usar AsyncNotifier e gerar controller via riverpod: padronização com o restante das features
+
   final RegisterWithEmail registerWithEmail;
   final CheckUniqueAvailability checkAvailability;
 

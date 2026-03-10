@@ -16,22 +16,22 @@ class Session extends _$Session {
     final accessToken = await storage.getAccessToken();
     final refreshToken = await storage.getRefreshToken();
 
-    // CASO 1: Usuário deslogado
     if (accessToken == null && refreshToken == null) {
       state = null;
       return;
     }
 
-    // Usuário com tokens armazenados => CASO 2: Tenta usar o accessToken guardado para pegar o usuário
+    // Tenta getMe com o accessToken atual
     final getMeResult = await ref.read(getMeProvider).call();
 
     await getMeResult.fold(
       (failure) async {
+        // getMe falhou — tenta refresh manualmente (sem passar pelo interceptador)
         if (refreshToken != null) {
           final refreshResult = await ref.read(refreshTokensProvider).call();
           await refreshResult.fold(
-            (f) => logout(), // falha do refresh, logout
-            (authResult) => initSession(authResult),
+            (_) async => logout(),
+            (authResult) async => initSession(authResult),
           );
         } else {
           await logout();
@@ -45,7 +45,7 @@ class Session extends _$Session {
 
   Future<void> initSession(AuthResult result) async {
     final storage = ref.read(tokenStorageProvider);
-    await storage.saveTokens(result);
+    await storage.saveTokens(result); // await garantido
     state = result.user;
   }
 
