@@ -3,7 +3,7 @@ import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dar
 class CheckAvailabilityParser {
   static CheckAvailability fromJson(Map<String, dynamic> json) {
     return CheckAvailability(
-      field: json['field'] as String,
+      field: json['field'] as AvailabilityField,
       value: json['value'] as String,
       available: json['available'] as bool,
     );

@@ -7,7 +7,7 @@ import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
 
 abstract class AuthRepository {
   Future<Either<Failure, CheckAvailability>> checkAvailability({
-    required String field,
+    required AvailabilityField field,
     required String value,
   });
 

@@ -58,12 +58,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, CheckAvailability>> checkAvailability({
-    required String field,
+    required AvailabilityField field,
     required String value,
   }) async {
     try {
       final result = await datasource.checkAvailability(
-        field: field,
+        field: field.value,
         value: value,
       );
       return Right(result);
