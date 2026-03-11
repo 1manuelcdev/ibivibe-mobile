@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/register_form_data.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/check_unique_availability.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/register_with_email.dart';
@@ -17,10 +18,15 @@ class RegisterController extends ChangeNotifier {
 
   final RegisterFormData formData = RegisterFormData();
 
-  final Map<String, ({bool? available, String? error})> _availability = {};
+  final Map<AvailabilityField, ({bool? available, String? error})>
+  _availability = {
+    AvailabilityField.username: (available: null, error: null),
+    AvailabilityField.email: (available: null, error: null),
+    AvailabilityField.phoneNumber: (available: null, error: null),
+  };
 
-  bool? isAvailable(String field) => _availability[field]?.available;
-  String? getError(String field) => _availability[field]?.error;
+  bool? isAvailable(AvailabilityField field) => _availability[field]?.available;
+  String? getError(AvailabilityField field) => _availability[field]?.error;
 
   void setName(String v) => formData.name = v;
   void setBirthDate(DateTime? v) => formData.birthDate = v;
@@ -30,8 +36,10 @@ class RegisterController extends ChangeNotifier {
   void setPassword(String v) => formData.password = v;
   void setConfirmPassword(String v) => formData.confirmPassword = v;
 
-  Future<bool> _validateUnique(String field, String value) async {
-    final result = await checkAvailability(field: field, value: value);
+  Future<bool> _validateUnique(AvailabilityField field, String value) async {
+    final result = await checkAvailability(
+      CheckUniqueAvailabilityParams(field: field, value: value),
+    );
 
     return result.fold(
       (failure) {
@@ -47,15 +55,20 @@ class RegisterController extends ChangeNotifier {
     );
   }
 
-  Future<bool> checkUsername(String v) => _validateUnique('username', v);
-  Future<bool> checkEmail(String v) => _validateUnique('email', v);
-  Future<bool> checkPhone(String v) => _validateUnique('phone_number', v);
+  Future<bool> checkUsername(String v) =>
+      _validateUnique(AvailabilityField.username, v);
+  Future<bool> checkEmail(String v) =>
+      _validateUnique(AvailabilityField.email, v);
+  Future<bool> checkPhone(String v) =>
+      _validateUnique(AvailabilityField.phoneNumber, v);
 
   Future<void> submit() async {
     _state = RegisterLoading();
     notifyListeners();
 
-    final result = await registerWithEmail(registerFormData: formData);
+    final result = await registerWithEmail(
+      RegisterWithEmailParams(registerFormData: formData),
+    );
 
     _state = result.fold(
       (failure) => RegisterError(failure.message),

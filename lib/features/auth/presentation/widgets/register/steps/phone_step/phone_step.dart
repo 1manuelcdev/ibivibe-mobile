@@ -100,7 +100,7 @@ class _PhoneStepState extends State<PhoneStep> {
       _isChecking = false;
       _isAvailable = available;
 
-      final fieldError = widget.controller.getError('phone_number');
+      final fieldError = widget.controller.getError(.phoneNumber);
       if (fieldError != null) {
         _apiError = fieldError;
       } else if (!available) {

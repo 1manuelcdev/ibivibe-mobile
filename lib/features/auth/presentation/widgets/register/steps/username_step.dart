@@ -98,7 +98,7 @@ class _UsernameStepState extends State<UsernameStep> {
       _isAvailable = available;
       _isChecking = false;
 
-      final fieldError = widget.controller.getError('username');
+      final fieldError = widget.controller.getError(.username);
       if (fieldError != null) {
         _errorText = fieldError;
       } else if (available == false) {

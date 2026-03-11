@@ -10,9 +10,11 @@ class CheckAvailability {
   });
 }
 
-enum AvailabilityField { username, email, phoneNumber }
+enum AvailabilityField {
+  username,
+  email,
+  phoneNumber;
 
-extension AvailabilityFieldMapper on AvailabilityField {
   String get value {
     switch (this) {
       case AvailabilityField.username:
@@ -21,6 +23,19 @@ extension AvailabilityFieldMapper on AvailabilityField {
         return 'email';
       case AvailabilityField.phoneNumber:
         return 'phone_number';
+    }
+  }
+
+  static AvailabilityField fromApi(String value) {
+    switch (value) {
+      case 'username':
+        return AvailabilityField.username;
+      case 'email':
+        return AvailabilityField.email;
+      case 'phone_number':
+        return AvailabilityField.phoneNumber;
+      default:
+        throw ArgumentError('Unknown AvailabilityField: $value');
     }
   }
 }

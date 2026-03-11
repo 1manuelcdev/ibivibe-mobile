@@ -19,7 +19,9 @@ class LoginController extends ChangeNotifier {
     _state = LoginLoading();
     notifyListeners();
 
-    final result = await loginWithEmail(email.trim(), password);
+    final result = await loginWithEmail(
+      LoginWithEmailParams(email: email.trim(), password: password),
+    );
     result.fold(
       (failure) {
         logger.w(

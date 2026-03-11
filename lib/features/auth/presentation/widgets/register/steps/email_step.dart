@@ -86,7 +86,7 @@ class _EmailStepState extends State<EmailStep> {
       _isAvailable = available;
       _isChecking = false;
 
-      final fieldError = widget.controller.getError('email');
+      final fieldError = widget.controller.getError(.email);
       if (fieldError != null) {
         _errorText = fieldError;
       } else if (available == false) {

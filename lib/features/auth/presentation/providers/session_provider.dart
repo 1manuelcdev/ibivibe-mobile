@@ -1,4 +1,5 @@
 import 'package:ibiapabaapp/core/storage/token_storage_provider.dart';
+import 'package:ibiapabaapp/core/usecases/usecase.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/auth_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
@@ -22,13 +23,15 @@ class Session extends _$Session {
     }
 
     // Tenta getMe com o accessToken atual
-    final getMeResult = await ref.read(getMeProvider).call();
+    final getMeResult = await ref.read(getMeProvider).call(NoParams());
 
     await getMeResult.fold(
       (failure) async {
         // getMe falhou — tenta refresh manualmente (sem passar pelo interceptador)
         if (refreshToken != null) {
-          final refreshResult = await ref.read(refreshTokensProvider).call();
+          final refreshResult = await ref
+              .read(refreshTokensProvider)
+              .call(NoParams());
           await refreshResult.fold(
             (_) async => logout(),
             (authResult) async => initSession(authResult),
