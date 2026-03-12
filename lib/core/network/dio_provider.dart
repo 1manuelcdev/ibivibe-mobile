@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_logger_interceptor.dart';
 import 'package:ibiapabaapp/core/storage/token_storage_provider.dart';
-import 'package:ibiapabaapp/core/usecases/usecase.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/auth_providers.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -119,7 +118,7 @@ Future<String?> _doRefresh(Ref ref) async {
   try {
     if (!ref.mounted) return null;
 
-    final result = await ref.read(refreshTokensProvider).call(NoParams());
+    final result = await ref.read(refreshTokensProvider).call();
 
     return result.fold(
       (_) {
