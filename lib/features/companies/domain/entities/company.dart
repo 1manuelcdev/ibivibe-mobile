@@ -6,7 +6,7 @@ class Company {
   final String? cnpj;
   final String name;
   final String? description;
-  final ReachLevel? maxReachLevel;
+  final ReachLevel maxReachLevel;
   final String? coverImgUrl;
   final List<String> categories;
 

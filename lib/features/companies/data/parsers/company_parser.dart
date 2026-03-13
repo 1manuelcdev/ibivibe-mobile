@@ -7,7 +7,10 @@ class CompanyParser {
       name: json['name'],
       slug: json['slug'],
       cnpj: json['cnpj'] ?? '',
-      maxReachLevel: json['max_reach_level'] ?? ReachLevel.local,
+      maxReachLevel: ReachLevel.values.firstWhere(
+        (e) => e.name == json['max_reach_level'],
+        orElse: () => ReachLevel.local,
+      ),
       coverImgUrl: json['cover_img_url'] ?? '',
       description: json['description'] as String?,
       categories:

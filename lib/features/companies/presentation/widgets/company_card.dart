@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/companies/domain/entities/company.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/media/content_media.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/media/sources.dart';
@@ -78,8 +77,6 @@ Widget getCompanyImage({
   if (coverImgUrl == null || coverImgUrl.isEmpty) {
     return errorPlaceholder;
   }
-
-  logger.d(coverImgUrl);
 
   final source = NetworkMedia(url: coverImgUrl);
 

@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'companies_controller.g.dart';
 
+// TODO: implementar ControllerLogHandler
 @riverpod
 class Companies extends _$Companies {
   @override

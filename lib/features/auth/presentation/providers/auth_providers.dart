@@ -1,3 +1,4 @@
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_provider.dart';
 import 'package:ibiapabaapp/core/storage/token_storage_provider.dart';
 import 'package:ibiapabaapp/features/auth/domain/repositories/auth_repository.dart';
@@ -25,8 +26,9 @@ AuthRemoteDatasourceImpl authRemoteDatasource(Ref ref) {
 
 @riverpod
 AuthRepository authRepository(Ref ref) {
+  final logger = ref.watch(loggerProvider);
   final datasource = ref.watch(authRemoteDatasourceProvider);
-  return AuthRepositoryImpl(datasource);
+  return AuthRepositoryImpl(datasource: datasource, logger: logger);
 }
 
 // USECASES
@@ -63,9 +65,14 @@ CheckUniqueAvailability checkUniqueAvailability(Ref ref) {
 // CONTROLLERS
 @riverpod
 LoginController loginController(Ref ref) {
+  final logger = ref.watch(loggerProvider);
   final usecase = ref.watch(loginWithEmailProvider);
   final session = ref.watch(sessionProvider.notifier);
-  return LoginController(usecase, session);
+  return LoginController(
+    loginWithEmail: usecase,
+    session: session,
+    logger: logger,
+  );
 }
 
 @riverpod

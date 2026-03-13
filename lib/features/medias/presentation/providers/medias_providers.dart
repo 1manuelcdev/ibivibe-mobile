@@ -1,3 +1,4 @@
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_provider.dart';
 import 'package:ibiapabaapp/features/medias/data/datasource/medias_remote_datasource.dart';
 import 'package:ibiapabaapp/features/medias/data/repositories/medias_repository_impl.dart';
@@ -16,8 +17,9 @@ MediasRemoteDatasource mediasRemoteDatasource(Ref ref) {
 
 @riverpod
 MediasRepository mediasRepository(Ref ref) {
+  final logger = ref.watch(loggerProvider);
   final datasource = ref.watch(mediasRemoteDatasourceProvider);
-  return MediasRepositoryImpl(remoteDatasource: datasource);
+  return MediasRepositoryImpl(remoteDatasource: datasource, logger: logger);
 }
 
 // USECASES

@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'medias_controller.g.dart';
 
+// TODO: implementar ControllerLogHandler
 @riverpod
 class EntityMedias extends _$EntityMedias {
   @override

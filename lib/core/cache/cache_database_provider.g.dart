@@ -13,15 +13,16 @@ part of 'cache_database_provider.dart';
 final cacheDatabaseProvider = CacheDatabaseProvider._();
 
 final class CacheDatabaseProvider
-    extends $FunctionalProvider<Database, Database, Database>
-    with $Provider<Database> {
+    extends
+        $FunctionalProvider<AsyncValue<Database>, Database, FutureOr<Database>>
+    with $FutureModifier<Database>, $FutureProvider<Database> {
   CacheDatabaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
         name: r'cacheDatabaseProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -31,21 +32,13 @@ final class CacheDatabaseProvider
 
   @$internal
   @override
-  $ProviderElement<Database> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<Database> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  Database create(Ref ref) {
+  FutureOr<Database> create(Ref ref) {
     return cacheDatabase(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Database value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Database>(value),
-    );
   }
 }
 
-String _$cacheDatabaseHash() => r'4d2370b3f3c544a2804b40369eaca7cb0261af4d';
+String _$cacheDatabaseHash() => r'196e8ea6fd5de592c9bdd5c91bc34218a5a078cd';

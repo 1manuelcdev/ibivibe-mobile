@@ -96,7 +96,7 @@ final class AuthRepositoryProvider
   }
 }
 
-String _$authRepositoryHash() => r'b28b06f62f9a13823024647fa1304d90f62f266d';
+String _$authRepositoryHash() => r'dbf3efef85572c46ff32069cfe672d56d4f8f3c6';
 
 @ProviderFor(loginWithEmail)
 final loginWithEmailProvider = LoginWithEmailProvider._();
@@ -355,7 +355,7 @@ final class LoginControllerProvider
   }
 }
 
-String _$loginControllerHash() => r'070f3df94ebb1890d38e9d38da4e6e55a48fd406';
+String _$loginControllerHash() => r'90895365fd2e58b06c1fab9c550c1c8a87c3f374';
 
 @ProviderFor(registerController)
 final registerControllerProvider = RegisterControllerProvider._();

@@ -1,38 +1,29 @@
 import 'package:dartz/dartz.dart';
-import 'package:ibiapabaapp/core/errors/exceptions/exceptions.dart';
-import 'package:ibiapabaapp/core/errors/exceptions/global_exception_to_failure_mapper.dart';
 import 'package:ibiapabaapp/core/errors/failures/failures.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
-import 'package:ibiapabaapp/core/logger/logger.dart';
+import 'package:ibiapabaapp/core/logger/handlers/repository_log_handler.dart';
 import 'package:ibiapabaapp/features/cities/data/datasource/cities_local_datasource.dart';
 import 'package:ibiapabaapp/features/cities/data/datasource/cities_remote_datasource.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/cities/domain/repositories/cities_repository.dart';
+import 'package:logger/logger.dart';
 
-class CitiesRepositoryImpl implements CitiesRepository {
+class CitiesRepositoryImpl
+    with RepositoryLogHandler
+    implements CitiesRepository {
+  @override
+  final Logger logger;
   final CitiesRemoteDatasource remoteDatasource;
   final CitiesLocalDatasource localDatasource;
 
   CitiesRepositoryImpl({
     required this.localDatasource,
     required this.remoteDatasource,
+    required this.logger,
   });
 
-  Failure _handleError(dynamic e, StackTrace stack, String tag) {
-    final code = e is AppException ? e.code : null;
-    logger.e(
-      '${LogTags.repository}${LogTags.cities}$tag',
-      error: {
-        'exception': e.runtimeType.toString(),
-        'code': code,
-        'message': e.toString(),
-      },
-      stackTrace: stack,
-    );
-
-    // TODO: CitiesExceptionToFailureMapper para erros específicos da funcionalidade
-    return GlobalExceptionToFailureMapper.map(e);
-  }
+  @override
+  LogFeature get feature => LogFeature.cities;
 
   @override
   Future<Either<Failure, List<City>>> getAllCities({
@@ -51,7 +42,13 @@ class CitiesRepositoryImpl implements CitiesRepository {
 
       return Right(remoteCities);
     } catch (e, stack) {
-      return Left(_handleError(e, stack, LogTags.getAllCities));
+      return Left(
+        handleRepositoryError(
+          exception: e,
+          stackTrace: stack,
+          action: CityAction.getAllCities,
+        ),
+      );
     }
   }
 
@@ -61,7 +58,13 @@ class CitiesRepositoryImpl implements CitiesRepository {
       final city = await localDatasource.getCityById(id);
       return Right(city);
     } catch (e, stack) {
-      return Left(_handleError(e, stack, LogTags.getCityById));
+      return Left(
+        handleRepositoryError(
+          exception: e,
+          stackTrace: stack,
+          action: CityAction.getCityById,
+        ),
+      );
     }
   }
 }

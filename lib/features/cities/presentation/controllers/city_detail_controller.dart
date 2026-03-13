@@ -12,10 +12,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'city_detail_controller.g.dart';
 
+// TODO: implementar ControllerLogHandler
 @riverpod
 class CityDetail extends _$CityDetail {
   @override
   Future<CityDetailData?> build(String id) async {
+    final logger = ref.watch(loggerProvider);
     final session = ref.watch(sessionProvider.select((s) => s));
     if (session == null) return null;
 
@@ -46,7 +48,6 @@ class CityDetail extends _$CityDetail {
 
   Future<void> refresh() async {
     state = const AsyncLoading();
-    // ref.invalidateSelf() força o build() a reexecutar corretamente
     ref.invalidateSelf();
     await future;
   }

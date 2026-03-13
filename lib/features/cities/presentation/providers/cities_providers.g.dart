@@ -55,7 +55,7 @@ final class CitiesLocalDatasourceProvider
 }
 
 String _$citiesLocalDatasourceHash() =>
-    r'884cf211472ac45591cd02fb0c807f007202d65e';
+    r'075cc0a343b4de952cb1fde26399add2697edeb7';
 
 @ProviderFor(citiesRemoteDatasource)
 final citiesRemoteDatasourceProvider = CitiesRemoteDatasourceProvider._();
@@ -149,7 +149,7 @@ final class CitiesRepositoryProvider
   }
 }
 
-String _$citiesRepositoryHash() => r'124679c31e63c0ef7b99fd80a94e0471176147c3';
+String _$citiesRepositoryHash() => r'2d2c99f3cf9e54aeaa30fd92d06acf58b4b99ccc';
 
 @ProviderFor(getAllCities)
 final getAllCitiesProvider = GetAllCitiesProvider._();

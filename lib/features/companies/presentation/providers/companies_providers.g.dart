@@ -103,7 +103,7 @@ final class CompaniesRepositoryProvider
 }
 
 String _$companiesRepositoryHash() =>
-    r'7be9d1f9f2963d6b5208f075f772f739aa40da11';
+    r'75f67014de1224d99b1d0d98e74865bf40ed0094';
 
 @ProviderFor(getAllCompanies)
 final getAllCompaniesProvider = GetAllCompaniesProvider._();

@@ -12,10 +12,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'company_detail_controller.g.dart';
 
+// TODO: implementar ControllerLogHandler
 @riverpod
 class CompanyDetail extends _$CompanyDetail {
   @override
   Future<CompanyDetailData?> build(String id) async {
+    final logger = ref.watch(loggerProvider);
     final session = ref.watch(sessionProvider.select((s) => s));
     if (session == null) return null;
 

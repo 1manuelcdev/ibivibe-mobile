@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
-import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/login_with_email.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
 import 'package:ibiapabaapp/features/auth/presentation/states/login_state.dart';
+import 'package:logger/logger.dart';
 
-class LoginController extends ChangeNotifier {
-  // TODO: Refatorar para usar AsyncNotifier e gerar controller via riverpod: padronização com o restante das features
+class LoginController extends ChangeNotifier with ControllerLogHandler {
+  @override
+  final Logger logger;
   final LoginWithEmail loginWithEmail;
   final Session session;
 
-  LoginController(this.loginWithEmail, this.session);
+  LoginController({
+    required this.loginWithEmail,
+    required this.session,
+    required this.logger,
+  });
+
+  @override
+  LogFeature get feature => LogFeature.auth;
 
   LoginState _state = LoginInitial();
   LoginState get state => _state;
@@ -22,21 +31,14 @@ class LoginController extends ChangeNotifier {
     final result = await loginWithEmail(
       LoginWithEmailParams(email: email.trim(), password: password),
     );
+
     result.fold(
       (failure) {
-        logger.w(
-          '${LogTags.controller}${LogTags.login}',
-          error: {
-            'failure': failure.runtimeType.toString(),
-            'code': failure.code,
-            'message': failure.message,
-          },
-        );
-
+        logControllerError(action: AuthAction.login, failure: failure);
         _state = LoginError(failure.message);
       },
       (authResult) async {
-        logger.i('${LogTags.controller}${LogTags.login}${LogTags.success}');
+        logControllerSuccess(action: AuthAction.login);
         await session.initSession(authResult);
         _state = LoginSuccess();
       },

@@ -27,7 +27,9 @@ Dio dio(Ref ref) {
     ),
   );
 
-  dio.interceptors.add(DioLoggerInterceptor(logger));
+  final logger = ref.watch(loggerProvider);
+  final interceptor = ref.watch(dioLoggerInterceptorProvider);
+  dio.interceptors.add(interceptor);
 
   dio.interceptors.add(
     InterceptorsWrapper(

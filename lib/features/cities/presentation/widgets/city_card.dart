@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/media/content_media.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/media/sources.dart';

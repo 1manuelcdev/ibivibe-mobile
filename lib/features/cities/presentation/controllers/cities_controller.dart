@@ -1,6 +1,5 @@
-import 'dart:math' as logger;
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/cities/presentation/providers/cities_providers.dart';
@@ -8,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'cities_controller.g.dart';
 
+// TODO: implementar ControllerLogHandler
 @riverpod
 class Cities extends _$Cities {
   static const _cacheThreshold = Duration(hours: 1);
@@ -55,6 +55,7 @@ class Cities extends _$Cities {
   }
 
   Future<void> _updateFromRemote() async {
+    final logger = ref.watch(loggerProvider);
     try {
       final getAllCitiesUsecase = ref.read(getAllCitiesProvider);
       final localCache = ref.read(citiesLocalDatasourceProvider);

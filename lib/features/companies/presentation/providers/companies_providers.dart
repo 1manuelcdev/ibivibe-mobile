@@ -1,3 +1,4 @@
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_provider.dart';
 import 'package:ibiapabaapp/features/companies/data/datasource/companies_remote_datasource.dart';
 import 'package:ibiapabaapp/features/companies/data/repositories/companies_repository_impl.dart';
@@ -17,9 +18,12 @@ CompaniesRemoteDatasource companiesRemoteDatasource(Ref ref) {
 
 @riverpod
 CompaniesRepository companiesRepository(Ref ref) {
+  final logger = ref.watch(loggerProvider);
   final remoteDatasource = ref.watch(companiesRemoteDatasourceProvider);
-
-  return CompaniesRepositoryImpl(remoteDatasource: remoteDatasource);
+  return CompaniesRepositoryImpl(
+    remoteDatasource: remoteDatasource,
+    logger: logger,
+  );
 }
 
 // USECASES

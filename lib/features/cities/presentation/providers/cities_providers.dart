@@ -1,4 +1,5 @@
 import 'package:ibiapabaapp/core/cache/cache_database_provider.dart';
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_provider.dart';
 import 'package:ibiapabaapp/features/cities/data/datasource/cities_local_datasource.dart';
 import 'package:ibiapabaapp/features/cities/data/datasource/cities_remote_datasource.dart';
@@ -14,8 +15,8 @@ part 'cities_providers.g.dart';
 // DATA
 @riverpod
 CitiesLocalDatasource citiesLocalDatasource(Ref ref) {
-  final database = ref.watch(cacheDatabaseProvider);
-  return CitiesLocalDatasourceImpl(cacheDatabase: database);
+  final db = ref.watch(cacheDatabaseProvider).requireValue;
+  return CitiesLocalDatasourceImpl(cacheDatabase: db);
 }
 
 @riverpod
@@ -26,12 +27,14 @@ CitiesRemoteDatasource citiesRemoteDatasource(Ref ref) {
 
 @riverpod
 CitiesRepository citiesRepository(Ref ref) {
+  final logger = ref.read(loggerProvider);
   final localDatasource = ref.watch(citiesLocalDatasourceProvider);
   final remoteDatasource = ref.watch(citiesRemoteDatasourceProvider);
 
   return CitiesRepositoryImpl(
     remoteDatasource: remoteDatasource,
     localDatasource: localDatasource,
+    logger: logger,
   );
 }
 

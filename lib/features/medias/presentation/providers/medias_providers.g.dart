@@ -101,7 +101,7 @@ final class MediasRepositoryProvider
   }
 }
 
-String _$mediasRepositoryHash() => r'8e91c17606c64f3031ae7511d63e746f69e9ecfb';
+String _$mediasRepositoryHash() => r'7cc921743f9826cb0ba21a1eefa71261cbc5e067';
 
 @ProviderFor(getEntityMedia)
 final getEntityMediaProvider = GetEntityMediaProvider._();
