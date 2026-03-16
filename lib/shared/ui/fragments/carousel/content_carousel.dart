@@ -75,8 +75,7 @@ class _ContentCarouselState extends State<ContentCarousel> {
                             child: ContentMedia(
                               source: item,
                               isPlaying: activeIndex == index,
-                              isVideo:
-                                  item.isVideo,
+                              isVideo: item.isVideo,
                             ),
                           ),
                         ),
@@ -92,14 +91,13 @@ class _ContentCarouselState extends State<ContentCarousel> {
                       pauseAutoPlayOnTouch: true,
                       enlargeCenterPage: isTablet,
                       enlargeStrategy: CenterPageEnlargeStrategy.zoom,
-                      enableInfiniteScroll: widget.items.length > 1,
+                      enableInfiniteScroll: false,
                       onPageChanged: (index, reason) {
                         setState(() => activeIndex = index);
                       },
                     ),
                   ),
 
-                  // Indicadores (Dots)
                   if (widget.items.length > 1)
                     Positioned(
                       bottom: 16,
