@@ -78,11 +78,22 @@ enum CityAction implements LogTag {
 
 enum CompanyAction implements LogTag {
   getAllCompanies('[GET_ALL_COMPANIES]'),
-  getCompanyById('[GET_COMPANY_BY_ID]');
+  getCompanyById('[GET_COMPANY_BY_ID]'),
+  getCompanyMedia('[GET_COMPANY_MEDIA]');
 
   @override
   final String tag;
   const CompanyAction(this.tag);
+}
+
+enum EventAction implements LogTag {
+  getAllEvents('[GET_ALL_EVENTS]'),
+  getEventById('[GET_EVENT_BY_ID]'),
+  getEventMedia('[GET_EVENT_MEDIA]');
+
+  @override
+  final String tag;
+  const EventAction(this.tag);
 }
 
 enum MediaAction implements LogTag {
