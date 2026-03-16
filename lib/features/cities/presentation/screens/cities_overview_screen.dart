@@ -5,9 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/cities/presentation/controllers/cities_controller.dart';
 import 'package:ibiapabaapp/features/cities/presentation/widgets/city_card.dart';
-import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/carousel/horizontal_infinite_carousel.dart';
 import 'package:ibiapabaapp/shared/ui/layout/section_header.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 final List<City> _mockCities = List.generate(
   5,
@@ -69,7 +68,7 @@ class _CitiesOverviewScreenState extends ConsumerState<CitiesOverviewScreen> {
               isLoading: true,
               refreshCities: () => ref.read(citiesProvider.notifier).refresh(),
             ),
-            
+
             data: (cities) => _Content(
               cities: cities,
               isLoading: citiesAsync.isLoading,
@@ -115,12 +114,12 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 0, 0, 0),
-      child: Column(
-        spacing: 16,
-        children: [
-          Row(
+    return Column(
+      spacing: 16,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Row(
             spacing: 8,
             children: [
               FittedBox(
@@ -150,16 +149,16 @@ class _Content extends StatelessWidget {
               ),
             ],
           ),
-          _Section(
-            cities: cities,
-            isLoading: isLoading,
-            header: const SectionHeader(
-              title: 'Alto da Serra',
-              onSeeAllTap: null,
-            ),
+        ),
+        _Section(
+          cities: cities,
+          isLoading: isLoading,
+          header: const SectionHeader(
+            title: 'Alto da Serra',
+            onSeeAllTap: null,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -181,28 +180,17 @@ class _Section extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        header,
-        Skeletonizer(
-          key: ValueKey(isLoading),
-          effect: customShimmerEffect(context),
-          enabled: isLoading,
-          child: SizedBox(
-            height: 300,
-            child: ListView.separated(
-              cacheExtent: 500,
-              addRepaintBoundaries: true,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: cities.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: 250,
-                  child: CityCard(city: cities[index]),
-                );
-              },
-            ),
-          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: header,
+        ),
+        HorizontalInfiniteCarousel(
+          isLoading: isLoading,
+          items: cities,
+          itemWidth: 250,
+          listHeight: 250,
+          separator: SizedBox(width: 12),
+          itemBuilder: (_, city) => CityCard(city: city),
         ),
       ],
     );

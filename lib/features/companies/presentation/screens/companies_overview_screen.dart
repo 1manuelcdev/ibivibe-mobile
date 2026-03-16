@@ -5,10 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/features/companies/domain/entities/company.dart';
 import 'package:ibiapabaapp/features/companies/presentation/controllers/companies_controller.dart';
 import 'package:ibiapabaapp/features/companies/presentation/widgets/company_card.dart';
-import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.dart';
+import 'package:ibiapabaapp/shared/ui/fragments/carousel/horizontal_infinite_carousel.dart';
 import 'package:ibiapabaapp/shared/ui/layout/section_header.dart';
-import 'package:ibiapabaapp/shared/ui/layout/wrappers/main_wrapper.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 final List<Company> _mockCompanies = List.generate(
   5,
@@ -108,26 +106,41 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MainWrapper(
-      hasTopPadding: false,
+    return Column(
+      spacing: 16,
       children: [
-        Row(
-          children: [
-            FittedBox(
-              alignment: Alignment.centerLeft,
-              child: FButton(
-                style: FButtonStyle.secondary(),
-                onPress: () {},
-                child: Row(
-                  spacing: 4,
-                  children: const [
-                    Icon(Icons.keyboard_arrow_down_rounded),
-                    Text('Categoria'),
-                  ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Row(
+            spacing: 8,
+            children: [
+              FittedBox(
+                alignment: Alignment.centerLeft,
+                child: FButton(
+                  style: FButtonStyle.secondary(),
+                  onPress: () {},
+                  child: Row(
+                    spacing: 4,
+                    children: const [
+                      Icon(Icons.keyboard_arrow_down_rounded),
+                      Text('Categoria'),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              FittedBox(
+                alignment: Alignment.centerLeft,
+                child: FButton(
+                  style: FButtonStyle.secondary(),
+                  onPress: () => (),
+                  child: Row(
+                    spacing: 4,
+                    children: const [Icon(Icons.refresh), Text('Atualizar')],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
 
         _Section(
@@ -157,27 +170,17 @@ class _Section extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        header,
-        Skeletonizer(
-          effect: customShimmerEffect(context),
-          enabled: isLoading,
-          child: SizedBox(
-            height: 270,
-            child: ListView.separated(
-              cacheExtent: 500,
-              addRepaintBoundaries: true,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              itemCount: companies.length,
-              separatorBuilder: (_, _) => const SizedBox(width: 12),
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  width: 250,
-                  child: CompanyCard(company: companies[index]),
-                );
-              },
-            ),
-          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: header,
+        ),
+        HorizontalInfiniteCarousel(
+          isLoading: isLoading,
+          items: companies,
+          listHeight: 220,
+          itemWidth: 160,
+          separator: SizedBox(width: 12),
+          itemBuilder: (_, company) => CompanyCard(company: company),
         ),
       ],
     );
