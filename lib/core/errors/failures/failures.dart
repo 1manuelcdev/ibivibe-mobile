@@ -33,3 +33,40 @@ class NotFoundFailure extends Failure {
   const NotFoundFailure(String message, {required super.code})
     : super(message: message);
 }
+
+class LocationPermissionDeniedFailure extends Failure {
+  const LocationPermissionDeniedFailure()
+    : super(
+        message: 'Permissão de localização negada.',
+        code: 'location_permission_denied',
+      );
+}
+
+class LocationPermissionPermanentlyDeniedFailure extends Failure {
+  const LocationPermissionPermanentlyDeniedFailure()
+    : super(
+        message: 'Permissão negada permanentemente. Acesse as configurações.',
+        code: 'location_permission_denied_permanently',
+      );
+}
+
+class LocationDisabledFailure extends Failure {
+  const LocationDisabledFailure()
+    : super(
+        message: 'Serviço de localização desativado.',
+        code: 'location_service_disabled',
+      );
+}
+
+class LocationTimeoutFailure extends Failure {
+  const LocationTimeoutFailure()
+    : super(
+        message: 'Tempo esgotado ao obter a localização.',
+        code: 'location_service_timeout',
+      );
+}
+
+class LocationUnknownFailure extends Failure {
+  const LocationUnknownFailure(String message)
+    : super(message: message, code: 'location_service_unknown_error');
+}

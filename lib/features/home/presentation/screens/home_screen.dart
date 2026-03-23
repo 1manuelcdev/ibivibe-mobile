@@ -5,7 +5,6 @@ import 'package:ibiapabaapp/features/home/presentation/widgets/explore_cities_se
 import 'package:ibiapabaapp/features/home/presentation/widgets/now_happening_section.dart';
 import 'package:ibiapabaapp/features/home/presentation/widgets/sheets/change_location_sheet.dart';
 import 'package:ibiapabaapp/features/home/presentation/widgets/quick_categories.dart';
-import 'package:ibiapabaapp/features/home/presentation/widgets/sponsored_highlights.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,9 +18,6 @@ class HomeScreen extends StatelessWidget {
           children: [
             _HomeHeader(),
             QuickCategoriesList(),
-            const SizedBox(height: 24),
-
-            SponsoredHighlights(),
             const SizedBox(height: 32),
 
             NowHappeningSection(),
@@ -81,7 +77,7 @@ class _ActualCityButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Ubajara, CE',
+              'Ubajara, CE', // TODO: trocar para cidade da sessão
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
