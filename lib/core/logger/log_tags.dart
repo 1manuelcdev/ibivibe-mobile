@@ -47,7 +47,8 @@ enum LogFeature implements LogTag {
   cities('[CITIES]'),
   companies('[COMPANIES]'),
   events('[EVENTS]'),
-  medias('[MEDIAS]');
+  medias('[MEDIAS]'),
+  session('[SESSION]');
 
   @override
   final String tag;
@@ -102,4 +103,19 @@ enum MediaAction implements LogTag {
   @override
   final String tag;
   const MediaAction(this.tag);
+}
+
+enum AppSessionAction implements LogTag {
+  restore('[RESTORE]'),
+  initSession('[INIT_SESSION]'),
+  logout('[LOGOUT]'),
+  setCurrentCity('[SET_CURRENT_CITY]'),
+  clearCurrentCity('[CLEAR_CURRENT_CITY]'),
+  detectNearestCity('[DETECT_NEAREST_CITY]'),
+  setFavoriteThemeMode('[SET_FAVORITE_THEME_MODE]'),
+  resolveDevicePosition('[RESOLVE_DEVICE_POSITION]');
+
+  @override
+  final String tag;
+  const AppSessionAction(this.tag);
 }

@@ -4,12 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:ibiapabaapp/app/router/app_router_provider.dart';
 import 'package:ibiapabaapp/app/theme/theme.dart';
+import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
+    final favoriteThemeMode = ref.watch(
+      appSessionProvider.select((s) => s.themeMode ?? ThemeMode.system),
+    );
+
     final customLightTheme = customZincLight();
     final customDarkTheme = customZincDark();
 
@@ -24,7 +29,7 @@ class App extends ConsumerWidget {
       supportedLocales: [Locale('pt', 'BR')],
       locale: Locale('pt', 'BR'),
       routerConfig: router,
-      themeMode: ThemeMode.system,
+      themeMode: favoriteThemeMode,
       theme: customLightTheme.toApproximateMaterialTheme().copyWith(
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
@@ -43,7 +48,11 @@ class App extends ConsumerWidget {
       ),
 
       builder: (context, child) {
-        final brightness = MediaQuery.of(context).platformBrightness;
+        final brightness = switch (favoriteThemeMode) {
+          ThemeMode.dark => Brightness.dark,
+          ThemeMode.light => Brightness.light,
+          ThemeMode.system => MediaQuery.of(context).platformBrightness,
+        };
         final foruiTheme = brightness == Brightness.dark
             ? customDarkTheme
             : customLightTheme;

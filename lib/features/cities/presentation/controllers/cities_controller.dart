@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
+import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/cities/domain/usecases/get_all_cities.dart';
 import 'package:ibiapabaapp/features/cities/presentation/providers/cities_providers.dart';
@@ -23,11 +23,8 @@ class Cities extends _$Cities with ControllerLogHandler {
 
   @override
   Future<List<City>> build() async {
-    final session = ref.watch(sessionProvider.select((s) => s));
-
-    if (session == null) {
-      return [];
-    }
+    final user = ref.watch(appSessionProvider.select((s) => s.user));
+    if (user == null) return [];
 
     final localCache = ref.read(citiesLocalDatasourceProvider);
     final cachedCities = await localCache.getCachedCities();

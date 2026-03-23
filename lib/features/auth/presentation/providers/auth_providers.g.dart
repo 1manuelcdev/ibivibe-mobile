@@ -355,7 +355,7 @@ final class LoginControllerProvider
   }
 }
 
-String _$loginControllerHash() => r'90895365fd2e58b06c1fab9c550c1c8a87c3f374';
+String _$loginControllerHash() => r'3a80ebce2b79090a0d6958ead38cee2459211aa3';
 
 @ProviderFor(registerController)
 final registerControllerProvider = RegisterControllerProvider._();
@@ -403,4 +403,4 @@ final class RegisterControllerProvider
 }
 
 String _$registerControllerHash() =>
-    r'fae587ffa45bc970efd8830bd74855df859c5b69';
+    r'86fce085b39103093131cd3891ebdf455f5773dc';

@@ -32,7 +32,7 @@ final class CitiesProvider extends $AsyncNotifierProvider<Cities, List<City>> {
   Cities create() => Cities();
 }
 
-String _$citiesHash() => r'df87de14914a7f32e9a88ef7dca6fc79b1e7f83f';
+String _$citiesHash() => r'86f0117d51b04999cc2c5566ec3bf2097750d34b';
 
 abstract class _$Cities extends $AsyncNotifier<List<City>> {
   FutureOr<List<City>> build();

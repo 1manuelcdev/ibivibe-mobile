@@ -1,5 +1,6 @@
 import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/network/dio_provider.dart';
+import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
 import 'package:ibiapabaapp/core/storage/token_storage_provider.dart';
 import 'package:ibiapabaapp/features/auth/domain/repositories/auth_repository.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/check_unique_availability.dart';
@@ -8,7 +9,6 @@ import 'package:ibiapabaapp/features/auth/domain/usecases/refresh_tokens.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/register_with_email.dart';
 import 'package:ibiapabaapp/features/auth/presentation/controllers/login_controller.dart';
 import 'package:ibiapabaapp/features/auth/presentation/controllers/register_controller.dart';
-import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ibiapabaapp/features/auth/data/datasources/auth_remote_datasource_impl.dart';
 import 'package:ibiapabaapp/features/auth/data/repositories/auth_repository_impl.dart';
@@ -67,8 +67,8 @@ CheckUniqueAvailability checkUniqueAvailability(Ref ref) {
 LoginController loginController(Ref ref) {
   final logger = ref.watch(loggerProvider);
   final usecase = ref.watch(loginWithEmailProvider);
-  final session = ref.watch(sessionProvider.notifier);
-  
+  final session = ref.watch(appSessionProvider.notifier);
+
   return LoginController(
     loginWithEmail: usecase,
     session: session,
@@ -81,7 +81,7 @@ RegisterController registerController(Ref ref) {
   final registerUsecase = ref.watch(registerWithEmailProvider);
   final checkUniqueUsecase = ref.watch(checkUniqueAvailabilityProvider);
   final logger = ref.watch(loggerProvider);
-  
+
   return RegisterController(
     registerWithEmail: registerUsecase,
     checkAvailability: checkUniqueUsecase,

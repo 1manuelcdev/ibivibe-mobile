@@ -4,7 +4,7 @@ import 'package:ibiapabaapp/core/errors/failures/failures.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/features/auth/presentation/providers/session_provider.dart';
+import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
 import 'package:ibiapabaapp/features/companies/domain/entities/company.dart';
 import 'package:ibiapabaapp/features/companies/domain/entities/company_detail_data.dart';
 import 'package:ibiapabaapp/features/companies/presentation/providers/companies_providers.dart';
@@ -25,8 +25,8 @@ class CompanyDetail extends _$CompanyDetail with ControllerLogHandler {
 
   @override
   Future<CompanyDetailData?> build(String id) async {
-    final session = ref.watch(sessionProvider.select((s) => s));
-    if (session == null) return null;
+    final user = ref.watch(appSessionProvider.select((s) => s.user));
+    if (user == null) return null;
 
     final results = await Future.wait([
       ref.read(getCompanyByIdProvider).call(id),
