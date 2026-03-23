@@ -47,5 +47,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>Precisamos da sua localização para encontrar a cidade mais próxima.</string>
 	</dict>
 </plist>
