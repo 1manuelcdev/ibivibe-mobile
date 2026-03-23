@@ -3,7 +3,11 @@ import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/app/theme/button_style.dart';
 import 'package:ibiapabaapp/app/theme/date_field_style.dart';
+import 'package:ibiapabaapp/app/theme/dialog_style.dart';
+import 'package:ibiapabaapp/app/theme/switch_style.dart';
 import 'package:ibiapabaapp/app/theme/text_field_style.dart';
+import 'package:ibiapabaapp/app/theme/tile_group_style.dart';
+import 'package:ibiapabaapp/app/theme/tile_style.dart';
 
 const brandPrimaryLight = Color(0xFF376208);
 const brandPrimaryDark = Color(0xFFB9FF70);
@@ -12,7 +16,7 @@ FThemeData customZincLight() {
   const colors = FColors(
     brightness: Brightness.light,
     systemOverlayStyle: SystemUiOverlayStyle.dark,
-    barrier: Color(0x33000000),
+    barrier: Color.fromARGB(160, 0, 0, 0),
     background: Color(0xFFFFFFFF),
     foreground: Color(0xFF09090B),
     primary: brandPrimaryLight,
@@ -50,6 +54,18 @@ FThemeData customZincLight() {
       typography: typography,
       style: style,
     ),
+    tileStyle: tileStyle(colors: colors, typography: typography, style: style),
+    tileGroupStyle: tileGroupStyle(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    switchStyle: switchStyle(colors: colors, style: style),
+    dialogStyle: dialogStyle(
+      style: style,
+      colors: colors,
+      typography: typography,
+    ),
   );
 }
 
@@ -57,7 +73,7 @@ FThemeData customZincDark() {
   const colors = FColors(
     brightness: Brightness.dark,
     systemOverlayStyle: SystemUiOverlayStyle.light,
-    barrier: Color(0x33000000),
+    barrier: Color.fromARGB(160, 0, 0, 0),
     background: Color(0xFF18181B),
     foreground: Color(0xFFFFFFFF),
     primary: brandPrimaryDark,
@@ -94,6 +110,18 @@ FThemeData customZincDark() {
       colors: colors,
       typography: typography,
       style: style,
+    ),
+    tileStyle: tileStyle(colors: colors, typography: typography, style: style),
+    tileGroupStyle: tileGroupStyle(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    switchStyle: switchStyle(colors: colors, style: style),
+    dialogStyle: dialogStyle(
+      style: style,
+      colors: colors,
+      typography: typography,
     ),
   );
 }
