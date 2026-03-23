@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:ibiapabaapp/features/medias/domain/entity/media.dart';
+import 'package:ibiapabaapp/shared/utils/get_entity_icon.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EntityBadge extends StatelessWidget {
@@ -18,22 +19,11 @@ class EntityBadge extends StatelessWidget {
           color: context.theme.colors.background,
         ),
         child: Icon(
-          _getEntityIcon(type),
-          size: 18,
+          getEntityIcon(type),
+          size: 16,
           color: context.theme.colors.foreground,
         ),
       ),
     );
-  }
-
-  IconData _getEntityIcon(EntityType type) {
-    switch (type) {
-      case EntityType.city:
-        return Icons.location_city;
-      case EntityType.company:
-        return Icons.business_center_outlined;
-      case EntityType.event:
-        return Icons.event_rounded;
-    }
   }
 }
