@@ -48,7 +48,10 @@ enum LogFeature implements LogTag {
   companies('[COMPANIES]'),
   events('[EVENTS]'),
   medias('[MEDIAS]'),
-  session('[SESSION]');
+  session('[SESSION]'),
+  categories('[CATEGORIES]'),
+  interests('[INTERESTS]'),
+  onboarding('[ONBOARDING]');
 
   @override
   final String tag;
@@ -113,9 +116,35 @@ enum AppSessionAction implements LogTag {
   clearCurrentCity('[CLEAR_CURRENT_CITY]'),
   detectNearestCity('[DETECT_NEAREST_CITY]'),
   setFavoriteThemeMode('[SET_FAVORITE_THEME_MODE]'),
-  resolveDevicePosition('[RESOLVE_DEVICE_POSITION]');
+  resolveDevicePosition('[RESOLVE_DEVICE_POSITION]'),
+  setUserInterests('[SET_USER_INTERESTS]');
 
   @override
   final String tag;
   const AppSessionAction(this.tag);
+}
+
+enum CategoryAction implements LogTag {
+  getParentCategories('[GET_PARENT_CATEGORIES]'),
+  getChildrenCategories('[GET_CHILDREN_CATEGORIES]');
+
+  @override
+  final String tag;
+  const CategoryAction(this.tag);
+}
+
+enum InterestAction implements LogTag {
+  postUserInterests('[POST_USER_INTERESTS]');
+
+  @override
+  final String tag;
+  const InterestAction(this.tag);
+}
+
+enum OnboardingAction implements LogTag {
+  completeOnboarding('[COMPLETE_ONBOARDING]');
+
+  @override
+  final String tag;
+  const OnboardingAction(this.tag);
 }
