@@ -13,6 +13,7 @@ import 'package:ibiapabaapp/features/auth/presentation/providers/auth_providers.
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/cities/domain/usecases/get_all_cities.dart';
 import 'package:ibiapabaapp/features/cities/presentation/providers/cities_providers.dart';
+import 'package:ibiapabaapp/features/interests/domain/entities/user_interests.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -23,13 +24,16 @@ part 'app_session_notifier_provider.g.dart';
 class AppSessionNotifier extends _$AppSessionNotifier
     with ControllerLogHandler {
   @override
-  Logger get logger => ref.read(loggerProvider);
+  late final Logger logger;
 
   @override
   LogFeature get feature => LogFeature.session;
 
   @override
-  AppSession build() => const AppSession();
+  AppSession build() {
+    logger = ref.read(loggerProvider);
+    return const AppSession();
+  }
 
   AppSessionStorage get _storage => ref.read(appSessionStorageProvider);
 
@@ -37,10 +41,16 @@ class AppSessionNotifier extends _$AppSessionNotifier
   Future<void> restore() async {
     final currentCity = await _storage.loadCurrentCity();
     final favoriteThemeMode = await _storage.getFavoriteThemeMode();
+    final needsOnboarding = await _storage.getNeedsOnboarding();
+    final userInterests = await _storage.getUserInterestsIds();
+
+    if (!ref.mounted) return;
 
     state = state.copyWith(
       currentCity: currentCity,
       themeMode: favoriteThemeMode,
+      needsOnboarding: needsOnboarding,
+      userInterests: userInterests,
     );
 
     await _restoreUser();
@@ -52,8 +62,10 @@ class AppSessionNotifier extends _$AppSessionNotifier
     final refreshToken = await storage.getRefreshToken();
 
     if (accessToken == null && refreshToken == null) return;
-
+ 
     final getMeResult = await ref.read(getMeProvider).call();
+ 
+    if (!ref.mounted) return;
 
     await getMeResult.fold(
       (failure) async {
@@ -79,14 +91,22 @@ class AppSessionNotifier extends _$AppSessionNotifier
   Future<void> initSession(AuthResult result) async {
     final storage = ref.read(tokenStorageProvider);
     await storage.saveTokens(result);
+ 
+    if (!ref.mounted) return;
+
     state = state.copyWith(user: result.user);
     logControllerSuccess(action: AppSessionAction.initSession);
+  }
+
+  Future<void> setNeedsOnboarding(bool value) async {
+    await _storage.saveNeedsOnboarding(value);
+    state = state.copyWith(needsOnboarding: value);
   }
 
   Future<void> logout() async {
     final storage = ref.read(tokenStorageProvider);
     await storage.clearTokens();
-    state = state.copyWith(clearUser: true); // cidade é mantida
+    state = state.copyWith(clearUser: true, needsOnboarding: false);
     logControllerSuccess(action: AppSessionAction.logout);
   }
 
@@ -103,10 +123,12 @@ class AppSessionNotifier extends _$AppSessionNotifier
     logControllerSuccess(action: AppSessionAction.clearCurrentCity);
   }
 
-  Future<Failure?> detectAndSetNearestCity() async {
+  Future<AppFailure?> detectAndSetNearestCity() async {
     final citiesResult = await ref
         .read(getAllCitiesProvider)
         .call(const GetAllCitiesParams());
+ 
+    if (!ref.mounted) return null;
 
     return citiesResult.fold(
       (failure) {
@@ -119,6 +141,8 @@ class AppSessionNotifier extends _$AppSessionNotifier
       (cities) async {
         final useCase = ref.read(getNearestCityProvider);
         final result = await useCase(cities);
+ 
+        if (!ref.mounted) return null;
 
         return result.fold(
           (failure) {
@@ -172,6 +196,17 @@ class AppSessionNotifier extends _$AppSessionNotifier
         failure: failure,
       );
     }
+  }
+
+  // ─── UserInterests ───────────────────────────────────────────────────────────
+  Future<void> updateUserInterests({required UserInterests interests}) async {
+    await _storage.updateUserInterestsIds(interests);
+    state = state.copyWith(userInterests: interests);
+    logControllerSuccess(action: AppSessionAction.setUserInterests);
+  }
+
+  Future<UserInterests> getUserInterests() async {
+    return await _storage.getUserInterestsIds();
   }
 }
 

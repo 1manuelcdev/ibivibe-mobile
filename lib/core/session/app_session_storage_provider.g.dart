@@ -54,4 +54,4 @@ final class AppSessionStorageProvider
   }
 }
 
-String _$appSessionStorageHash() => r'3d1908ffb6692bd42026851b6adafc87315e1f35';
+String _$appSessionStorageHash() => r'529de362ab2932bb882c9faeae50843511830f6b';
