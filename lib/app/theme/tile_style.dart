@@ -14,23 +14,23 @@ FTileStyle tileStyle({
   backgroundColor: .all(colors.background),
   decoration: FWidgetStateMap({
     WidgetState.disabled: BoxDecoration(
-      color: colors.disable(colors.secondary),
+      color: colors.disable(colors.secondary.withAlpha(128)),
       border: .all(color: colors.border),
       borderRadius: .circular(16),
     ),
     WidgetState.hovered | WidgetState.pressed: BoxDecoration(
-      color: colors.secondary,
+      color: colors.secondary.withAlpha(128),
       border: .all(color: colors.border),
       borderRadius: .circular(16),
     ),
     WidgetState.any: BoxDecoration(
-      color: colors.background,
+      color: colors.secondary.withAlpha(128),
       border: .all(color: colors.border),
       borderRadius: .circular(16),
     ),
   }),
   contentStyle: FItemContentStyle(
-    padding: const .fromSTEB(16, 14, 10, 14),
+    padding: const .fromSTEB(16, 12, 10, 12),
     prefixIconStyle: FWidgetStateMap({
       WidgetState.disabled: IconThemeData(
         color: colors.disable(colors.foreground),
@@ -65,7 +65,7 @@ FTileStyle tileStyle({
     }),
   ),
   rawItemContentStyle: FRawItemContentStyle(
-    padding: const .fromSTEB(16, 14, 10, 14),
+    padding: const .fromSTEB(16, 12, 10, 12),
     prefixIconStyle: FWidgetStateMap({
       WidgetState.disabled: IconThemeData(
         color: colors.disable(colors.foreground),

@@ -1,10 +1,16 @@
 import 'package:flutter/services.dart';
 import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
+import 'package:ibiapabaapp/app/theme/badge_styles.dart';
 import 'package:ibiapabaapp/app/theme/button_style.dart';
+import 'package:ibiapabaapp/app/theme/card_style.dart';
 import 'package:ibiapabaapp/app/theme/date_field_style.dart';
 import 'package:ibiapabaapp/app/theme/dialog_style.dart';
+import 'package:ibiapabaapp/app/theme/divider_styles.dart';
+import 'package:ibiapabaapp/app/theme/multi_select_style.dart';
+import 'package:ibiapabaapp/app/theme/select_style.dart';
 import 'package:ibiapabaapp/app/theme/switch_style.dart';
+import 'package:ibiapabaapp/app/theme/tabs_style.dart';
 import 'package:ibiapabaapp/app/theme/text_field_style.dart';
 import 'package:ibiapabaapp/app/theme/tile_group_style.dart';
 import 'package:ibiapabaapp/app/theme/tile_style.dart';
@@ -66,6 +72,24 @@ FThemeData customZincLight() {
       colors: colors,
       typography: typography,
     ),
+    selectStyle: selectStyle(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    multiSelectStyle: multiSelectStyle(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    cardStyle: cardStyle(colors: colors, typography: typography, style: style),
+    dividerStyles: dividerStyles(colors: colors, style: style),
+    badgeStyles: badgeStyles(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    tabsStyle: tabsStyle(colors: colors, typography: typography, style: style),
   );
 }
 
@@ -123,6 +147,24 @@ FThemeData customZincDark() {
       colors: colors,
       typography: typography,
     ),
+    selectStyle: selectStyle(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    multiSelectStyle: multiSelectStyle(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    cardStyle: cardStyle(colors: colors, typography: typography, style: style),
+    dividerStyles: dividerStyles(colors: colors, style: style),
+    badgeStyles: badgeStyles(
+      colors: colors,
+      typography: typography,
+      style: style,
+    ),
+    tabsStyle: tabsStyle(colors: colors, typography: typography, style: style),
   );
 }
 
@@ -216,11 +258,11 @@ FStyle _style({
       ),
   focusedOutlineStyle: FFocusedOutlineStyle(
     color: colors.primary,
-    borderRadius: FLerpBorderRadius.circular(32),
+    borderRadius: FLerpBorderRadius.circular(24),
   ),
   iconStyle: IconThemeData(color: colors.primary, size: 20),
   tappableStyle: FTappableStyle(),
-  borderRadius: FLerpBorderRadius.circular(32),
+  borderRadius: FLerpBorderRadius.circular(24),
   borderWidth: 1,
   shadow: const [
     BoxShadow(color: Color(0x0d000000), offset: Offset(0, 1), blurRadius: 2),

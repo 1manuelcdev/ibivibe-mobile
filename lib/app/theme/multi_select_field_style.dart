@@ -1,8 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:forui/forui.dart';
 
-FTextFieldStyle textFieldStyle({
+// ignore_for_file: unnecessary_ignore
+// ignore_for_file: avoid_redundant_argument_values
+
+FMultiSelectFieldStyle multiSelectFieldStyle({
   required FColors colors,
   required FTypography typography,
   required FStyle style,
@@ -13,70 +17,54 @@ FTextFieldStyle textFieldStyle({
     typography: typography,
     style: style,
   ).ghost;
-  final textStyle = typography.sm.copyWith(
-    fontFamily: typography.defaultFontFamily,
-    color: colors.foreground,
-  );
-  final buttonStyle = ghost.copyWith(
-    iconContentStyle: ghost.iconContentStyle
-        .copyWith(
-          iconStyle: FWidgetStateMap({
-            WidgetState.disabled: IconThemeData(
-              color: colors.disable(colors.mutedForeground),
-              size: 17,
-            ),
-            WidgetState.any: IconThemeData(
-              color: colors.mutedForeground,
-              size: 17,
-            ),
-          }),
-        )
-        .call,
-  );
   return .new(
-    keyboardAppearance: colors.brightness,
-    clearButtonStyle: buttonStyle,
-    obscureButtonStyle: buttonStyle,
-    contentTextStyle: FWidgetStateMap({
-      WidgetState.disabled: textStyle.copyWith(
-        color: colors.disable(colors.foreground),
-      ),
-      WidgetState.any: textStyle.copyWith(color: colors.foreground),
-    }),
-    hintTextStyle: FWidgetStateMap({
-      WidgetState.disabled: textStyle.copyWith(
-        color: colors.disable(colors.border),
-      ),
-      WidgetState.any: textStyle.copyWith(color: colors.mutedForeground),
-    }),
-    counterTextStyle: FWidgetStateMap({
-      WidgetState.disabled: textStyle.copyWith(
-        color: colors.disable(colors.primary),
-      ),
-      WidgetState.any: textStyle.copyWith(color: colors.primary),
-    }),
-    cursorColor: colors.primary,
-    border: FWidgetStateMap({
-      WidgetState.error: OutlineInputBorder(
-        borderSide: BorderSide(color: colors.error, width: style.borderWidth),
+    decoration: FWidgetStateMap({
+      WidgetState.error: BoxDecoration(
+        border: .all(color: colors.error, width: style.borderWidth),
         borderRadius: .circular(12),
       ),
-      WidgetState.disabled: OutlineInputBorder(
-        borderSide: BorderSide(
+      WidgetState.disabled: BoxDecoration(
+        border: .all(
           color: colors.disable(colors.border),
           width: style.borderWidth,
         ),
         borderRadius: .circular(12),
       ),
-      WidgetState.focused: OutlineInputBorder(
-        borderSide: BorderSide(color: colors.primary, width: style.borderWidth),
+      WidgetState.focused: BoxDecoration(
+        border: .all(color: colors.primary, width: style.borderWidth),
         borderRadius: .circular(12),
       ),
-      WidgetState.any: OutlineInputBorder(
-        borderSide: BorderSide(color: colors.border, width: style.borderWidth),
+      WidgetState.any: BoxDecoration(
+        border: .all(color: colors.border, width: style.borderWidth),
         borderRadius: .circular(12),
       ),
     }),
+    hintTextStyle: FWidgetStateMap({
+      WidgetState.disabled: typography.sm.copyWith(
+        color: colors.disable(colors.border),
+      ),
+      WidgetState.any: typography.sm.copyWith(color: colors.mutedForeground),
+    }),
+    iconStyle: IconThemeData(color: colors.mutedForeground, size: 18),
+    clearButtonStyle: ghost.copyWith(
+      iconContentStyle: ghost.iconContentStyle
+          .copyWith(
+            iconStyle: FWidgetStateMap({
+              WidgetState.disabled: IconThemeData(
+                color: colors.disable(colors.mutedForeground),
+                size: 17,
+              ),
+              WidgetState.any: IconThemeData(
+                color: colors.mutedForeground,
+                size: 17,
+              ),
+            }),
+          )
+          .call,
+    ),
+    tappableStyle: style.tappableStyle.copyWith(
+      motion: FTappableMotion.none.call,
+    ),
     labelTextStyle: style.formFieldStyle.labelTextStyle,
     descriptionTextStyle: style.formFieldStyle.descriptionTextStyle,
     errorTextStyle: style.formFieldStyle.errorTextStyle,
@@ -132,16 +120,16 @@ FButtonStyles _buttonStyles({
     decoration: FWidgetStateMap({
       WidgetState.disabled: BoxDecoration(
         border: .all(color: colors.disable(colors.border)),
-        borderRadius: .circular(12),
+        borderRadius: style.borderRadius,
       ),
       WidgetState.hovered | WidgetState.pressed: BoxDecoration(
         border: .all(color: colors.border),
-        borderRadius: .circular(12),
+        borderRadius: style.borderRadius,
         color: colors.secondary,
       ),
       WidgetState.any: BoxDecoration(
         border: .all(color: colors.border),
-        borderRadius: .circular(12),
+        borderRadius: style.borderRadius,
       ),
     }),
     focusedOutlineStyle: style.focusedOutlineStyle,
@@ -158,12 +146,12 @@ FButtonStyles _buttonStyles({
   ),
   ghost: FButtonStyle(
     decoration: FWidgetStateMap({
-      WidgetState.disabled: BoxDecoration(borderRadius: .circular(12)),
+      WidgetState.disabled: BoxDecoration(borderRadius: style.borderRadius),
       WidgetState.hovered | WidgetState.pressed: BoxDecoration(
-        borderRadius: .circular(12),
+        borderRadius: style.borderRadius,
         color: colors.secondary,
       ),
-      WidgetState.any: BoxDecoration(borderRadius: .circular(12)),
+      WidgetState.any: BoxDecoration(borderRadius: style.borderRadius),
     }),
     focusedOutlineStyle: style.focusedOutlineStyle,
     contentStyle: .inherit(
