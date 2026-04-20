@@ -1,70 +1,166 @@
-import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
+import 'package:ibiapabaapp/core/preferences/user_preferences_state_provider.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
-import 'package:ibiapabaapp/features/auth/domain/entities/register_form_data.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/check_unique_availability.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/register_with_email.dart';
+import 'package:ibiapabaapp/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:ibiapabaapp/features/auth/presentation/states/register_state.dart';
+import 'package:ibiapabaapp/features/auth/validation/auth_validator.dart';
 import 'package:logger/logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:ibiapabaapp/features/auth/presentation/providers/auth_providers.dart';
+import 'package:ibiapabaapp/core/logger/logger.dart';
 
-// TODO: Refatorar para usar AsyncNotifier e gerar controller via riverpod: padronização com o restante das features
-class RegisterController extends ChangeNotifier with ControllerLogHandler {
+part 'register_controller.g.dart';
+
+@riverpod
+class RegisterController extends _$RegisterController
+    with ControllerLogHandler {
   @override
-  Logger logger;
+  late final Logger logger;
 
   @override
   LogFeature get feature => LogFeature.auth;
 
-  final RegisterWithEmail registerWithEmail;
-  final CheckUniqueAvailability checkAvailability;
+  @override
+  RegisterState build() {
+    logger = ref.read(loggerProvider);
+    return RegisterState.initial();
+  }
 
-  RegisterController({
-    required this.registerWithEmail,
-    required this.checkAvailability,
-    required this.logger,
-  });
+  bool? isAvailable(AvailabilityField field) =>
+      state.availability[field]?.available;
+  String? getError(AvailabilityField field) => state.availability[field]?.error;
+  bool isChecking(AvailabilityField field) =>
+      state.availability[field]?.isChecking ?? false;
 
-  RegisterState _state = RegisterInitial();
-  RegisterState get state => _state;
+  void setName(String v) {
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.name, v),
+    );
+  }
 
-  final RegisterFormData formData = RegisterFormData();
+  void setBirthDate(DateTime? v) {
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.birthDate, v),
+    );
+  }
 
-  final Map<AvailabilityField, ({bool? available, String? error})>
-  _availability = {
-    AvailabilityField.username: (available: null, error: null),
-    AvailabilityField.email: (available: null, error: null),
-    AvailabilityField.phoneNumber: (available: null, error: null),
-  };
+  void setUsername(String v) {
+    final availability =
+        Map<
+          AvailabilityField,
+          ({bool? available, String? error, bool isChecking})
+        >.from(state.availability);
+    availability[AvailabilityField.username] = (
+      available: null,
+      error: null,
+      isChecking: false,
+    );
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.username, v),
+      availability: availability,
+    );
+  }
 
-  bool? isAvailable(AvailabilityField field) => _availability[field]?.available;
-  String? getError(AvailabilityField field) => _availability[field]?.error;
+  void setPhone(String v) {
+    final availability =
+        Map<
+          AvailabilityField,
+          ({bool? available, String? error, bool isChecking})
+        >.from(state.availability);
+    availability[AvailabilityField.phoneNumber] = (
+      available: null,
+      error: null,
+      isChecking: false,
+    );
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.phoneNumber, v),
+      availability: availability,
+    );
+  }
 
-  void setName(String v) => formData.name = v;
-  void setBirthDate(DateTime? v) => formData.birthDate = v;
-  void setUsername(String v) => formData.username = v;
-  void setPhone(String v) => formData.phoneNumber = v;
-  void setEmail(String v) => formData.email = v;
-  void setPassword(String v) => formData.password = v;
-  void setConfirmPassword(String v) => formData.confirmPassword = v;
+  void setEmail(String v) {
+    final availability =
+        Map<
+          AvailabilityField,
+          ({bool? available, String? error, bool isChecking})
+        >.from(state.availability);
+    availability[AvailabilityField.email] = (
+      available: null,
+      error: null,
+      isChecking: false,
+    );
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.email, v),
+      availability: availability,
+    );
+  }
+
+  void setPassword(String v) {
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.password, v),
+    );
+  }
+
+  void setConfirmPassword(String v) {
+    state = state.copyWith(
+      formData: state.formData.copyWithField(AuthFields.confirmPassword, v),
+    );
+  }
 
   Future<bool> _validateUnique(AvailabilityField field, String value) async {
+    final checkAvailability = ref.read(checkUniqueAvailabilityProvider);
+
+    final loadingAvailability =
+        Map<
+          AvailabilityField,
+          ({bool? available, String? error, bool isChecking})
+        >.from(state.availability);
+    loadingAvailability[field] = (
+      available: null,
+      error: null,
+      isChecking: true,
+    );
+    state = state.copyWith(availability: loadingAvailability);
+
     final result = await checkAvailability(
       CheckUniqueAvailabilityParams(field: field, value: value),
     );
 
+    if (!ref.mounted) return false;
+
     return result.fold(
       (failure) {
-        _availability[field] = (available: false, error: failure.message);
+        final availability =
+            Map<
+              AvailabilityField,
+              ({bool? available, String? error, bool isChecking})
+            >.from(state.availability);
+        availability[field] = (
+          available: false,
+          error: failure.message,
+          isChecking: false,
+        );
+        state = state.copyWith(availability: availability);
         logControllerError(action: AuthAction.register, failure: failure);
-        notifyListeners();
         return false;
       },
-      (availability) {
-        _availability[field] = (available: availability.available, error: null);
+      (availabilityResult) {
+        final availability =
+            Map<
+              AvailabilityField,
+              ({bool? available, String? error, bool isChecking})
+            >.from(state.availability);
+        availability[field] = (
+          available: availabilityResult.available,
+          error: null,
+          isChecking: false,
+        );
+        state = state.copyWith(availability: availability);
         logControllerSuccess(action: AuthAction.register);
-        notifyListeners();
-        return availability.available;
+        return availabilityResult.available;
       },
     );
   }
@@ -77,24 +173,32 @@ class RegisterController extends ChangeNotifier with ControllerLogHandler {
       _validateUnique(AvailabilityField.phoneNumber, v);
 
   Future<void> submit() async {
-    _state = RegisterLoading();
-    notifyListeners();
+    state = state.copyWith(status: RegisterStatus.loading);
+
+    final registerWithEmail = ref.read(registerWithEmailProvider);
+    final authState = ref.read(authStateProvider.notifier);
+    final prefs = ref.read(userPreferencesStateProvider.notifier);
 
     final result = await registerWithEmail(
-      RegisterWithEmailParams(registerFormData: formData),
+      RegisterWithEmailParams(registerFormData: state.formData),
     );
 
-    _state = result.fold(
-      (failure) {
+    if (!ref.mounted) return;
+
+    await result.fold(
+      (failure) async {
         logControllerError(action: AuthAction.register, failure: failure);
-        return RegisterError(failure.message);
+        state = state.copyWith(
+          status: RegisterStatus.error,
+          errorMessage: failure.message,
+        );
       },
-      (_) {
+      (authResult) async {
         logControllerSuccess(action: AuthAction.register);
-        return RegisterSuccess();
+        await authState.initSession(authResult);
+        prefs.setNeedsOnboarding(true);
+        state = state.copyWith(status: RegisterStatus.success);
       },
     );
-
-    notifyListeners();
   }
 }

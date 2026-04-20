@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:ibiapabaapp/app/theme/theme.dart';
 import 'package:ibiapabaapp/features/auth/presentation/controllers/register_controller.dart';
+import 'package:ibiapabaapp/features/auth/validation/auth_validator.dart';
 
-class NameStep extends StatefulWidget {
-  final RegisterController controller;
+class NameStep extends ConsumerStatefulWidget {
   final VoidCallback onNext;
 
-  const NameStep({super.key, required this.controller, required this.onNext});
+  const NameStep({super.key, required this.onNext});
 
   @override
-  State<NameStep> createState() => _NameStepState();
+  ConsumerState<NameStep> createState() => _NameStepState();
 }
 
-class _NameStepState extends State<NameStep> {
+class _NameStepState extends ConsumerState<NameStep> {
   final _formKey = GlobalKey<FormState>();
 
   String _name = '';
@@ -22,21 +23,22 @@ class _NameStepState extends State<NameStep> {
   @override
   void initState() {
     super.initState();
-    _name = widget.controller.formData.name;
+    _name = ref.read(registerControllerProvider).formData.name;
     _nameControl = FTextFieldControl.managed(onChange: (v) => _name = v.text);
   }
 
   void _submit() {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
-    widget.controller.setName(_name);
+    ref.read(registerControllerProvider.notifier).setName(_name);
     widget.onNext();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authValidator = ref.watch(authValidatorProvider);
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Form(
         key: _formKey,
         child: Column(
@@ -54,15 +56,7 @@ class _NameStepState extends State<NameStep> {
                   style.withBaseFontSize(typography: context.theme.typography),
               hint: 'Seu nome e sobrenome',
               autovalidateMode: AutovalidateMode.onUnfocus,
-              validator: (v) {
-                if (v == null || v.trim().isEmpty) {
-                  return 'Informe seu nome';
-                }
-                if (v.trim().split(' ').length < 2) {
-                  return 'Informe nome e sobrenome';
-                }
-                return null;
-              },
+              validator: (v) => authValidator.validateField(.name, v),
               onSubmit: (_) => _submit(),
             ),
 

@@ -1,28 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:ibiapabaapp/app/theme/theme.dart';
 import 'package:ibiapabaapp/features/auth/presentation/controllers/register_controller.dart';
 import 'package:ibiapabaapp/features/auth/presentation/states/register_state.dart';
+import 'package:ibiapabaapp/features/auth/validation/auth_validator.dart';
 
-class PasswordStep extends StatefulWidget {
-  final RegisterController controller;
+class PasswordStep extends ConsumerStatefulWidget {
   final VoidCallback onSubmit;
 
   const PasswordStep({
     super.key,
-    required this.controller,
     required this.onSubmit,
   });
 
   @override
-  State<PasswordStep> createState() => _PasswordStepState();
+  ConsumerState<PasswordStep> createState() => _PasswordStepState();
 }
 
-class _PasswordStepState extends State<PasswordStep> {
+class _PasswordStepState extends ConsumerState<PasswordStep> {
   final _formKey = GlobalKey<FormState>();
-
-  String _password = '';
-  String _confirmPassword = '';
 
   late final FTextFieldControl _passwordControl;
   late final FTextFieldControl _confirmPasswordControl;
@@ -30,52 +27,28 @@ class _PasswordStepState extends State<PasswordStep> {
   @override
   void initState() {
     super.initState();
-
-    // 1. Pegamos os valores iniciais
-    _password = widget.controller.formData.password;
-    _confirmPassword = widget.controller.formData.confirmPassword;
-
-    // 2. Inicializamos os controles já com o texto (se houver)
     _passwordControl = FTextFieldControl.managed(
-      initial: TextEditingValue(text: _password),
-      onChange: (v) => setState(
-        () => _password = v.text,
-      ), // setState aqui ajuda na validação em tempo real
+      onChange: (v) => ref.read(registerControllerProvider.notifier).setPassword(v.text),
     );
-
     _confirmPasswordControl = FTextFieldControl.managed(
-      initial: TextEditingValue(text: _confirmPassword),
-      onChange: (v) => setState(() => _confirmPassword = v.text),
+      onChange: (v) => ref.read(registerControllerProvider.notifier).setConfirmPassword(v.text),
     );
-
-    widget.controller.addListener(_controllerListener);
-  }
-
-  void _controllerListener() {
-    if (mounted) setState(() {});
   }
 
   void _submit() {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
-
-    widget.controller.setPassword(_password);
-    widget.controller.setConfirmPassword(_confirmPassword);
     widget.onSubmit();
   }
 
   @override
-  void dispose() {
-    widget.controller.removeListener(_controllerListener);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final isLoading = widget.controller.state is RegisterLoading;
+    final authValidator = ref.watch(authValidatorProvider);
+    final status = ref.watch(registerControllerProvider.select((s) => s.status));
+    final isLoading = status == RegisterStatus.loading;
 
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Form(
         key: _formKey,
         child: Column(
@@ -102,21 +75,7 @@ class _PasswordStepState extends State<PasswordStep> {
               hint: 'Mínimo 8 caracteres',
               enabled: !isLoading,
               autovalidateMode: AutovalidateMode.onUnfocus,
-              validator: (v) {
-                if (v == null || v.isEmpty) {
-                  return 'Informe a senha';
-                }
-                if (v.length < 8) {
-                  return 'No mínimo 8 caracteres';
-                }
-                if (!RegExp(r'[A-Z]').hasMatch(v)) {
-                  return 'Inclua pelo menos 1 letra maiúscula';
-                }
-                if (!RegExp(r'[0-9]').hasMatch(v)) {
-                  return 'Inclua pelo menos 1 número';
-                }
-                return null;
-              },
+              validator: (v) => authValidator.validateField(AuthFields.password, v),
             ),
 
             FTextFormField.password(
@@ -127,15 +86,7 @@ class _PasswordStepState extends State<PasswordStep> {
               hint: 'Digite novamente',
               enabled: !isLoading,
               autovalidateMode: AutovalidateMode.onUnfocus,
-              validator: (v) {
-                if (v == null || v.isEmpty) {
-                  return 'Confirme a senha';
-                }
-                if (v != _password) {
-                  return 'As senhas não coincidem';
-                }
-                return null;
-              },
+              validator: (v) => authValidator.validateField(AuthFields.confirmPassword, v),
               onSubmit: (_) => _submit(),
             ),
 

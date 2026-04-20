@@ -1,84 +1,43 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:ibiapabaapp/app/theme/theme.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
 import 'package:ibiapabaapp/features/auth/presentation/controllers/register_controller.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/phone_step/country_code_config.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/phone_step/country_picker_sheet.dart';
 import 'package:ibiapabaapp/features/auth/presentation/widgets/register/steps/phone_step/custom_code_dialog.dart';
+import 'package:ibiapabaapp/features/auth/validation/auth_validator.dart';
+import 'package:ibiapabaapp/shared/ui/layout/availability_suffix.dart';
 
-class PhoneStep extends StatefulWidget {
-  final RegisterController controller;
+class PhoneStep extends ConsumerStatefulWidget {
   final VoidCallback onNext;
 
-  const PhoneStep({super.key, required this.controller, required this.onNext});
+  const PhoneStep({super.key, required this.onNext});
 
   @override
-  State<PhoneStep> createState() => _PhoneStepState();
+  ConsumerState<PhoneStep> createState() => _PhoneStepState();
 }
 
-class _PhoneStepState extends State<PhoneStep> {
-  final _formKey = GlobalKey<FormState>();
-  late final FTextFieldControl _phoneControl;
-
-  String _digits = '';
+class _PhoneStepState extends ConsumerState<PhoneStep> {
   String _countryCode = '+55';
   bool _isCustomCountry = false;
 
   Timer? _debounce;
-  bool _isChecking = false;
-  bool? _isAvailable;
-  String? _apiError;
-  String? _successText;
-
-  static final _e164Regex = RegExp(r'^\+[1-9]\d{1,14}$');
-
-  bool get _canContinue =>
-      _isAvailable == true &&
-      !_isChecking &&
-      _apiError == null &&
-      _digits.isNotEmpty;
+  late final FTextFieldControl _phoneControl;
+  String _phoneNumber = '';
 
   @override
   void initState() {
     super.initState();
     _phoneControl = FTextFieldControl.managed(
       onChange: (v) {
-        setState(() {
-          _digits = v.text.replaceAll(RegExp(r'\D'), '');
-          _apiError = null;
-          _isAvailable = null;
-        });
-        _onPhoneChanged();
+        _phoneNumber = v.text;
+        _onPhoneChanged(_phoneNumber);
       },
     );
-  }
-
-  void _onPhoneChanged() {
-    _debounce?.cancel();
-
-    setState(() {
-      _isAvailable = null;
-      _apiError = null;
-      _successText = null;
-    });
-
-    final fullNumber = '$_countryCode$_digits';
-
-    if (_countryCode == '+55' && _digits.length != 11) {
-      return;
-    }
-
-    if (_countryCode != '+55' && _digits.length < _currentCountry.minDigits) {
-      return;
-    }
-
-    _debounce = Timer(const Duration(milliseconds: 600), () {
-      _checkPhoneAvailability(fullNumber);
-    });
   }
 
   @override
@@ -87,30 +46,24 @@ class _PhoneStepState extends State<PhoneStep> {
     super.dispose();
   }
 
-  Future<void> _checkPhoneAvailability(String phone) async {
-    setState(() {
-      _isChecking = true;
+  void _onPhoneChanged(String value) {
+    _debounce?.cancel();
+
+    final digits = value.replaceAll(RegExp(r'\D'), '');
+    final fullNumber = '$_countryCode$digits';
+
+    final notifier = ref.read(registerControllerProvider.notifier);
+    notifier.setPhone(fullNumber);
+
+    final validator = ref.read(authValidatorProvider);
+    final error = validator.validateField(AuthFields.phoneNumber, value);
+    if (error != null) {
+      return;
+    }
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      notifier.checkPhone(fullNumber);
     });
-
-    final available = await widget.controller.checkPhone(phone);
-
-    if (!mounted) return;
-
-    setState(() {
-      _isChecking = false;
-      _isAvailable = available;
-
-      final fieldError = widget.controller.getError(.phoneNumber);
-      if (fieldError != null) {
-        _apiError = fieldError;
-      } else if (!available) {
-        _apiError = 'Este telefone já está vinculado a outra conta.';
-      } else {
-        _successText = 'Telefone disponível!';
-      }
-    });
-
-    _formKey.currentState?.validate();
   }
 
   CountryPhoneConfig get _currentCountry =>
@@ -126,81 +79,22 @@ class _PhoneStepState extends State<PhoneStep> {
     ];
   }
 
-  String? _validate(String? v) {
-    if (_digits.isEmpty) return 'Digite seu telefone';
-
-    if (_countryCode == '+55') {
-      if (_digits.length < 11) return 'Informe DDD + número';
-    } else {
-      if (_digits.length < _currentCountry.minDigits) {
-        return 'Número muito curto';
-      }
-    }
-
-    final fullNumber = '$_countryCode$_digits';
-    if (!_e164Regex.hasMatch(fullNumber)) {
-      return 'Formato de telefone inválido';
-    }
-
-    if (_apiError != null) return _apiError;
-    return null;
-  }
-
-  void _submit() {
-    FocusScope.of(context).unfocus();
-
-    if (!_formKey.currentState!.validate()) return;
-    if (_isAvailable != true) return;
-    widget.controller.setPhone('$_countryCode$_digits');
-    widget.onNext();
-  }
-
-  Widget _buildSuffix(BuildContext context) {
-    if (_isChecking) {
-      return const Padding(
-        padding: EdgeInsets.all(12),
-        child: SizedBox(
-          width: 16,
-          height: 16,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
-      );
-    }
-    if (_isAvailable == true) {
-      return Padding(
-        padding: const EdgeInsets.all(12),
-        child: Icon(
-          Icons.check_circle_outline,
-          color: context.theme.colors.primary,
-        ),
-      );
-    }
-    if (_isAvailable == false) {
-      return Padding(
-        padding: const EdgeInsets.all(12),
-        child: Icon(Icons.error_outline, color: context.theme.colors.error),
-      );
-    }
-    return const SizedBox.shrink();
-  }
-
   void _showCountryPicker() async {
     final result = await showCountryPickerSheet(
       context: context,
       currentCode: _countryCode,
       isCustomCountry: _isCustomCountry,
     );
-
     if (result == null) return;
-
     if (result.isCustom) {
       _showCustomCodeDialog();
     } else {
       setState(() {
         _isCustomCountry = false;
         _countryCode = result.code;
-        _digits = '';
       });
+      ref.read(selectedCountryProvider.notifier).state = (result.code, 11);
+      ref.read(registerControllerProvider.notifier).setPhone('');
     }
   }
 
@@ -209,105 +103,104 @@ class _PhoneStepState extends State<PhoneStep> {
       context: context,
       initialCode: _isCustomCountry ? _countryCode : '+',
     );
-
     if (code != null) {
       setState(() {
         _isCustomCountry = true;
         _countryCode = code;
-        _digits = '';
       });
+      ref.read(selectedCountryProvider.notifier).state = (code, 8);
+      ref.read(registerControllerProvider.notifier).setPhone('');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final authValidator = ref.read(authValidatorProvider);
+    final availability = ref.watch(
+      registerControllerProvider.select(
+        (s) => s.availability[AvailabilityField.phoneNumber],
+      ),
+    );
+    final isAvailable = availability?.available;
+    final isChecking = availability?.isChecking ?? false;
+
     return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 16,
-          children: [
-            Text(
-              'Qual é o seu telefone?',
-              style: context.theme.typography.xl2.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 16,
+        children: [
+          Text(
+            'Qual é o seu telefone?',
+            style: context.theme.typography.xl2.copyWith(
+              fontWeight: FontWeight.w600,
             ),
+          ),
 
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: _showCountryPicker,
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: context.theme.colors.border),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _currentCountry.flag,
-                          style: context.theme.typography.base,
-                        ),
-                        const SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: context.theme.colors.foreground,
-                          size: 20,
-                        ),
-                      ],
-                    ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: _showCountryPicker,
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: context.theme.colors.border),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _currentCountry.flag,
+                        style: context.theme.typography.base,
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: context.theme.colors.foreground,
+                        size: 20,
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: FTextFormField(
-                    control: _phoneControl,
-                    suffixBuilder: (context, style, states) =>
-                        _buildSuffix(context),
-                    keyboardType: TextInputType.phone,
-                    hint: _currentCountry.example,
-                    inputFormatters: _inputFormatters,
-                    style: (style) => style.withBaseFontSize(
-                      typography: context.theme.typography,
-                    ),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: _validate,
-                    onSubmit: (_) => _canContinue ? _submit() : null,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: FTextFormField(
+                  control: _phoneControl,
+                  keyboardType: TextInputType.phone,
+                  hint: _currentCountry.example,
+                  inputFormatters: _inputFormatters,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (v) => authValidator.validateField(
+                    AuthFields.phoneNumber,
+                    v,
+                  ),
+                  suffixBuilder: (context, style, states) =>
+                      AvailabilitySuffix(
+                    isAvailable: isAvailable,
+                    isChecking: isChecking,
                   ),
                 ),
-              ],
-            ),
-
-            if (_successText != null && _apiError == null && !_isChecking)
-              Text(
-                _successText!,
-                style: context.theme.typography.sm.copyWith(
-                  color: context.theme.colors.primary,
-                  fontWeight: FontWeight.w600,
-                ),
               ),
+            ],
+          ),
 
-            const Spacer(),
+          const Spacer(),
 
-            SizedBox(
-              width: double.infinity,
-              child: FButton(
-                onPress: _canContinue ? _submit : null,
-                child: const Text(
-                  'Continuar',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+          SizedBox(
+            width: double.infinity,
+            child: FButton(
+              onPress: isAvailable == true ? widget.onNext : null,
+              child: const Text(
+                'Continuar',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
