@@ -45,13 +45,16 @@ enum LogStatus implements LogTag {
 enum LogFeature implements LogTag {
   auth('[AUTH]'),
   cities('[CITIES]'),
-  companies('[COMPANIES]'),
+  businesses('[COMPANIES]'),
   events('[EVENTS]'),
   medias('[MEDIAS]'),
   session('[SESSION]'),
   categories('[CATEGORIES]'),
   interests('[INTERESTS]'),
-  onboarding('[ONBOARDING]');
+  onboarding('[ONBOARDING]'),
+  profiles('[PROFILES]'),
+  location('[LOCATION]'),
+  search('[SEARCH]');
 
   @override
   final String tag;
@@ -80,14 +83,14 @@ enum CityAction implements LogTag {
   const CityAction(this.tag);
 }
 
-enum CompanyAction implements LogTag {
-  getAllCompanies('[GET_ALL_COMPANIES]'),
-  getCompanyById('[GET_COMPANY_BY_ID]'),
-  getCompanyMedia('[GET_COMPANY_MEDIA]');
+enum BusinessAction implements LogTag {
+  getAllBusinesses('[GET_ALL_BUSINESSES]'),
+  getBusinessById('[GET_BUSINESS_BY_ID]'),
+  getBusinessMedia('[GET_BUSINESS_MEDIA]');
 
   @override
   final String tag;
-  const CompanyAction(this.tag);
+  const BusinessAction(this.tag);
 }
 
 enum EventAction implements LogTag {
@@ -116,8 +119,11 @@ enum AppSessionAction implements LogTag {
   clearCurrentCity('[CLEAR_CURRENT_CITY]'),
   detectNearestCity('[DETECT_NEAREST_CITY]'),
   setFavoriteThemeMode('[SET_FAVORITE_THEME_MODE]'),
+  setNeedsOnboarding('[SET_NEEDS_ONBOARDING]'),
   resolveDevicePosition('[RESOLVE_DEVICE_POSITION]'),
-  setUserInterests('[SET_USER_INTERESTS]');
+  setUserInterests('[SET_USER_INTERESTS]'),
+  switchProfile('[SWITCH_PROFILE]'),
+  getAccountProfiles('[GET_ACCOUNT_PROFILES]');
 
   @override
   final String tag;
@@ -141,10 +147,37 @@ enum InterestAction implements LogTag {
   const InterestAction(this.tag);
 }
 
-enum OnboardingAction implements LogTag {
-  completeOnboarding('[COMPLETE_ONBOARDING]');
+enum UserInterestsAction implements LogTag {
+  complete('[USER_INTERESTS_COMPLETE]');
 
   @override
   final String tag;
-  const OnboardingAction(this.tag);
+  const UserInterestsAction(this.tag);
+}
+
+enum CompanyDataAction implements LogTag {
+  getCities('[GET_CITIES]'),
+  submit('[SUBMIT]');
+
+  @override
+  final String tag;
+  const CompanyDataAction(this.tag);
+}
+
+enum ProfileAction implements LogTag {
+  getAccountProfiles('[GET_ACCOUNT_PROFILES]'),
+  getProfileInterests('[GET_PROFILE_INTERESTS]'),
+  updateProfileInterests('[UPDATE_PROFILE_INTERESTS]');
+
+  @override
+  final String tag;
+  const ProfileAction(this.tag);
+}
+
+enum SearchAction implements LogTag {
+  restore('[RESTORE]');
+
+  @override
+  final String tag;
+  const SearchAction(this.tag);
 }
