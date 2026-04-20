@@ -1,13 +1,16 @@
-import 'package:ibiapabaapp/features/categories/domain/entities/category_count.dart';
+import 'package:ibiapabaapp/core/entities/entity_type.dart';
+import 'package:ibiapabaapp/features/categories/domain/entities/child_category.dart';
 
 class ParentCategory {
   final String id;
   final String name;
-  final CategoryCount count;
+  final List<EntityType> entities;
+  final List<ChildCategory>? children;
 
   const ParentCategory({
     required this.id,
     required this.name,
-    required this.count,
+    required this.entities,
+    this.children,
   });
 }

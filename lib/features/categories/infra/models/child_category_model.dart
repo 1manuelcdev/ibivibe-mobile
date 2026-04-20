@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ibiapabaapp/features/categories/infra/models/category_count_model.dart';
+import 'package:ibiapabaapp/core/entities/entity_type.dart';
 import 'package:ibiapabaapp/features/categories/domain/entities/child_category.dart';
 
 part 'child_category_model.freezed.dart';
@@ -14,7 +14,7 @@ abstract class ChildCategoryModel
   const factory ChildCategoryModel({
     @Default('') String id,
     @Default('') String name,
-    @JsonKey(name: '_count') required CategoryCountModel count,
+    required List<EntityType> entities,
   }) = _ChildCategoryModel;
 
   factory ChildCategoryModel.fromJson(Map<String, dynamic> json) =>
@@ -35,12 +35,7 @@ abstract class ChildCategoryModel
     return ChildCategoryModel(
       id: category.id,
       name: category.name,
-      count: CategoryCountModel(
-        cities: category.count.cities,
-        companies: category.count.companies,
-        events: category.count.events,
-        children: category.count.children,
-      ),
+      entities: category.entities,
     ).toJson();
   }
 }

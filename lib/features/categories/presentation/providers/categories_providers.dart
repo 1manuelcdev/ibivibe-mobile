@@ -10,8 +10,8 @@ import 'package:ibiapabaapp/features/categories/domain/entities/parent_category.
 import 'package:ibiapabaapp/features/categories/domain/repositories/categories_repository.dart';
 import 'package:ibiapabaapp/features/categories/domain/usecases/get_children_categories.dart';
 import 'package:ibiapabaapp/features/categories/domain/usecases/get_parent_categories.dart';
-import 'package:ibiapabaapp/features/categories/infra/cities_local_datasource_impl.dart';
-import 'package:ibiapabaapp/features/categories/infra/cities_remote_datasource_impl.dart';
+import 'package:ibiapabaapp/features/categories/infra/categories_local_datasource_impl.dart';
+import 'package:ibiapabaapp/features/categories/infra/categories_remote_datasource_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'categories_providers.g.dart';

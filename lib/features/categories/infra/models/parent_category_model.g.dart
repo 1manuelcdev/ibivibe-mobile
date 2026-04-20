@@ -10,9 +10,16 @@ _ParentCategoryModel _$ParentCategoryModelFromJson(Map<String, dynamic> json) =>
     _ParentCategoryModel(
       id: json['id'] as String? ?? '',
       name: json['name'] as String? ?? '',
-      count: CategoryCountModel.fromJson(
-        json['_count'] as Map<String, dynamic>,
-      ),
+      entities: (json['entities'] as List<dynamic>)
+          .map((e) => $enumDecode(_$EntityTypeEnumMap, e))
+          .toList(),
+      children:
+          (json['children'] as List<dynamic>?)
+              ?.map(
+                (e) => ChildCategoryModel.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          null,
     );
 
 Map<String, dynamic> _$ParentCategoryModelToJson(
@@ -20,5 +27,12 @@ Map<String, dynamic> _$ParentCategoryModelToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
-  '_count': instance.count,
+  'entities': instance.entities.map((e) => _$EntityTypeEnumMap[e]!).toList(),
+  'children': instance.children,
+};
+
+const _$EntityTypeEnumMap = {
+  EntityType.city: 'city',
+  EntityType.event: 'event',
+  EntityType.business: 'business',
 };

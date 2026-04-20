@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ParentCategoryModel {
 
- String get id; String get name;@JsonKey(name: '_count') CategoryCountModel get count;
+ String get id; String get name; List<EntityType> get entities; List<ChildCategoryModel>? get children;
 /// Create a copy of ParentCategoryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ParentCategoryModelCopyWith<ParentCategoryModel> get copyWith => _$ParentCatego
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ParentCategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.count, count) || other.count == count));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ParentCategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.entities, entities)&&const DeepCollectionEquality().equals(other.children, children));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,count);
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(entities),const DeepCollectionEquality().hash(children));
 
 @override
 String toString() {
-  return 'ParentCategoryModel(id: $id, name: $name, count: $count)';
+  return 'ParentCategoryModel(id: $id, name: $name, entities: $entities, children: $children)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $ParentCategoryModelCopyWith<$Res>  {
   factory $ParentCategoryModelCopyWith(ParentCategoryModel value, $Res Function(ParentCategoryModel) _then) = _$ParentCategoryModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name,@JsonKey(name: '_count') CategoryCountModel count
+ String id, String name, List<EntityType> entities, List<ChildCategoryModel>? children
 });
 
 
-$CategoryCountModelCopyWith<$Res> get count;
+
 
 }
 /// @nodoc
@@ -65,24 +65,16 @@ class _$ParentCategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of ParentCategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? count = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? entities = null,Object? children = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
-as CategoryCountModel,
+as String,entities: null == entities ? _self.entities : entities // ignore: cast_nullable_to_non_nullable
+as List<EntityType>,children: freezed == children ? _self.children : children // ignore: cast_nullable_to_non_nullable
+as List<ChildCategoryModel>?,
   ));
 }
-/// Create a copy of ParentCategoryModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$CategoryCountModelCopyWith<$Res> get count {
-  
-  return $CategoryCountModelCopyWith<$Res>(_self.count, (value) {
-    return _then(_self.copyWith(count: value));
-  });
-}
+
 }
 
 
@@ -164,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name, @JsonKey(name: '_count')  CategoryCountModel count)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  List<EntityType> entities,  List<ChildCategoryModel>? children)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ParentCategoryModel() when $default != null:
-return $default(_that.id,_that.name,_that.count);case _:
+return $default(_that.id,_that.name,_that.entities,_that.children);case _:
   return orElse();
 
 }
@@ -185,10 +177,10 @@ return $default(_that.id,_that.name,_that.count);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name, @JsonKey(name: '_count')  CategoryCountModel count)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  List<EntityType> entities,  List<ChildCategoryModel>? children)  $default,) {final _that = this;
 switch (_that) {
 case _ParentCategoryModel():
-return $default(_that.id,_that.name,_that.count);case _:
+return $default(_that.id,_that.name,_that.entities,_that.children);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +197,10 @@ return $default(_that.id,_that.name,_that.count);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name, @JsonKey(name: '_count')  CategoryCountModel count)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  List<EntityType> entities,  List<ChildCategoryModel>? children)?  $default,) {final _that = this;
 switch (_that) {
 case _ParentCategoryModel() when $default != null:
-return $default(_that.id,_that.name,_that.count);case _:
+return $default(_that.id,_that.name,_that.entities,_that.children);case _:
   return null;
 
 }
@@ -220,12 +212,27 @@ return $default(_that.id,_that.name,_that.count);case _:
 @JsonSerializable()
 
 class _ParentCategoryModel extends ParentCategoryModel {
-  const _ParentCategoryModel({this.id = '', this.name = '', @JsonKey(name: '_count') required this.count}): super._();
+  const _ParentCategoryModel({this.id = '', this.name = '', required final  List<EntityType> entities, final  List<ChildCategoryModel>? children = null}): _entities = entities,_children = children,super._();
   factory _ParentCategoryModel.fromJson(Map<String, dynamic> json) => _$ParentCategoryModelFromJson(json);
 
 @override@JsonKey() final  String id;
 @override@JsonKey() final  String name;
-@override@JsonKey(name: '_count') final  CategoryCountModel count;
+ final  List<EntityType> _entities;
+@override List<EntityType> get entities {
+  if (_entities is EqualUnmodifiableListView) return _entities;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_entities);
+}
+
+ final  List<ChildCategoryModel>? _children;
+@override@JsonKey() List<ChildCategoryModel>? get children {
+  final value = _children;
+  if (value == null) return null;
+  if (_children is EqualUnmodifiableListView) return _children;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of ParentCategoryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -240,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ParentCategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.count, count) || other.count == count));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ParentCategoryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._entities, _entities)&&const DeepCollectionEquality().equals(other._children, _children));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,count);
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(_entities),const DeepCollectionEquality().hash(_children));
 
 @override
 String toString() {
-  return 'ParentCategoryModel(id: $id, name: $name, count: $count)';
+  return 'ParentCategoryModel(id: $id, name: $name, entities: $entities, children: $children)';
 }
 
 
@@ -260,11 +267,11 @@ abstract mixin class _$ParentCategoryModelCopyWith<$Res> implements $ParentCateg
   factory _$ParentCategoryModelCopyWith(_ParentCategoryModel value, $Res Function(_ParentCategoryModel) _then) = __$ParentCategoryModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name,@JsonKey(name: '_count') CategoryCountModel count
+ String id, String name, List<EntityType> entities, List<ChildCategoryModel>? children
 });
 
 
-@override $CategoryCountModelCopyWith<$Res> get count;
+
 
 }
 /// @nodoc
@@ -277,25 +284,17 @@ class __$ParentCategoryModelCopyWithImpl<$Res>
 
 /// Create a copy of ParentCategoryModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? count = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? entities = null,Object? children = freezed,}) {
   return _then(_ParentCategoryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
-as CategoryCountModel,
+as String,entities: null == entities ? _self._entities : entities // ignore: cast_nullable_to_non_nullable
+as List<EntityType>,children: freezed == children ? _self._children : children // ignore: cast_nullable_to_non_nullable
+as List<ChildCategoryModel>?,
   ));
 }
 
-/// Create a copy of ParentCategoryModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$CategoryCountModelCopyWith<$Res> get count {
-  
-  return $CategoryCountModelCopyWith<$Res>(_self.count, (value) {
-    return _then(_self.copyWith(count: value));
-  });
-}
+
 }
 
 // dart format on
