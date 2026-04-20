@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
-import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
 import 'package:ibiapabaapp/features/auth/domain/usecases/login_with_email.dart';
+import 'package:ibiapabaapp/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:ibiapabaapp/features/auth/presentation/states/login_state.dart';
 import 'package:logger/logger.dart';
 
@@ -10,11 +10,11 @@ class LoginController extends ChangeNotifier with ControllerLogHandler {
   @override
   final Logger logger;
   final LoginWithEmail loginWithEmail;
-  final AppSessionNotifier session;
+  final AuthState authState;
 
   LoginController({
     required this.loginWithEmail,
-    required this.session,
+    required this.authState,
     required this.logger,
   });
 
@@ -45,7 +45,7 @@ class LoginController extends ChangeNotifier with ControllerLogHandler {
     );
 
     if (authResult != null) {
-      await session.initSession(authResult);
+      await authState.initSession(authResult);
       _state = LoginSuccess();
     }
 

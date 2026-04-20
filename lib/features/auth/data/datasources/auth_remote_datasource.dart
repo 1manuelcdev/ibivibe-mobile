@@ -1,7 +1,7 @@
 import 'package:ibiapabaapp/features/auth/domain/entities/auth_result.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/register_form_data.dart';
-import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
 
 abstract class AuthRemoteDatasource {
   Future<AuthResult> login({required String email, required String password});
@@ -13,7 +13,7 @@ abstract class AuthRemoteDatasource {
     required String value,
   });
 
-  Future<User> getMe();
+  Future<Account> getMe();
 
   Future<AuthResult> refreshTokens();
 }

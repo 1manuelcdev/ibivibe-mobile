@@ -2,13 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:ibiapabaapp/core/network/dio_exception_to_app_exception_mapper.dart';
 import 'package:ibiapabaapp/core/storage/token_storage_strategy.dart';
 import 'package:ibiapabaapp/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/auth_result.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/register_form_data.dart';
-import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
 import 'package:ibiapabaapp/features/auth/infra/models/auth_result_model.dart';
 import 'package:ibiapabaapp/features/auth/infra/models/check_availability_model.dart';
-import 'package:ibiapabaapp/features/auth/infra/models/user_model.dart';
+import 'package:ibiapabaapp/features/auth/infra/models/account_model.dart';
 
 class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   final Dio _dio;
@@ -21,15 +21,15 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   Future<AuthResult> login({
     required String email,
     required String password,
-    }) async {
-      try {
-        final response = await _dio.post(
-          '/auth/login',
-          data: {'email': email, 'password': password},
-        );
-        return AuthResultModel.fromJson(response.data);
-      } on DioException catch (e) {
-        throw DioExceptionToAppExceptionMapper.map(e);
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/auth/login',
+        data: {'email': email, 'password': password},
+      );
+      return AuthResultModel.fromJson(response.data);
+    } on DioException catch (e) {
+      throw DioExceptionToAppExceptionMapper.map(e);
     }
   }
 
@@ -65,10 +65,10 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Future<User> getMe() async {
+  Future<Account> getMe() async {
     try {
       final response = await _dio.get('/auth/me');
-      return UserModel.fromJson(response.data);
+      return AccountModel.fromJson(response.data);
     } on DioException catch (e) {
       throw DioExceptionToAppExceptionMapper.map(e);
     }

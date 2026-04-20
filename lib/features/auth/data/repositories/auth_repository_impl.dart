@@ -7,7 +7,7 @@ import 'package:ibiapabaapp/features/auth/data/mappers/auth_exception_to_failure
 import 'package:ibiapabaapp/features/auth/domain/entities/register_form_data.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/auth_result.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
-import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
 import 'package:ibiapabaapp/features/auth/domain/repositories/auth_repository.dart';
 import 'package:logger/logger.dart';
 
@@ -87,7 +87,7 @@ class AuthRepositoryImpl with RepositoryLogHandler implements AuthRepository {
   }
 
   @override
-  Future<Either<AppFailure, User>> getMe() async {
+  Future<Either<AppFailure, Account>> getMe() async {
     try {
       final result = await datasource.getMe();
       return Right(result);

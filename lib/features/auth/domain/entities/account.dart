@@ -1,17 +1,15 @@
-class User {
+class Account {
   final String id;
   final String name;
   final String email;
-  final String username;
-  final String role;
+  final String phoneNumber;
   final bool active;
 
-  User({
+  Account({
     required this.id,
     required this.name,
     required this.email,
-    required this.username,
-    required this.role,
+    required this.phoneNumber,
     required this.active,
   });
 }

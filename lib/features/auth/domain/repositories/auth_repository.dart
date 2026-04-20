@@ -3,7 +3,7 @@ import 'package:ibiapabaapp/core/errors/failures/failures.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/check_availability.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/register_form_data.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/auth_result.dart';
-import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
 
 abstract class AuthRepository {
   Future<Either<AppFailure, CheckAvailability>> checkAvailability({
@@ -20,7 +20,7 @@ abstract class AuthRepository {
     required RegisterFormData registerFormData,
   });
 
-  Future<Either<AppFailure, User>> getMe();
+  Future<Either<AppFailure, Account>> getMe();
 
   Future<Either<AppFailure, AuthResult>> refreshTokens();
 }
