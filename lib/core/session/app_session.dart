@@ -1,50 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:ibiapabaapp/features/auth/domain/entities/user.dart';
+import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
-import 'package:ibiapabaapp/features/interests/domain/entities/user_interests.dart';
+import 'package:ibiapabaapp/features/businesses/domain/entities/business.dart';
+import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
 import 'package:latlong2/latlong.dart';
 
 class AppSession {
-  final User? user;
-  final UserInterests? userInterests;
+  final Account? account;
+  final Profile? activeProfile;
+  final List<Profile> accountProfiles;
+
   final City? currentCity;
-
-  // Null enquanto não resolvida ou se permissão negada
   final LatLng? devicePosition;
+  final List<String> recentSearches;
 
-  final ThemeMode? themeMode;
+  final ThemeMode themeMode;
   final bool needsOnboarding;
 
   const AppSession({
-    this.user,
-    this.userInterests,
+    this.account,
+    this.activeProfile,
+    this.accountProfiles = const [],
     this.currentCity,
     this.devicePosition,
-    this.themeMode,
-    this.needsOnboarding = false,
+    this.recentSearches = const [],
+    this.themeMode = ThemeMode.system,
+    this.needsOnboarding = true,
   });
 
+  bool get isAuthenticated => activeProfile != null;
+  bool get isPersonal => activeProfile?.type == ProfileType.personal;
+
+  BusinessRole? get currentBusinessRole => activeProfile?.businessRole;
+  Business? get activeBusiness => activeProfile?.business;
+
   AppSession copyWith({
-    User? user,
-    UserInterests? userInterests,
+    Account? account,
+    Profile? activeProfile,
+    bool clearActiveProfile = false,
+    List<Profile>? accountProfiles,
     City? currentCity,
-    ThemeMode? themeMode,
-    LatLng? devicePosition,
-    bool clearUser = false,
-    bool clearUserInterests = false,
     bool clearCity = false,
+    LatLng? devicePosition,
     bool clearDevicePosition = false,
+    List<String>? recentSearches,
+    ThemeMode? themeMode,
     bool? needsOnboarding,
   }) {
     return AppSession(
-      user: clearUser ? null : (user ?? this.user),
-      userInterests: clearUserInterests
+      account: account ?? this.account,
+      activeProfile: clearActiveProfile
           ? null
-          : (userInterests ?? this.userInterests),
+          : (activeProfile ?? this.activeProfile),
+      accountProfiles: accountProfiles ?? this.accountProfiles,
       currentCity: clearCity ? null : (currentCity ?? this.currentCity),
       devicePosition: clearDevicePosition
           ? null
           : (devicePosition ?? this.devicePosition),
+      recentSearches: recentSearches ?? this.recentSearches,
       themeMode: themeMode ?? this.themeMode,
       needsOnboarding: needsOnboarding ?? this.needsOnboarding,
     );
