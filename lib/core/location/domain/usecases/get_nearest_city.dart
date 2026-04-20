@@ -1,15 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:ibiapabaapp/core/location/location_service.dart';
+import 'package:ibiapabaapp/core/location/infra/location_service.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../features/cities/domain/entities/city.dart';
-import '../errors/failures/failures.dart';
-import '../usecases/usecase.dart';
-import 'exceptions/location_exceptions.dart';
-import 'location_provider.dart';
-
-part 'get_nearest_city.g.dart';
+import '../../../../features/cities/domain/entities/city.dart';
+import '../../../errors/failures/failures.dart';
+import '../../../usecases/usecase.dart';
+import '../exceptions/location_exceptions.dart';
 
 class GetNearestCity implements Usecase<City, List<City>> {
   GetNearestCity({required this.locationService});
@@ -17,6 +13,7 @@ class GetNearestCity implements Usecase<City, List<City>> {
   final LocationService locationService;
   final _distance = const Distance();
 
+  // TODO: refatorar para dividir responsabilidades
   @override
   Future<Either<AppFailure, City>> call(List<City> cities) async {
     if (cities.isEmpty) {
@@ -73,11 +70,4 @@ class GetNearestCity implements Usecase<City, List<City>> {
     LocationTimeoutException() => const LocationTimeoutFailure(),
     LocationUnknownException() => LocationUnknownFailure(e.message),
   };
-}
-
-// ─── Provider ────────────────────────────────────────────────────────────────
-@riverpod
-GetNearestCity getNearestCity(Ref ref) {
-  final LocationService locationService = ref.watch(locationServiceProvider);
-  return GetNearestCity(locationService: locationService);
 }

@@ -1,0 +1,123 @@
+import 'package:ibiapabaapp/core/errors/failures/failures.dart';
+import 'package:ibiapabaapp/core/location/data/datasources/location_local_storage.dart';
+import 'package:ibiapabaapp/core/location/domain/entities/location_data.dart';
+import 'package:ibiapabaapp/core/location/presentation/providers/location_providers.dart';
+import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
+import 'package:ibiapabaapp/core/logger/log_tags.dart';
+import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
+import 'package:ibiapabaapp/features/cities/domain/usecases/get_all_cities.dart';
+import 'package:ibiapabaapp/features/cities/presentation/providers/cities_providers.dart';
+import 'package:logger/logger.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'location_state_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class LocationState extends _$LocationState with ControllerLogHandler {
+  @override
+  LocationData build() {
+    return LocationData();
+  }
+
+  @override
+  late final Logger logger;
+
+  @override
+  LogFeature get feature => LogFeature.location;
+
+  LocationLocalStorage get _storage => ref.read(locationLocalStorageProvider);
+
+  Future<void> restore() async {
+    try {
+      // TODO: ajeitar latestCity
+      // final latestCity = await _storage.loadLatestCity();
+      final devicePosition = await ref
+          .read(locationServiceProvider)
+          .getCurrentLocation();
+
+      if (!ref.mounted) return;
+
+      state = state.copyWith(
+        // currentCity: latestCity,
+        devicePosition: devicePosition,
+      );
+    } catch (e) {
+      logControllerError(action: AppSessionAction.restore, failure: e);
+    }
+  }
+
+  // ─── City ──────────────────────────────────────────────────────────────────
+  Future<void> setCurrentCity(City city) async {
+    await _storage.saveCurrentCityId(city.id);
+    state = state.copyWith(currentCity: city);
+    logControllerSuccess(action: AppSessionAction.setCurrentCity);
+  }
+
+  Future<void> clearCurrentCity() async {
+    await _storage.clearCurrentCity();
+    state = state.copyWith(clearCity: true);
+    logControllerSuccess(action: AppSessionAction.clearCurrentCity);
+  }
+
+  Future<AppFailure?> detectAndSetNearestCity() async {
+    final citiesResult = await ref
+        .read(getAllCitiesProvider)
+        .call(const GetAllCitiesParams());
+
+    if (!ref.mounted) return null;
+
+    return citiesResult.fold(
+      (failure) {
+        logControllerError(
+          action: AppSessionAction.detectNearestCity,
+          failure: failure,
+        );
+        return failure;
+      },
+      (cities) async {
+        final result = await ref.read(getNearestCityProvider)(cities);
+
+        if (!ref.mounted) return null;
+
+        return result.fold(
+          (failure) {
+            logControllerError(
+              action: AppSessionAction.detectNearestCity,
+              failure: failure,
+            );
+            if (failure is LocationPermissionPermanentlyDeniedFailure) {
+              ref.read(locationServiceProvider).openAppSettings();
+            }
+            return failure;
+          },
+          (nearestCity) async {
+            await setCurrentCity(nearestCity);
+            logControllerSuccess(action: AppSessionAction.detectNearestCity);
+            return null;
+          },
+        );
+      },
+    );
+  }
+
+  // ─── Device Position ───────────────────────────────────────────────────────
+  Future<void> resolveDevicePosition({bool force = false}) async {
+    if (!force && state.devicePosition != null) return;
+
+    try {
+      final pos = await ref.read(locationServiceProvider).getCurrentLocation();
+      state = state.copyWith(devicePosition: pos);
+      logControllerSuccess(action: AppSessionAction.resolveDevicePosition);
+    } catch (failure) {
+      logControllerError(
+        action: AppSessionAction.resolveDevicePosition,
+        failure: failure,
+      );
+    }
+  }
+}
+
+@riverpod
+City? currentCity(Ref ref) {
+  return ref.watch(locationStateProvider).currentCity;
+}

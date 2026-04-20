@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:ibiapabaapp/core/location/exceptions/location_exceptions.dart';
-import 'package:ibiapabaapp/core/location/geolocator_wrapper.dart';
+import 'package:ibiapabaapp/core/location/domain/exceptions/location_exceptions.dart';
+import 'package:ibiapabaapp/core/location/infra/models/geolocator_wrapper.dart';
 import 'package:latlong2/latlong.dart';
 
 class LocationService {
@@ -13,7 +13,9 @@ class LocationService {
 
   Future<LatLng> getCurrentLocation() async {
     final serviceEnabled = await _geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) throw LocationDisabledException();
+    if (!serviceEnabled) {
+      throw const LocationDisabledException();
+    }
 
     var permission = await _geolocator.checkPermission();
 
