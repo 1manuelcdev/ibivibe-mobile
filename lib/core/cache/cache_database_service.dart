@@ -104,6 +104,14 @@ class CacheDatabaseService {
     return list.map((item) => fromJson(item as Map<String, dynamic>)).toList();
   }
 
+  Future<void> clearKey({
+    required String storeName,
+    required String key,
+  }) async {
+    await stringMapStoreFactory.store(storeName).record(key).delete(_db);
+    _logger.i('🧹 [Sembast] Key "$key" limpa em "$storeName".');
+  }
+
   Future<void> clear({String? storeName}) async {
     if (storeName != null) {
       await stringMapStoreFactory.store(storeName).delete(_db);
