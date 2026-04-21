@@ -15,7 +15,7 @@ import 'package:ibiapabaapp/features/events/presentation/screens/events_overview
 import 'package:ibiapabaapp/features/events/presentation/screens/event_detail_screen.dart';
 import 'package:ibiapabaapp/features/favorites/presentation/screens/favorites_screen.dart';
 import 'package:ibiapabaapp/features/search/presentation/screens/expanded_search_screen.dart';
-import 'package:ibiapabaapp/features/onboarding/presentation/screens/company_data_screen.dart';
+import 'package:ibiapabaapp/features/onboarding/presentation/screens/business_data_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/presentation/screens/interests/profile_businesses_interests_screen.dart';
 import 'package:ibiapabaapp/features/onboarding/presentation/screens/interests/profile_events_interests_screen.dart';
@@ -98,7 +98,7 @@ GoRouter appRouter(Ref ref) {
       // ─── Business Data (Onboarding & reutilizável) ─────────────────────────────
       GoRoute(
         path: '/app/businesses/basic-data',
-        builder: (context, state) => const CompanyDataScreen(),
+        builder: (context, state) => const BusinessDataScreen(),
       ),
 
       // ─── Authentication ────────────────────────────────────────────────────
