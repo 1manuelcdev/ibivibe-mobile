@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
-import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/businesses/domain/entities/business.dart';
+import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
+import 'package:ibiapabaapp/features/profiles/domain/entities/profile_business.dart';
+import 'package:ibiapabaapp/features/profiles/domain/entities/profile_extensions.dart';
 import 'package:latlong2/latlong.dart';
 
 class AppSession {
@@ -29,10 +31,12 @@ class AppSession {
   });
 
   bool get isAuthenticated => activeProfile != null;
-  bool get isPersonal => activeProfile?.type == ProfileType.personal;
+  bool get isActiveProfilePersonal => activeProfile?.isBusiness ?? false;
+  bool get isActiveProfileBusiness => activeProfile?.isPersonal ?? false;
 
+  ProfileBusiness? get activeBusiness => activeProfile?.business;
   BusinessRole? get currentBusinessRole => activeProfile?.businessRole;
-  Business? get activeBusiness => activeProfile?.business;
+  Business? get activeBusinessEntity => activeProfile?.toBusiness();
 
   AppSession copyWith({
     Account? account,

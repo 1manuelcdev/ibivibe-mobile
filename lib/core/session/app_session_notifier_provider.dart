@@ -16,15 +16,13 @@ part 'app_session_notifier_provider.g.dart';
 class AppSessionNotifier extends _$AppSessionNotifier
     with ControllerLogHandler {
   @override
-  late final Logger logger;
+  late final Logger logger = ref.read(loggerProvider);
 
   @override
   LogFeature get feature => LogFeature.session;
 
   @override
   AppSession build() {
-    logger = ref.read(loggerProvider);
-
     final authData = ref.watch(authStateProvider);
     final profileData = ref.watch(profileStateProvider);
     final preferences = ref.watch(userPreferencesStateProvider);
@@ -44,14 +42,23 @@ class AppSessionNotifier extends _$AppSessionNotifier
 
   Future<void> restore() async {
     try {
-      await ref.read(authStateProvider.notifier).restore();
-      await ref.read(userPreferencesStateProvider.notifier).restore();
-      await ref.read(locationStateProvider.notifier).restore();
-      await ref.read(searchStateProvider.notifier).restore();
+      await Future.wait([
+        ref.read(authStateProvider.notifier).restore(),
+        ref.read(userPreferencesStateProvider.notifier).restore(),
+        ref.read(locationStateProvider.notifier).restore(),
+        ref.read(searchStateProvider.notifier).restore(),
+      ]);
+
+      await ref.read(profileStateProvider.notifier).restore();
+      await Future.microtask(ref.invalidateSelf);
 
       logControllerSuccess(action: AppSessionAction.restore);
-    } catch (e) {
-      logControllerError(action: AppSessionAction.restore, failure: e);
+    } catch (e, s) {
+      logControllerError(
+        action: AppSessionAction.restore,
+        failure: e,
+        stackTrace: s,
+      );
     }
   }
 }
