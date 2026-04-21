@@ -12,8 +12,9 @@ class LocationService {
   final GeolocatorWrapper _geolocator;
 
   Future<LatLng> getCurrentLocation() async {
-    final serviceEnabled = await _geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
+    try {
+      await _geolocator.isLocationServiceEnabled();
+    } catch (e) {
       throw const LocationDisabledException();
     }
 
