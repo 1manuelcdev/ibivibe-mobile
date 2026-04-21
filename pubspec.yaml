@@ -71,6 +71,7 @@ dependencies:
   webview_flutter: ^4.13.1
   flutter_inappwebview: ^6.1.5
   url_launcher: ^6.3.2
+  collection: ^1.19.1
 
 dev_dependencies:
   flutter_test:
