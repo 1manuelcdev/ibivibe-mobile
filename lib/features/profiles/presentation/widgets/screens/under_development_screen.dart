@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,7 +69,7 @@ class UnderDevelopmentScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'IbiapabaApp v1.0.0-beta',
+                dotenv.env['APP_VERSION_TAG']!,
                 style: context.theme.typography.sm.copyWith(
                   color: context.theme.colors.mutedForeground,
                 ),
