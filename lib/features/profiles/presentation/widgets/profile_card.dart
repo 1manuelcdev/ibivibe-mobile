@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
+import 'package:ibiapabaapp/app/theme/custom_styles/inverted_badge.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
 import 'package:ibiapabaapp/features/profiles/presentation/dialogs/profile_switcher_dialog.dart';
 import 'package:ibiapabaapp/features/profiles/presentation/widgets/profile_photo.dart';
@@ -38,7 +39,6 @@ class _ProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final profile = this.profile;
     return Expanded(
       child: Column(
         mainAxisSize: .max,
@@ -47,11 +47,7 @@ class _ProfileInfo extends StatelessWidget {
         spacing: 4,
         children: [
           Text(
-            switch (profile.type) {
-              ProfileType.personal => profile.displayName,
-              ProfileType.business =>
-                profile.business?.name ?? 'Empresa ${profile.id}',
-            },
+            profile.displayName,
             overflow: .ellipsis,
             textAlign: .start,
             style: TextStyle(
@@ -78,18 +74,12 @@ class _ProfileInfo extends StatelessWidget {
               runSpacing: 8,
               children: [
                 FBadge(
-                  style: FBadgeStyle.primary(
-                    (style) => style.copyWith(
-                      contentStyle: (style) => style.copyWith(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                      ),
-                    ),
-                  ),
+                  style: getInvertedBadgeStyle(
+                    context.theme.colors,
+                    context.theme.typography,
+                  ).call,
                   child: Text(
-                    profile.businessRole.toString(),
+                    profile.businessRole!.name,
                     style: context.theme.typography.xs.copyWith(
                       color: context.theme.colors.primaryForeground,
                     ),

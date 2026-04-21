@@ -10,11 +10,8 @@ abstract class ProfileInterestsModel with _$ProfileInterestsModel {
   const ProfileInterestsModel._();
 
   const factory ProfileInterestsModel({
-    @JsonKey(name: 'businesses_interests')
-    @Default([])
-    List<InterestModel> businesses,
-
-    @JsonKey(name: 'events_interests') @Default([]) List<InterestModel> events,
+    @JsonKey(name: 'businesses') @Default([]) List<InterestModel> businesses,
+    @JsonKey(name: 'events') @Default([]) List<InterestModel> events,
   }) = _ProfileInterestsModel;
 
   factory ProfileInterestsModel.fromJson(Map<String, dynamic> json) =>
@@ -31,6 +28,13 @@ abstract class ProfileInterestsModel with _$ProfileInterestsModel {
   }
 
   static Map<String, dynamic> toMap(ProfileInterests interests) {
-    return {'businesses': interests.businesses, 'events': interests.events};
+    return {
+      'businesses': interests.businesses
+          .map(InterestModel.toMap)
+          .toList(growable: false),
+      'events': interests.events
+          .map(InterestModel.toMap)
+          .toList(growable: false),
+    };
   }
 }

@@ -1,10 +1,20 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:ibiapabaapp/features/businesses/infra/models/business_model.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
-import 'package:ibiapabaapp/features/profiles/infra/models/profile_interests_model.dart';
+import 'package:ibiapabaapp/features/profiles/domain/entities/profile_interests.dart';
+import 'package:ibiapabaapp/features/profiles/infra/models/profile_business_model.dart';
 
 part 'profile_model.freezed.dart';
 part 'profile_model.g.dart';
+
+ProfileInterests? _profileInterestsFromJson(Map<String, dynamic>? json) {
+  if (json == null) return null;
+  return ProfileInterests.fromJson(json);
+}
+
+Map<String, dynamic>? _profileInterestsToJson(ProfileInterests? interests) {
+  if (interests == null) return null;
+  return ProfileInterests.toMap(interests);
+}
 
 @freezed
 abstract class ProfileModel with _$ProfileModel implements Profile {
@@ -19,8 +29,12 @@ abstract class ProfileModel with _$ProfileModel implements Profile {
     required ProfileType type,
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'updated_at') required DateTime updatedAt,
-    ProfileInterestsModel? interests,
-    BusinessModel? business,
+    @JsonKey(
+      fromJson: _profileInterestsFromJson,
+      toJson: _profileInterestsToJson,
+    )
+    ProfileInterests? interests,
+    ProfileBusinessModel? business,
     @JsonKey(name: 'role', defaultValue: null) BusinessRole? businessRole,
   }) = _ProfileModel;
 
@@ -42,10 +56,10 @@ abstract class ProfileModel with _$ProfileModel implements Profile {
     'avatar_url': profile.avatarUrl,
     'type': profile.type.name,
     'interests': profile.interests != null
-        ? ProfileInterestsModel.toMap(profile.interests!)
+        ? ProfileInterests.toMap(profile.interests!)
         : null,
     'business': profile.business != null
-        ? BusinessModel.toMap(profile.business!)
+        ? ProfileBusinessModel.toMap(profile.business!)
         : null,
     'role': profile.businessRole?.name,
     'created_at': profile.createdAt.toIso8601String(),

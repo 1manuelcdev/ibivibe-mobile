@@ -16,14 +16,14 @@ _ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) =>
       type: $enumDecode(_$ProfileTypeEnumMap, json['type']),
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
-      interests: json['interests'] == null
-          ? null
-          : ProfileInterestsModel.fromJson(
-              json['interests'] as Map<String, dynamic>,
-            ),
+      interests: _profileInterestsFromJson(
+        json['interests'] as Map<String, dynamic>?,
+      ),
       business: json['business'] == null
           ? null
-          : BusinessModel.fromJson(json['business'] as Map<String, dynamic>),
+          : ProfileBusinessModel.fromJson(
+              json['business'] as Map<String, dynamic>,
+            ),
       businessRole: $enumDecodeNullable(_$BusinessRoleEnumMap, json['role']),
     );
 
@@ -37,7 +37,7 @@ Map<String, dynamic> _$ProfileModelToJson(_ProfileModel instance) =>
       'type': _$ProfileTypeEnumMap[instance.type]!,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
-      'interests': instance.interests,
+      'interests': _profileInterestsToJson(instance.interests),
       'business': instance.business,
       'role': _$BusinessRoleEnumMap[instance.businessRole],
     };

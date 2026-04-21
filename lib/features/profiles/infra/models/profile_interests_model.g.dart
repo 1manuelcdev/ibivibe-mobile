@@ -10,12 +10,12 @@ _ProfileInterestsModel _$ProfileInterestsModelFromJson(
   Map<String, dynamic> json,
 ) => _ProfileInterestsModel(
   businesses:
-      (json['businesses_interests'] as List<dynamic>?)
+      (json['businesses'] as List<dynamic>?)
           ?.map((e) => InterestModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
   events:
-      (json['events_interests'] as List<dynamic>?)
+      (json['events'] as List<dynamic>?)
           ?.map((e) => InterestModel.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
@@ -24,6 +24,6 @@ _ProfileInterestsModel _$ProfileInterestsModelFromJson(
 Map<String, dynamic> _$ProfileInterestsModelToJson(
   _ProfileInterestsModel instance,
 ) => <String, dynamic>{
-  'businesses_interests': instance.businesses,
-  'events_interests': instance.events,
+  'businesses': instance.businesses,
+  'events': instance.events,
 };

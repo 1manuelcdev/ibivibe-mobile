@@ -24,20 +24,16 @@ class SettingsScreen extends ConsumerWidget {
           ],
           title: Text('Configurações', style: context.theme.typography.base),
         ),
-        childPad: false,
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              spacing: 24,
-              children: [
-                _AccountSection(),
-                _AppearenceSection(),
-                _NotificationsSection(),
-                _SocialSection(),
-                _LogoutButton(),
-              ],
-            ),
+          child: Column(
+            spacing: 24,
+            children: [
+              _AccountSection(),
+              _AppearenceSection(),
+              _NotificationsSection(),
+              _SocialSection(),
+              _LogoutButton(),
+            ],
           ),
         ),
       ),

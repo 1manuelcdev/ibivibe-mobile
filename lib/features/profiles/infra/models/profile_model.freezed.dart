@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileModel {
 
- String get id; String get slug;@JsonKey(name: 'display_name') String get displayName; String get bio;@JsonKey(name: 'avatar_url') String get avatarUrl; ProfileType get type;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt; ProfileInterestsModel? get interests; BusinessModel? get business;@JsonKey(name: 'role', defaultValue: null) BusinessRole? get businessRole;
+ String get id; String get slug;@JsonKey(name: 'display_name') String get displayName; String get bio;@JsonKey(name: 'avatar_url') String get avatarUrl; ProfileType get type;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;@JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson) ProfileInterests? get interests; ProfileBusinessModel? get business;@JsonKey(name: 'role', defaultValue: null) BusinessRole? get businessRole;
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $ProfileModelCopyWith<$Res>  {
   factory $ProfileModelCopyWith(ProfileModel value, $Res Function(ProfileModel) _then) = _$ProfileModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String slug,@JsonKey(name: 'display_name') String displayName, String bio,@JsonKey(name: 'avatar_url') String avatarUrl, ProfileType type,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt, ProfileInterestsModel? interests, BusinessModel? business,@JsonKey(name: 'role', defaultValue: null) BusinessRole? businessRole
+ String id, String slug,@JsonKey(name: 'display_name') String displayName, String bio,@JsonKey(name: 'avatar_url') String avatarUrl, ProfileType type,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson) ProfileInterests? interests, ProfileBusinessModel? business,@JsonKey(name: 'role', defaultValue: null) BusinessRole? businessRole
 });
 
 
-$ProfileInterestsModelCopyWith<$Res>? get interests;$BusinessModelCopyWith<$Res>? get business;
+$ProfileBusinessModelCopyWith<$Res>? get business;
 
 }
 /// @nodoc
@@ -76,8 +76,8 @@ as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non
 as ProfileType,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,interests: freezed == interests ? _self.interests : interests // ignore: cast_nullable_to_non_nullable
-as ProfileInterestsModel?,business: freezed == business ? _self.business : business // ignore: cast_nullable_to_non_nullable
-as BusinessModel?,businessRole: freezed == businessRole ? _self.businessRole : businessRole // ignore: cast_nullable_to_non_nullable
+as ProfileInterests?,business: freezed == business ? _self.business : business // ignore: cast_nullable_to_non_nullable
+as ProfileBusinessModel?,businessRole: freezed == businessRole ? _self.businessRole : businessRole // ignore: cast_nullable_to_non_nullable
 as BusinessRole?,
   ));
 }
@@ -85,24 +85,12 @@ as BusinessRole?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ProfileInterestsModelCopyWith<$Res>? get interests {
-    if (_self.interests == null) {
-    return null;
-  }
-
-  return $ProfileInterestsModelCopyWith<$Res>(_self.interests!, (value) {
-    return _then(_self.copyWith(interests: value));
-  });
-}/// Create a copy of ProfileModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$BusinessModelCopyWith<$Res>? get business {
+$ProfileBusinessModelCopyWith<$Res>? get business {
     if (_self.business == null) {
     return null;
   }
 
-  return $BusinessModelCopyWith<$Res>(_self.business!, (value) {
+  return $ProfileBusinessModelCopyWith<$Res>(_self.business!, (value) {
     return _then(_self.copyWith(business: value));
   });
 }
@@ -187,7 +175,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String slug, @JsonKey(name: 'display_name')  String displayName,  String bio, @JsonKey(name: 'avatar_url')  String avatarUrl,  ProfileType type, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt,  ProfileInterestsModel? interests,  BusinessModel? business, @JsonKey(name: 'role', defaultValue: null)  BusinessRole? businessRole)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String slug, @JsonKey(name: 'display_name')  String displayName,  String bio, @JsonKey(name: 'avatar_url')  String avatarUrl,  ProfileType type, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson)  ProfileInterests? interests,  ProfileBusinessModel? business, @JsonKey(name: 'role', defaultValue: null)  BusinessRole? businessRole)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
 return $default(_that.id,_that.slug,_that.displayName,_that.bio,_that.avatarUrl,_that.type,_that.createdAt,_that.updatedAt,_that.interests,_that.business,_that.businessRole);case _:
@@ -208,7 +196,7 @@ return $default(_that.id,_that.slug,_that.displayName,_that.bio,_that.avatarUrl,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String slug, @JsonKey(name: 'display_name')  String displayName,  String bio, @JsonKey(name: 'avatar_url')  String avatarUrl,  ProfileType type, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt,  ProfileInterestsModel? interests,  BusinessModel? business, @JsonKey(name: 'role', defaultValue: null)  BusinessRole? businessRole)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String slug, @JsonKey(name: 'display_name')  String displayName,  String bio, @JsonKey(name: 'avatar_url')  String avatarUrl,  ProfileType type, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson)  ProfileInterests? interests,  ProfileBusinessModel? business, @JsonKey(name: 'role', defaultValue: null)  BusinessRole? businessRole)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel():
 return $default(_that.id,_that.slug,_that.displayName,_that.bio,_that.avatarUrl,_that.type,_that.createdAt,_that.updatedAt,_that.interests,_that.business,_that.businessRole);case _:
@@ -228,7 +216,7 @@ return $default(_that.id,_that.slug,_that.displayName,_that.bio,_that.avatarUrl,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String slug, @JsonKey(name: 'display_name')  String displayName,  String bio, @JsonKey(name: 'avatar_url')  String avatarUrl,  ProfileType type, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt,  ProfileInterestsModel? interests,  BusinessModel? business, @JsonKey(name: 'role', defaultValue: null)  BusinessRole? businessRole)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String slug, @JsonKey(name: 'display_name')  String displayName,  String bio, @JsonKey(name: 'avatar_url')  String avatarUrl,  ProfileType type, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt, @JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson)  ProfileInterests? interests,  ProfileBusinessModel? business, @JsonKey(name: 'role', defaultValue: null)  BusinessRole? businessRole)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
 return $default(_that.id,_that.slug,_that.displayName,_that.bio,_that.avatarUrl,_that.type,_that.createdAt,_that.updatedAt,_that.interests,_that.business,_that.businessRole);case _:
@@ -243,7 +231,7 @@ return $default(_that.id,_that.slug,_that.displayName,_that.bio,_that.avatarUrl,
 @JsonSerializable()
 
 class _ProfileModel extends ProfileModel {
-  const _ProfileModel({this.id = '', this.slug = '', @JsonKey(name: 'display_name') required this.displayName, this.bio = '', @JsonKey(name: 'avatar_url') this.avatarUrl = '', required this.type, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, this.interests, this.business, @JsonKey(name: 'role', defaultValue: null) this.businessRole}): super._();
+  const _ProfileModel({this.id = '', this.slug = '', @JsonKey(name: 'display_name') required this.displayName, this.bio = '', @JsonKey(name: 'avatar_url') this.avatarUrl = '', required this.type, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt, @JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson) this.interests, this.business, @JsonKey(name: 'role', defaultValue: null) this.businessRole}): super._();
   factory _ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);
 
 @override@JsonKey() final  String id;
@@ -254,8 +242,8 @@ class _ProfileModel extends ProfileModel {
 @override final  ProfileType type;
 @override@JsonKey(name: 'created_at') final  DateTime createdAt;
 @override@JsonKey(name: 'updated_at') final  DateTime updatedAt;
-@override final  ProfileInterestsModel? interests;
-@override final  BusinessModel? business;
+@override@JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson) final  ProfileInterests? interests;
+@override final  ProfileBusinessModel? business;
 @override@JsonKey(name: 'role', defaultValue: null) final  BusinessRole? businessRole;
 
 /// Create a copy of ProfileModel
@@ -282,8 +270,6 @@ int get hashCode => Object.hash(runtimeType,id,slug,displayName,bio,avatarUrl,ty
 String toString() {
   return 'ProfileModel(id: $id, slug: $slug, displayName: $displayName, bio: $bio, avatarUrl: $avatarUrl, type: $type, createdAt: $createdAt, updatedAt: $updatedAt, interests: $interests, business: $business, businessRole: $businessRole)';
 }
-
-
 }
 
 /// @nodoc
@@ -291,11 +277,11 @@ abstract mixin class _$ProfileModelCopyWith<$Res> implements $ProfileModelCopyWi
   factory _$ProfileModelCopyWith(_ProfileModel value, $Res Function(_ProfileModel) _then) = __$ProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String slug,@JsonKey(name: 'display_name') String displayName, String bio,@JsonKey(name: 'avatar_url') String avatarUrl, ProfileType type,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt, ProfileInterestsModel? interests, BusinessModel? business,@JsonKey(name: 'role', defaultValue: null) BusinessRole? businessRole
+ String id, String slug,@JsonKey(name: 'display_name') String displayName, String bio,@JsonKey(name: 'avatar_url') String avatarUrl, ProfileType type,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt,@JsonKey(fromJson: _profileInterestsFromJson, toJson: _profileInterestsToJson) ProfileInterests? interests, ProfileBusinessModel? business,@JsonKey(name: 'role', defaultValue: null) BusinessRole? businessRole
 });
 
 
-@override $ProfileInterestsModelCopyWith<$Res>? get interests;@override $BusinessModelCopyWith<$Res>? get business;
+@override $ProfileBusinessModelCopyWith<$Res>? get business;
 
 }
 /// @nodoc
@@ -319,8 +305,8 @@ as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non
 as ProfileType,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,interests: freezed == interests ? _self.interests : interests // ignore: cast_nullable_to_non_nullable
-as ProfileInterestsModel?,business: freezed == business ? _self.business : business // ignore: cast_nullable_to_non_nullable
-as BusinessModel?,businessRole: freezed == businessRole ? _self.businessRole : businessRole // ignore: cast_nullable_to_non_nullable
+as ProfileInterests?,business: freezed == business ? _self.business : business // ignore: cast_nullable_to_non_nullable
+as ProfileBusinessModel?,businessRole: freezed == businessRole ? _self.businessRole : businessRole // ignore: cast_nullable_to_non_nullable
 as BusinessRole?,
   ));
 }
@@ -329,24 +315,12 @@ as BusinessRole?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$ProfileInterestsModelCopyWith<$Res>? get interests {
-    if (_self.interests == null) {
-    return null;
-  }
-
-  return $ProfileInterestsModelCopyWith<$Res>(_self.interests!, (value) {
-    return _then(_self.copyWith(interests: value));
-  });
-}/// Create a copy of ProfileModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$BusinessModelCopyWith<$Res>? get business {
+$ProfileBusinessModelCopyWith<$Res>? get business {
     if (_self.business == null) {
     return null;
   }
 
-  return $BusinessModelCopyWith<$Res>(_self.business!, (value) {
+  return $ProfileBusinessModelCopyWith<$Res>(_self.business!, (value) {
     return _then(_self.copyWith(business: value));
   });
 }

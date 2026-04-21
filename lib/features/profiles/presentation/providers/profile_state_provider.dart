@@ -1,20 +1,31 @@
+import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
+import 'package:ibiapabaapp/core/logger/log_tags.dart';
+import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/account.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:ibiapabaapp/features/profiles/data/datasources/profiles_local_storage.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
 import 'package:ibiapabaapp/features/profiles/presentation/providers/profiles_providers.dart';
+import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:collection/collection.dart';
 
 part 'profile_state_provider.g.dart';
 
 @riverpod
-class ProfileState extends _$ProfileState {
+class ProfileState extends _$ProfileState with ControllerLogHandler {
+  @override
+  late final Logger logger = ref.read(loggerProvider);
+
+  @override
+  LogFeature get feature => LogFeature.profiles;
+
   @override
   ProfileStateData build() {
-    ref.listen(authStateProvider.notifier, (previous, next) {
-      if (next.state.account != null) {
-        _onAccountLoaded(next.state.account!);
-      } else {
+    ref.listen(authStateProvider, (previous, next) {
+      if (next.account != null && previous?.account == null) {
+        _onAccountLoaded(next.account!);
+      } else if (next.account == null) {
         state = const ProfileStateData();
       }
     });
@@ -24,12 +35,21 @@ class ProfileState extends _$ProfileState {
 
   Future<void> _onAccountLoaded(Account account) async {
     final result = await ref.read(getAccountProfilesProvider).call();
-    result.fold((failure) => null, (profiles) async {
-      final latestId = await _storage.loadLatestProfileId();
-      final active = profiles.firstWhere((p) => p.id == latestId);
+    result.fold(
+      (failure) => logControllerError(
+        action: ProfileAction.getAccountProfiles,
+        failure: failure,
+      ),
+      (profiles) async {
+        final latestId = await _storage.loadLatestProfileId();
 
-      state = ProfileStateData(activeProfile: active, profiles: profiles);
-    });
+        final active =
+            profiles.firstWhereOrNull((p) => p.id == latestId) ??
+            profiles.firstOrNull;
+
+        state = ProfileStateData(activeProfile: active, profiles: profiles);
+      },
+    );
   }
 
   ProfilesLocalStorage get _storage => ref.read(profilesLocalStorageProvider);
@@ -40,8 +60,11 @@ class ProfileState extends _$ProfileState {
 
     if (latestProfileId == null || profiles.isEmpty) return;
 
-    final activeProfile = profiles.firstWhere((p) => p.id == latestProfileId);
-
+    final activeProfile = profiles.firstWhereOrNull(
+      (p) => p.id == latestProfileId,
+    );
+    if (activeProfile == null) return;
+    
     state = ProfileStateData(activeProfile: activeProfile, profiles: profiles);
   }
 

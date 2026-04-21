@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileInterestsModel {
 
-@JsonKey(name: 'businesses_interests') List<InterestModel> get businesses;@JsonKey(name: 'events_interests') List<InterestModel> get events;
+@JsonKey(name: 'businesses') List<InterestModel> get businesses;@JsonKey(name: 'events') List<InterestModel> get events;
 /// Create a copy of ProfileInterestsModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ProfileInterestsModelCopyWith<$Res>  {
   factory $ProfileInterestsModelCopyWith(ProfileInterestsModel value, $Res Function(ProfileInterestsModel) _then) = _$ProfileInterestsModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'businesses_interests') List<InterestModel> businesses,@JsonKey(name: 'events_interests') List<InterestModel> events
+@JsonKey(name: 'businesses') List<InterestModel> businesses,@JsonKey(name: 'events') List<InterestModel> events
 });
 
 
@@ -154,7 +154,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'businesses_interests')  List<InterestModel> businesses, @JsonKey(name: 'events_interests')  List<InterestModel> events)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'businesses')  List<InterestModel> businesses, @JsonKey(name: 'events')  List<InterestModel> events)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileInterestsModel() when $default != null:
 return $default(_that.businesses,_that.events);case _:
@@ -175,7 +175,7 @@ return $default(_that.businesses,_that.events);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'businesses_interests')  List<InterestModel> businesses, @JsonKey(name: 'events_interests')  List<InterestModel> events)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'businesses')  List<InterestModel> businesses, @JsonKey(name: 'events')  List<InterestModel> events)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileInterestsModel():
 return $default(_that.businesses,_that.events);case _:
@@ -195,7 +195,7 @@ return $default(_that.businesses,_that.events);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'businesses_interests')  List<InterestModel> businesses, @JsonKey(name: 'events_interests')  List<InterestModel> events)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'businesses')  List<InterestModel> businesses, @JsonKey(name: 'events')  List<InterestModel> events)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileInterestsModel() when $default != null:
 return $default(_that.businesses,_that.events);case _:
@@ -210,18 +210,18 @@ return $default(_that.businesses,_that.events);case _:
 @JsonSerializable()
 
 class _ProfileInterestsModel extends ProfileInterestsModel {
-  const _ProfileInterestsModel({@JsonKey(name: 'businesses_interests') final  List<InterestModel> businesses = const [], @JsonKey(name: 'events_interests') final  List<InterestModel> events = const []}): _businesses = businesses,_events = events,super._();
+  const _ProfileInterestsModel({@JsonKey(name: 'businesses') final  List<InterestModel> businesses = const [], @JsonKey(name: 'events') final  List<InterestModel> events = const []}): _businesses = businesses,_events = events,super._();
   factory _ProfileInterestsModel.fromJson(Map<String, dynamic> json) => _$ProfileInterestsModelFromJson(json);
 
  final  List<InterestModel> _businesses;
-@override@JsonKey(name: 'businesses_interests') List<InterestModel> get businesses {
+@override@JsonKey(name: 'businesses') List<InterestModel> get businesses {
   if (_businesses is EqualUnmodifiableListView) return _businesses;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_businesses);
 }
 
  final  List<InterestModel> _events;
-@override@JsonKey(name: 'events_interests') List<InterestModel> get events {
+@override@JsonKey(name: 'events') List<InterestModel> get events {
   if (_events is EqualUnmodifiableListView) return _events;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_events);
@@ -261,7 +261,7 @@ abstract mixin class _$ProfileInterestsModelCopyWith<$Res> implements $ProfileIn
   factory _$ProfileInterestsModelCopyWith(_ProfileInterestsModel value, $Res Function(_ProfileInterestsModel) _then) = __$ProfileInterestsModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'businesses_interests') List<InterestModel> businesses,@JsonKey(name: 'events_interests') List<InterestModel> events
+@JsonKey(name: 'businesses') List<InterestModel> businesses,@JsonKey(name: 'events') List<InterestModel> events
 });
 
 

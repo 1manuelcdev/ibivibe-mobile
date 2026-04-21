@@ -1,11 +1,14 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibiapabaapp/app/theme/custom_styles/inverted_badge.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
+import 'package:ibiapabaapp/features/profiles/domain/entities/profile_extensions.dart';
 import 'package:ibiapabaapp/features/profiles/presentation/providers/profile_state_provider.dart';
-import 'package:ibiapabaapp/features/profiles/presentation/widgets/screens/profile_screen.dart';
 import 'package:ibiapabaapp/features/profiles/presentation/widgets/profile_photo.dart';
+import 'package:ibiapabaapp/features/profiles/presentation/widgets/screens/profile_screen.dart';
 import 'package:ibiapabaapp/shared/ui/layout/sheet_drag_indicator.dart';
 
 void showProfileSwitcherSheet(BuildContext context, WidgetRef ref) {
@@ -21,7 +24,6 @@ void showProfileSwitcherSheet(BuildContext context, WidgetRef ref) {
 }
 
 // ─── Sheet ────────────────────────────────────────────────────────────────────
-
 class _ProfileSwitcherSheetContent extends ConsumerWidget {
   const _ProfileSwitcherSheetContent();
 
@@ -30,12 +32,18 @@ class _ProfileSwitcherSheetContent extends ConsumerWidget {
     final activeProfile = ref.watch(profileStateProvider).activeProfile;
     final profiles = ref.watch(profileStateProvider).profiles;
 
-    final personalProfile = profiles.firstWhere(
+    final personalProfile = profiles.firstWhereOrNull(
       (p) => p.type == ProfileType.personal,
     );
+
     final businessProfiles = profiles.where(
-      (p) => p.type == ProfileType.business,
+      (p) => p.type == ProfileType.business && p.business != null,
     );
+
+    // guard: sheet não renderiza enquanto perfis não estiverem prontos
+    if (personalProfile == null) {
+      return const SafeArea(child: Center(child: CircularProgressIndicator()));
+    }
 
     return SafeArea(
       child: Container(
@@ -75,18 +83,19 @@ class _ProfileSwitcherSheetContent extends ConsumerWidget {
             ),
 
             // ─── Perfis de empresa ────────────────────────────────────────
-            ...businessProfiles.map(
-              (b) => _ProfileTile(
+            ...businessProfiles.map((b) {
+              final business = b.toBusiness();
+              return _ProfileTile(
                 profile: b,
-                name: b.business!.name,
-                subtitle: b.business!.slug,
+                name: business!.name,
+                subtitle: b.businessRole!.name,
                 isSelected: activeProfile == b,
                 onTap: () {
                   ref.read(profileStateProvider.notifier).switchToProfile(b);
                   context.pop();
                 },
-              ),
-            ),
+              );
+            }),
 
             FTile(
               style: (style) => style.copyWith(
@@ -131,8 +140,7 @@ class _ProfileSwitcherSheetContent extends ConsumerWidget {
   }
 }
 
-// ─── Tile ─────────────────────────────────────────────────────────────────────
-
+// ─── Tile ────────────────────────────────────────────────────────────────────
 class _ProfileTile extends StatelessWidget {
   final Profile? profile;
   final String name;
@@ -184,20 +192,14 @@ class _ProfileTile extends StatelessWidget {
               ),
             )
           : FBadge(
-              style: FBadgeStyle.primary(
-                (style) => style.copyWith(
-                  contentStyle: (style) => style.copyWith(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 2,
-                    ),
-                  ),
-                ),
-              ),
+              style: getInvertedBadgeStyle(
+                context.theme.colors,
+                context.theme.typography,
+              ).call,
               child: Text(
                 subtitle,
                 style: context.theme.typography.xs.copyWith(
-                  color: context.theme.colors.primaryForeground,
+                  color: context.theme.colors.background,
                 ),
               ),
             ),

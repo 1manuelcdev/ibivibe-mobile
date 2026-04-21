@@ -6,7 +6,6 @@ import 'package:ibiapabaapp/features/profiles/data/datasources/profiles_remote_d
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile_interests.dart';
 import 'package:ibiapabaapp/features/profiles/domain/entities/profile_interests_response.dart';
-import 'package:ibiapabaapp/features/profiles/infra/models/profile_interests_model.dart';
 import 'package:ibiapabaapp/features/profiles/infra/models/profile_interests_response_model.dart';
 import 'package:ibiapabaapp/features/profiles/infra/models/profile_model.dart';
 
@@ -40,10 +39,10 @@ class ProfilesRemoteDatasourceImpl implements ProfilesRemoteDatasource {
 
       final data = response.data;
       if (data == null) {
-        return Right(ProfileInterests(businesses: [], events: []));
+        return const Right(ProfileInterests.empty());
       }
 
-      return Right(ProfileInterestsModel.fromJson(data));
+      return Right(ProfileInterests.fromJson(data));
     } on DioException catch (e) {
       throw DioExceptionToAppExceptionMapper.map(e);
     }
@@ -57,7 +56,7 @@ class ProfilesRemoteDatasourceImpl implements ProfilesRemoteDatasource {
     try {
       final response = await dio.post(
         '/profiles/$profileId/interests',
-        data: interests,
+        data: ProfileInterests.toMap(interests),
       );
       final data = response.data;
       return Right(ProfileInterestsResponseModel.fromJson(data));
