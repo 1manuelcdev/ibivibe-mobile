@@ -8,12 +8,12 @@ FDividerStyles dividerStyles({
 }) => FDividerStyles(
   horizontalStyle: FDividerStyle(
     color: colors.border.withAlpha(156),
-    padding: FDividerStyle.defaultPadding.horizontalStyle,
+    padding: const .all(0),
     width: style.borderWidth,
   ),
   verticalStyle: FDividerStyle(
     color: colors.border.withAlpha(156),
-    padding: FDividerStyle.defaultPadding.verticalStyle,
+    padding: const .all(0),
     width: style.borderWidth,
   ),
 );

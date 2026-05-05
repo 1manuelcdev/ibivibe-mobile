@@ -66,6 +66,6 @@ FTileGroupStyle tileGroupStyle({
     errorTextStyle: typography.xs.copyWith(
       color: style.formFieldStyle.errorTextStyle.color,
     ),
-    labelPadding: .fromSTEB(0, 0, 0, 10),
+    labelPadding: const .fromSTEB(0, 0, 0, 10),
   );
 }

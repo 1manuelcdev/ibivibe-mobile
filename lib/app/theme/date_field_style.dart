@@ -18,7 +18,7 @@ FDateFieldStyle dateFieldStyle({
   calendarStyle: .inherit(colors: colors, typography: typography, style: style)
       .copyWith(
         headerStyle: (style) => style.copyWith(
-          headerTextStyle: TextStyle(fontSize: 16, fontWeight: .w600),
+          headerTextStyle: const TextStyle(fontSize: 16, fontWeight: .w600),
         ),
       ),
   iconStyle: IconThemeData(color: colors.mutedForeground, size: 18),

@@ -10,20 +10,23 @@ class RegisterHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        Text(
+        const Text(
           'Cadastro',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
-        Text(
+        const Text(
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
           style: TextStyle(fontSize: 14),
         ),
-        SizedBox(height: 12),
+        const SizedBox(height: 12),
         FButton(
           onPress: () {},
           style: FButtonStyle.secondary(),
           prefix: Image.asset('assets/images/google-g-logo.webp', width: 16),
-          child: Text("Entrar com Google", style: TextStyle(fontSize: 14)),
+          child: const Text(
+            "Entrar com Google",
+            style: TextStyle(fontSize: 14),
+          ),
         ),
       ],
     );

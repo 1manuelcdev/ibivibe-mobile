@@ -8,7 +8,7 @@ FBadgeStyle getInvertedBadgeStyle(FColors colors, FTypography typography) {
       borderRadius: FBadgeStyles.defaultRadius,
     ),
     contentStyle: FBadgeContentStyle(
-      padding: .symmetric(horizontal: 8, vertical: 4),
+      padding: const .symmetric(horizontal: 8, vertical: 4),
       labelTextStyle: typography.sm.copyWith(
         color: colors.background,
         fontWeight: .w500,

@@ -16,10 +16,6 @@ FScaffoldStyle scaffoldStyle({
     left: 16,
     right: 16,
   ),
-  footerDecoration: BoxDecoration(
-    border: Border(
-      top: BorderSide(color: colors.border, width: style.borderWidth),
-    ),
-  ),
+  footerDecoration: const BoxDecoration(),
   headerDecoration: const BoxDecoration(),
 );
