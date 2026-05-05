@@ -96,7 +96,7 @@ class Navbar extends ConsumerWidget {
           selectedIndex: index,
           height: 64,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          labelPadding: .fromLTRB(0, 4, 0, 0),
+          labelPadding: const .fromLTRB(0, 4, 0, 0),
           onDestinationSelected: (i) {
             if (i == index) return;
 

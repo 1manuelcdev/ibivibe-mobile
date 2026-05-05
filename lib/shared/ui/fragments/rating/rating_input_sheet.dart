@@ -81,13 +81,12 @@ class _FormState extends State<_Form> {
 
   double _rating = 0.0;
 
-  String _text = '';
   late final FTextFieldControl _textControl;
 
   @override
   void initState() {
     super.initState();
-    _textControl = FTextFieldControl.managed(onChange: (v) => _text = v.text);
+    _textControl = const FTextFieldControl.managed();
     // widget.controller.addListener(_controllerListener);
   }
 
@@ -101,7 +100,7 @@ class _FormState extends State<_Form> {
     if (!_formKey.currentState!.validate()) return;
     showAppToast(
       context: context,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
       alignment: .bottomCenter,
       title: Text(
         'TODO: Falta implementar controller e comunicação com backend',
@@ -182,7 +181,7 @@ class _FormState extends State<_Form> {
           ),
           const SizedBox(height: 24),
 
-          FButton(onPress: _submit, child: Text('Enviar avaliação')),
+          FButton(onPress: _submit, child: const Text('Enviar avaliação')),
         ],
       ),
     );

@@ -27,7 +27,7 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
           controller: carouselController,
           itemCount: carouselSlides.length,
           options: CarouselOptions(
-            scrollPhysics: ClampingScrollPhysics(),
+            scrollPhysics: const ClampingScrollPhysics(),
             disableCenter: true,
             initialPage: 0,
             height: 400,

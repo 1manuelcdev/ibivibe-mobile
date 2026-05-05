@@ -43,7 +43,7 @@ FButtonStyles getButtonStyles({
           contentStyle: base.contentStyle
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
-                  TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 14),
                 ),
               )
               .call,
@@ -59,7 +59,7 @@ FButtonStyles getButtonStyles({
           contentStyle: base.contentStyle
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
-                  TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 14),
                 ),
               )
               .call,
@@ -81,7 +81,7 @@ FButtonStyles getButtonStyles({
           contentStyle: base.contentStyle
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
-                  TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 14),
                 ),
               )
               .call,

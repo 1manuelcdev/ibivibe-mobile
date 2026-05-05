@@ -16,7 +16,7 @@ void showLogoutDialog(BuildContext context, WidgetRef ref) {
         style: style.call,
         animation: animation,
         title: const Text('Sair da conta'),
-        body: Text(
+        body: const Text(
           'Tem certeza que deseja sair? Você precisará fazer login novamente.',
         ),
         actions: [

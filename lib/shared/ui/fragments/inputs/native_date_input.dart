@@ -96,19 +96,19 @@ class _NativeDateInputState extends ConsumerState<NativeDateInput> {
               ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: theme.colors.border),
-                borderRadius: BorderRadius.all(.circular(16)),
+                borderRadius: const BorderRadius.all(.circular(16)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: theme.colors.primary, width: 2),
-                borderRadius: BorderRadius.all(.circular(16)),
+                borderRadius: const BorderRadius.all(.circular(16)),
               ),
               errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: theme.colors.error),
-                borderRadius: BorderRadius.all(.circular(16)),
+                borderRadius: const BorderRadius.all(.circular(16)),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: theme.colors.error, width: 2),
-                borderRadius: BorderRadius.all(.circular(16)),
+                borderRadius: const BorderRadius.all(.circular(16)),
               ),
 
               suffixIcon: IconButton(

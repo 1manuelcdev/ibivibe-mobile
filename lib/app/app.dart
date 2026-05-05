@@ -22,14 +22,14 @@ class App extends ConsumerWidget {
 
     return MaterialApp.router(
       title: 'IbiapabaApp',
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
         FLocalizations.delegate,
       ],
-      supportedLocales: [Locale('pt', 'BR')],
-      locale: Locale('pt', 'BR'),
+      supportedLocales: const [Locale('pt', 'BR')],
+      locale: const Locale('pt', 'BR'),
       routerConfig: router,
       themeMode: favoriteThemeMode,
       theme: customLightTheme.toApproximateMaterialTheme().copyWith(

@@ -16,13 +16,13 @@ class WelcomeActions extends ConsumerWidget {
       children: [
         FButton(
           onPress: () => context.push('/auth/register'),
-          child: Text("Criar conta"),
+          child: const Text("Criar conta"),
         ),
         FButton(
           onPress: () =>
               showLoginSheet(context: context, controller: loginController),
           style: FButtonStyle.ghost(),
-          child: Text("Entrar"),
+          child: const Text("Entrar"),
         ),
       ],
     );

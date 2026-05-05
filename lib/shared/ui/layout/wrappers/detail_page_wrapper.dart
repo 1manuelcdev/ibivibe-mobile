@@ -30,7 +30,7 @@ class DetailPageWrapper extends StatelessWidget {
               ],
             ),
             Container(
-              padding: .symmetric(horizontal: 16),
+              padding: const .symmetric(horizontal: 16),
               child: Column(crossAxisAlignment: .start, children: bodyChildren),
             ),
           ],

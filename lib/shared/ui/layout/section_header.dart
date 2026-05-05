@@ -24,7 +24,7 @@ class SectionHeader extends StatelessWidget {
           child: Text(
             title,
             style: context.theme.typography.base.copyWith(fontWeight: .w600),
-            strutStyle: StrutStyle(leading: 1.2),
+            strutStyle: const StrutStyle(leading: 1.2),
           ),
         ),
 
