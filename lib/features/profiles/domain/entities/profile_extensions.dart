@@ -9,6 +9,7 @@ extension ProfileX on Profile {
     if (business == null) return null;
     return Business(
       id: business!.id,
+      profileId: id,
       slug: slug,
       name: displayName,
       bio: bio,

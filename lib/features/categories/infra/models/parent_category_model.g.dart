@@ -18,8 +18,7 @@ _ParentCategoryModel _$ParentCategoryModelFromJson(Map<String, dynamic> json) =>
               ?.map(
                 (e) => ChildCategoryModel.fromJson(e as Map<String, dynamic>),
               )
-              .toList() ??
-          null,
+              .toList(),
     );
 
 Map<String, dynamic> _$ParentCategoryModelToJson(

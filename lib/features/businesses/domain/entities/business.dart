@@ -2,6 +2,7 @@ enum ReachLevel { local, regional }
 
 class Business {
   final String id;
+  final String profileId;
   final String name;
   final String slug;
   final String? bio;
@@ -12,6 +13,7 @@ class Business {
 
   Business({
     required this.id,
+    required this.profileId,
     required this.slug,
     required this.name,
     this.bio,

@@ -10,11 +10,14 @@ abstract class BusinessModel with _$BusinessModel implements Business {
 
   const factory BusinessModel({
     @Default('') String id,
+    @Default('')
+    @JsonKey(defaultValue: '', name: 'profile_id')
+    String profileId,
     @Default('') String slug,
     String? cnpj,
     @Default('') String name,
     String? bio,
-    String? avatar,
+    @JsonKey(name: 'avatar_url') String? avatar,
 
     @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')
     required ReachLevel maxReachLevel,

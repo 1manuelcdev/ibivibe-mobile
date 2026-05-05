@@ -16,4 +16,15 @@ abstract class AccountModel with _$AccountModel implements Account {
 
   factory AccountModel.fromJson(Map<String, dynamic> json) =>
       _$AccountModelFromJson(json);
+
+  static Map<String, dynamic> toMap(Account account) {
+    if (account is AccountModel) return account.toJson();
+    return AccountModel(
+      id: account.id,
+      name: account.name,
+      email: account.email,
+      phoneNumber: account.phoneNumber,
+      active: account.active,
+    ).toJson();
+  }
 }

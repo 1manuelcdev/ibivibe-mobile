@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BusinessModel {
 
- String get id; String get slug; String? get cnpj; String get name; String? get bio; String? get avatar;@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') ReachLevel get maxReachLevel;@JsonKey(name: 'cover_img_url') String? get coverImgUrl; List<String> get categories;@JsonKey(name: 'created_at') DateTime get createdAt;
+ String get id;@JsonKey(defaultValue: '', name: 'profile_id') String get profileId; String get slug; String? get cnpj; String get name; String? get bio;@JsonKey(name: 'avatar_url') String? get avatar;@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') ReachLevel get maxReachLevel;@JsonKey(name: 'cover_img_url') String? get coverImgUrl; List<String> get categories;@JsonKey(name: 'created_at') DateTime get createdAt;
 /// Create a copy of BusinessModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BusinessModelCopyWith<BusinessModel> get copyWith => _$BusinessModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BusinessModel&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.cnpj, cnpj) || other.cnpj == cnpj)&&(identical(other.name, name) || other.name == name)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.maxReachLevel, maxReachLevel) || other.maxReachLevel == maxReachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BusinessModel&&(identical(other.id, id) || other.id == id)&&(identical(other.profileId, profileId) || other.profileId == profileId)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.cnpj, cnpj) || other.cnpj == cnpj)&&(identical(other.name, name) || other.name == name)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.maxReachLevel, maxReachLevel) || other.maxReachLevel == maxReachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,slug,cnpj,name,bio,avatar,maxReachLevel,coverImgUrl,const DeepCollectionEquality().hash(categories),createdAt);
+int get hashCode => Object.hash(runtimeType,id,profileId,slug,cnpj,name,bio,avatar,maxReachLevel,coverImgUrl,const DeepCollectionEquality().hash(categories),createdAt);
 
 @override
 String toString() {
-  return 'BusinessModel(id: $id, slug: $slug, cnpj: $cnpj, name: $name, bio: $bio, avatar: $avatar, maxReachLevel: $maxReachLevel, coverImgUrl: $coverImgUrl, categories: $categories, createdAt: $createdAt)';
+  return 'BusinessModel(id: $id, profileId: $profileId, slug: $slug, cnpj: $cnpj, name: $name, bio: $bio, avatar: $avatar, maxReachLevel: $maxReachLevel, coverImgUrl: $coverImgUrl, categories: $categories, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BusinessModelCopyWith<$Res>  {
   factory $BusinessModelCopyWith(BusinessModel value, $Res Function(BusinessModel) _then) = _$BusinessModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String slug, String? cnpj, String name, String? bio, String? avatar,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') ReachLevel maxReachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'created_at') DateTime createdAt
+ String id,@JsonKey(defaultValue: '', name: 'profile_id') String profileId, String slug, String? cnpj, String name, String? bio,@JsonKey(name: 'avatar_url') String? avatar,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') ReachLevel maxReachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'created_at') DateTime createdAt
 });
 
 
@@ -65,9 +65,10 @@ class _$BusinessModelCopyWithImpl<$Res>
 
 /// Create a copy of BusinessModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? cnpj = freezed,Object? name = null,Object? bio = freezed,Object? avatar = freezed,Object? maxReachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? profileId = null,Object? slug = null,Object? cnpj = freezed,Object? name = null,Object? bio = freezed,Object? avatar = freezed,Object? maxReachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,profileId: null == profileId ? _self.profileId : profileId // ignore: cast_nullable_to_non_nullable
 as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,cnpj: freezed == cnpj ? _self.cnpj : cnpj // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -162,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String slug,  String? cnpj,  String name,  String? bio,  String? avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')  ReachLevel maxReachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(defaultValue: '', name: 'profile_id')  String profileId,  String slug,  String? cnpj,  String name,  String? bio, @JsonKey(name: 'avatar_url')  String? avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')  ReachLevel maxReachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BusinessModel() when $default != null:
-return $default(_that.id,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar,_that.maxReachLevel,_that.coverImgUrl,_that.categories,_that.createdAt);case _:
+return $default(_that.id,_that.profileId,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar,_that.maxReachLevel,_that.coverImgUrl,_that.categories,_that.createdAt);case _:
   return orElse();
 
 }
@@ -183,10 +184,10 @@ return $default(_that.id,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String slug,  String? cnpj,  String name,  String? bio,  String? avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')  ReachLevel maxReachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(defaultValue: '', name: 'profile_id')  String profileId,  String slug,  String? cnpj,  String name,  String? bio, @JsonKey(name: 'avatar_url')  String? avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')  ReachLevel maxReachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'created_at')  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _BusinessModel():
-return $default(_that.id,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar,_that.maxReachLevel,_that.coverImgUrl,_that.categories,_that.createdAt);case _:
+return $default(_that.id,_that.profileId,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar,_that.maxReachLevel,_that.coverImgUrl,_that.categories,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -203,10 +204,10 @@ return $default(_that.id,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String slug,  String? cnpj,  String name,  String? bio,  String? avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')  ReachLevel maxReachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(defaultValue: '', name: 'profile_id')  String profileId,  String slug,  String? cnpj,  String name,  String? bio, @JsonKey(name: 'avatar_url')  String? avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level')  ReachLevel maxReachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'created_at')  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _BusinessModel() when $default != null:
-return $default(_that.id,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar,_that.maxReachLevel,_that.coverImgUrl,_that.categories,_that.createdAt);case _:
+return $default(_that.id,_that.profileId,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar,_that.maxReachLevel,_that.coverImgUrl,_that.categories,_that.createdAt);case _:
   return null;
 
 }
@@ -218,15 +219,16 @@ return $default(_that.id,_that.slug,_that.cnpj,_that.name,_that.bio,_that.avatar
 @JsonSerializable()
 
 class _BusinessModel extends BusinessModel {
-  const _BusinessModel({this.id = '', this.slug = '', this.cnpj, this.name = '', this.bio, this.avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') required this.maxReachLevel, @JsonKey(name: 'cover_img_url') this.coverImgUrl, final  List<String> categories = const [], @JsonKey(name: 'created_at') required this.createdAt}): _categories = categories,super._();
+  const _BusinessModel({this.id = '', @JsonKey(defaultValue: '', name: 'profile_id') this.profileId = '', this.slug = '', this.cnpj, this.name = '', this.bio, @JsonKey(name: 'avatar_url') this.avatar, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') required this.maxReachLevel, @JsonKey(name: 'cover_img_url') this.coverImgUrl, final  List<String> categories = const [], @JsonKey(name: 'created_at') required this.createdAt}): _categories = categories,super._();
   factory _BusinessModel.fromJson(Map<String, dynamic> json) => _$BusinessModelFromJson(json);
 
 @override@JsonKey() final  String id;
+@override@JsonKey(defaultValue: '', name: 'profile_id') final  String profileId;
 @override@JsonKey() final  String slug;
 @override final  String? cnpj;
 @override@JsonKey() final  String name;
 @override final  String? bio;
-@override final  String? avatar;
+@override@JsonKey(name: 'avatar_url') final  String? avatar;
 @override@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') final  ReachLevel maxReachLevel;
 @override@JsonKey(name: 'cover_img_url') final  String? coverImgUrl;
  final  List<String> _categories;
@@ -251,16 +253,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BusinessModel&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.cnpj, cnpj) || other.cnpj == cnpj)&&(identical(other.name, name) || other.name == name)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.maxReachLevel, maxReachLevel) || other.maxReachLevel == maxReachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BusinessModel&&(identical(other.id, id) || other.id == id)&&(identical(other.profileId, profileId) || other.profileId == profileId)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.cnpj, cnpj) || other.cnpj == cnpj)&&(identical(other.name, name) || other.name == name)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.avatar, avatar) || other.avatar == avatar)&&(identical(other.maxReachLevel, maxReachLevel) || other.maxReachLevel == maxReachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,slug,cnpj,name,bio,avatar,maxReachLevel,coverImgUrl,const DeepCollectionEquality().hash(_categories),createdAt);
+int get hashCode => Object.hash(runtimeType,id,profileId,slug,cnpj,name,bio,avatar,maxReachLevel,coverImgUrl,const DeepCollectionEquality().hash(_categories),createdAt);
 
 @override
 String toString() {
-  return 'BusinessModel(id: $id, slug: $slug, cnpj: $cnpj, name: $name, bio: $bio, avatar: $avatar, maxReachLevel: $maxReachLevel, coverImgUrl: $coverImgUrl, categories: $categories, createdAt: $createdAt)';
+  return 'BusinessModel(id: $id, profileId: $profileId, slug: $slug, cnpj: $cnpj, name: $name, bio: $bio, avatar: $avatar, maxReachLevel: $maxReachLevel, coverImgUrl: $coverImgUrl, categories: $categories, createdAt: $createdAt)';
 }
 
 
@@ -271,7 +273,7 @@ abstract mixin class _$BusinessModelCopyWith<$Res> implements $BusinessModelCopy
   factory _$BusinessModelCopyWith(_BusinessModel value, $Res Function(_BusinessModel) _then) = __$BusinessModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String slug, String? cnpj, String name, String? bio, String? avatar,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') ReachLevel maxReachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'created_at') DateTime createdAt
+ String id,@JsonKey(defaultValue: '', name: 'profile_id') String profileId, String slug, String? cnpj, String name, String? bio,@JsonKey(name: 'avatar_url') String? avatar,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'max_reach_level') ReachLevel maxReachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'created_at') DateTime createdAt
 });
 
 
@@ -288,9 +290,10 @@ class __$BusinessModelCopyWithImpl<$Res>
 
 /// Create a copy of BusinessModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? cnpj = freezed,Object? name = null,Object? bio = freezed,Object? avatar = freezed,Object? maxReachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? profileId = null,Object? slug = null,Object? cnpj = freezed,Object? name = null,Object? bio = freezed,Object? avatar = freezed,Object? maxReachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? createdAt = null,}) {
   return _then(_BusinessModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,profileId: null == profileId ? _self.profileId : profileId // ignore: cast_nullable_to_non_nullable
 as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,cnpj: freezed == cnpj ? _self.cnpj : cnpj // ignore: cast_nullable_to_non_nullable
 as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable

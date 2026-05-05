@@ -270,6 +270,8 @@ int get hashCode => Object.hash(runtimeType,id,slug,displayName,bio,avatarUrl,ty
 String toString() {
   return 'ProfileModel(id: $id, slug: $slug, displayName: $displayName, bio: $bio, avatarUrl: $avatarUrl, type: $type, createdAt: $createdAt, updatedAt: $updatedAt, interests: $interests, business: $business, businessRole: $businessRole)';
 }
+
+
 }
 
 /// @nodoc

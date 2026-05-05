@@ -9,11 +9,12 @@ part of 'business_model.dart';
 _BusinessModel _$BusinessModelFromJson(Map<String, dynamic> json) =>
     _BusinessModel(
       id: json['id'] as String? ?? '',
+      profileId: json['profile_id'] as String? ?? '',
       slug: json['slug'] as String? ?? '',
       cnpj: json['cnpj'] as String?,
       name: json['name'] as String? ?? '',
       bio: json['bio'] as String?,
-      avatar: json['avatar'] as String?,
+      avatar: json['avatar_url'] as String?,
       maxReachLevel: $enumDecode(
         _$ReachLevelEnumMap,
         json['max_reach_level'],
@@ -31,11 +32,12 @@ _BusinessModel _$BusinessModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$BusinessModelToJson(_BusinessModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'profile_id': instance.profileId,
       'slug': instance.slug,
       'cnpj': instance.cnpj,
       'name': instance.name,
       'bio': instance.bio,
-      'avatar': instance.avatar,
+      'avatar_url': instance.avatar,
       'max_reach_level': _$ReachLevelEnumMap[instance.maxReachLevel]!,
       'cover_img_url': instance.coverImgUrl,
       'categories': instance.categories,
