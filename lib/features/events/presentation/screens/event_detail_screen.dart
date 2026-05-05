@@ -4,6 +4,7 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/features/events/domain/entities/event_detail_data.dart';
 import 'package:ibiapabaapp/features/events/presentation/controllers/event_detail_controller.dart';
+import 'package:ibiapabaapp/features/favorites/presentation/widgets/favorite_button.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/carousel/content_carousel.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/effects/expandable_text.dart';
@@ -69,7 +70,9 @@ class _EventDetailContent extends StatelessWidget {
               child: const Icon(Icons.arrow_back, size: 24),
             ),
           ],
-          suffixes: [const FavoriteButton()],
+          suffixes: [
+            FavoriteButton(eventId: detail?.event.id),
+          ],
         ),
         bodyChildren: [
           Column(
@@ -149,40 +152,6 @@ class _ErrorView extends StatelessWidget {
             ),
             FButton(onPress: onRetry, child: const Text('Tentar novamente')),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class FavoriteButton extends StatefulWidget {
-  const FavoriteButton({super.key});
-
-  @override
-  State<FavoriteButton> createState() => _FavoriteButtonState();
-}
-
-class _FavoriteButtonState extends State<FavoriteButton> {
-  bool _favourited = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return FButton.icon(
-      style: FButtonStyle.secondary(),
-      onPress: () => setState(() => _favourited = !_favourited),
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 150),
-        transitionBuilder: (child, animation) => ScaleTransition(
-          scale: CurvedAnimation(parent: animation, curve: Curves.bounceOut),
-          child: FadeTransition(opacity: animation, child: child),
-        ),
-        child: Icon(
-          _favourited ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
-          key: ValueKey<bool>(_favourited),
-          size: 24,
-          color: _favourited
-              ? context.theme.colors.primary
-              : context.theme.colors.foreground,
         ),
       ),
     );

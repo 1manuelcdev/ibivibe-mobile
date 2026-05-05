@@ -12,17 +12,17 @@ import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.d
 import 'package:skeletonizer/skeletonizer.dart';
 
 final _mockParentCategories = [
-  ParentCategory(
+  const ParentCategory(
     id: 'mock-1',
     name: 'Carregando categoria',
     entities: [EntityType.city],
   ),
-  ParentCategory(
+  const ParentCategory(
     id: 'mock-2',
     name: 'Carregando categoria',
     entities: [EntityType.city],
   ),
-  ParentCategory(
+  const ParentCategory(
     id: 'mock-3',
     name: 'Carregando categoria',
     entities: [EntityType.city],
@@ -111,7 +111,7 @@ class _UserCompaniesInterestsScreenState
                 child: FButton(
                   style: FButtonStyle.outline(),
                   onPress: _handleSkip,
-                  child: Text('Pular'),
+                  child: const Text('Pular'),
                 ),
               ),
               Expanded(
@@ -125,7 +125,7 @@ class _UserCompaniesInterestsScreenState
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Text('Continuar'),
+                      : const Text('Continuar'),
                 ),
               ),
             ],

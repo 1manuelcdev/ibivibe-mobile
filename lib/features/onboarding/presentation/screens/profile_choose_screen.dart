@@ -20,33 +20,30 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: true,
-      child: FScaffold(
-        header: FHeader.nested(),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            spacing: 32,
-            children: [
-              _Heading(),
-              _buildProfileSelector(),
-              FAlert(
-                style: (style) => style.copyWith(
-                  decoration: style.decoration.copyWith(
-                    borderRadius: .circular(16),
-                  ),
-                ),
-                icon: Icon(FIcons.info),
-                title: Text(
-                  'Dica: Você pode alternar entre seus perfis a qualquer momento em "Perfil"',
-                  style: context.theme.typography.sm.copyWith(
-                    fontWeight: .normal,
-                  ),
+    return FScaffold(
+      header: const FHeader.nested(),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          spacing: 32,
+          children: [
+            const _Heading(),
+            _buildProfileSelector(),
+            FAlert(
+              style: (style) => style.copyWith(
+                decoration: style.decoration.copyWith(
+                  borderRadius: .circular(16),
                 ),
               ),
-            ],
-          ),
+              icon: const Icon(FIcons.info),
+              title: Text(
+                'Dica: Você pode alternar entre seus perfis a qualquer momento em "Perfil"',
+                style: context.theme.typography.sm.copyWith(
+                  fontWeight: .normal,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

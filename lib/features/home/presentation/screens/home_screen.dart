@@ -7,6 +7,7 @@ import 'package:ibiapabaapp/features/home/presentation/widgets/explore_cities_se
 import 'package:ibiapabaapp/features/home/presentation/widgets/now_happening_section.dart';
 import 'package:ibiapabaapp/features/home/presentation/widgets/sheets/change_location_sheet/change_location_sheet.dart';
 import 'package:ibiapabaapp/features/home/presentation/widgets/quick_categories.dart';
+import 'package:ibiapabaapp/features/home/presentation/widgets/sponsored_highlights.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,21 +15,24 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      top: true,
+      maintainBottomViewPadding: false,
       child: SingleChildScrollView(
         child: Column(
           children: [
             _HomeHeader(),
             QuickCategoriesList(),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
 
-            NowHappeningSection(),
-            const SizedBox(height: 32),
+            const SponsoredHighlights(),
+            const SizedBox(height: 24),
 
-            CompaniesSection(),
-            const SizedBox(height: 32),
+            const NowHappeningSection(),
+            const SizedBox(height: 24),
 
-            ExploreCitiesSection(),
+            const CompaniesSection(),
+            const SizedBox(height: 24),
+
+            const ExploreCitiesSection(),
           ],
         ),
       ),
@@ -43,13 +47,11 @@ class _HomeHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      toolbarHeight: 64,
+      toolbarHeight: 56,
       elevation: 0,
       scrolledUnderElevation: 0,
       backgroundColor: Colors.transparent,
       titleSpacing: 24,
-      automaticallyImplyLeading: false,
-
       title: _ActualCityButton(),
       actions: [
         Padding(
@@ -82,11 +84,7 @@ class _ActualCityButton extends ConsumerWidget {
             Text(
               session.currentCity?.name ?? 'Selecione uma cidade',
               overflow: .ellipsis,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: context.theme.colors.foreground,
-              ),
+              style: context.theme.typography.lg.copyWith(fontWeight: .w600),
             ),
             const SizedBox(width: 4),
             Icon(

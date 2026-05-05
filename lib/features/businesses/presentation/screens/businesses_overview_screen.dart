@@ -13,6 +13,7 @@ final List<Business> _mockCompanies = List.generate(
   5,
   (index) => Business(
     id: 'mock-$index',
+    profileId: 'mock-$index-profile',
     slug: 'mock',
     name: 'Carregando empresa',
     maxReachLevel: ReachLevel.regional,
@@ -110,40 +111,6 @@ class _Content extends StatelessWidget {
     return Column(
       spacing: 16,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            spacing: 8,
-            children: [
-              FittedBox(
-                alignment: Alignment.centerLeft,
-                child: FButton(
-                  style: FButtonStyle.secondary(),
-                  onPress: () {},
-                  child: Row(
-                    spacing: 4,
-                    children: const [
-                      Icon(Icons.keyboard_arrow_down_rounded),
-                      Text('Categoria'),
-                    ],
-                  ),
-                ),
-              ),
-              FittedBox(
-                alignment: Alignment.centerLeft,
-                child: FButton(
-                  style: FButtonStyle.secondary(),
-                  onPress: () => (),
-                  child: Row(
-                    spacing: 4,
-                    children: const [Icon(Icons.refresh), Text('Atualizar')],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
         _Section(
           businesses: businesses,
           isLoading: isLoading,

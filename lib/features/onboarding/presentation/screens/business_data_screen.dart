@@ -39,7 +39,7 @@ class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
             FButton.icon(
               style: FButtonStyle.ghost(),
               onPress: () => context.pop(),
-              child: Icon(Icons.arrow_back),
+              child: const Icon(Icons.arrow_back),
             ),
           ],
         ),
@@ -104,12 +104,15 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: .start,
+        mainAxisAlignment: MainAxisAlignment.start,
         spacing: 16,
         children: [
           FTextFormField(
-            control: .managed(),
-            label: FLabel(axis: .vertical, child: Text('Nome da empresa')),
+            control: const FTextFieldControl.managed(),
+            label: const FLabel(
+              axis: Axis.vertical,
+              child: Text('Nome da empresa'),
+            ),
             hint: 'Nome fantasia',
             style: (style) =>
                 style.withBaseFontSize(typography: context.theme.typography),
@@ -146,7 +149,7 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
             data: (data) =>
                 _CompanyHeadquarterLocationField(cities: data.cities),
             error: (_, stack) => Text('error $stack'),
-            loading: () => Skeletonizer(
+            loading: () => const Skeletonizer(
               child: _CompanyHeadquarterLocationField(cities: []),
             ),
           ),
@@ -175,7 +178,7 @@ class __CompanyHeadquarterLocationFieldState
   Widget build(BuildContext context) {
     return FSelect<String>.searchBuilder(
       hint: 'Escolha uma cidade',
-      label: FLabel(axis: .vertical, child: Text('Cidade da matriz')),
+      label: const FLabel(axis: Axis.vertical, child: Text('Cidade da matriz')),
       format: (s) => s,
       clearable: true,
       filter: (query) => query.isEmpty
@@ -219,8 +222,8 @@ class _CompanyBranchesLocationFieldState
       builder: (context, type, _) => type == CompanyLocationType.haveBranches
           ? FMultiSelect<String>.searchBuilder(
               hint: const Text('Selecione uma ou mais cidades'),
-              label: FLabel(
-                axis: .vertical,
+              label: const FLabel(
+                axis: Axis.vertical,
                 child: Text('Cidades com filiais'),
               ),
               format: Text.new,

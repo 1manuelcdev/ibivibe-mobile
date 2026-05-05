@@ -16,17 +16,17 @@ import 'package:ibiapabaapp/shared/ui/fragments/toast/show_app_toast.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 final _mockParentCategories = [
-  ParentCategory(
+  const ParentCategory(
     id: 'mock-1',
     name: 'Carregando categoria',
     entities: [EntityType.city],
   ),
-  ParentCategory(
+  const ParentCategory(
     id: 'mock-2',
     name: 'Carregando categoria',
     entities: [EntityType.city],
   ),
-  ParentCategory(
+  const ParentCategory(
     id: 'mock-3',
     name: 'Carregando categoria',
     entities: [EntityType.city],
@@ -112,7 +112,7 @@ class _UserEventsInterestsScreenState
         icon: const Icon(FIcons.check),
         context: context,
         title: const Text('Interesses enviados'),
-        description: Text('Seus interesses foram salvos com sucesso!'),
+        description: const Text('Seus interesses foram salvos com sucesso!'),
       );
     } else {
       showAppToast(
@@ -190,7 +190,7 @@ class _UserEventsInterestsScreenState
                 child: FButton(
                   style: FButtonStyle.outline(),
                   onPress: _handleSkip,
-                  child: Text('Pular'),
+                  child: const Text('Pular'),
                 ),
               ),
               Expanded(
@@ -204,7 +204,7 @@ class _UserEventsInterestsScreenState
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Text('Finalizar'),
+                      : const Text('Finalizar'),
                 ),
               ),
             ],

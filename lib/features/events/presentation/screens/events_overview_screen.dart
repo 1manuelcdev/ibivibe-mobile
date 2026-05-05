@@ -114,42 +114,6 @@ class _Content extends StatelessWidget {
     return Column(
       spacing: 16,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            spacing: 8,
-            children: [
-              FittedBox(
-                child: FButton(
-                  style: FButtonStyle.secondary(),
-                  onPress: () {},
-                  child: Row(
-                    spacing: 6,
-                    mainAxisAlignment: .center,
-                    crossAxisAlignment: .center,
-                    children: [
-                      Icon(Icons.calendar_month_outlined, size: 18),
-                      Text('Data', style: context.theme.typography.sm),
-                    ],
-                  ),
-                ),
-              ),
-              FittedBox(
-                child: FButton(
-                  style: FButtonStyle.secondary(),
-                  onPress: () {},
-                  child: Row(
-                    spacing: 4,
-                    children: [
-                      Icon(Icons.filter_list_rounded, size: 18),
-                      Text('Filtros', style: context.theme.typography.sm),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
         _Section(
           events: events,
           isLoading: isLoading,
