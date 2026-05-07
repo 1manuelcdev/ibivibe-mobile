@@ -4,10 +4,9 @@ enum EventType { simple, featured }
 
 class Event {
   final String id;
+  final String ownerAccountId;
   final String slug;
   final String name;
-  final String? userId;
-  final String? companyId;
 
   final String? description;
   final EventType type;
@@ -23,11 +22,9 @@ class Event {
 
   Event({
     required this.id,
+    required this.ownerAccountId,
     required this.slug,
     required this.name,
-    this.userId,
-    this.companyId,
-
     this.description,
     required this.type,
     required this.reachLevel,

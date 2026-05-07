@@ -2,7 +2,7 @@ import 'package:ibiapabaapp/core/errors/failures/failures.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/cities/domain/entities/city.dart';
 import 'package:ibiapabaapp/features/cities/domain/usecases/get_all_cities.dart';
 import 'package:ibiapabaapp/features/cities/presentation/providers/cities_providers.dart';
@@ -52,7 +52,7 @@ class BusinessDataController extends _$BusinessDataController
   }
 
   Future<bool> submit() async {
-    final account = ref.read(appSessionProvider).account;
+    final account = ref.read(accountsStateProvider).activeAccount;
 
     if (account == null) {
       logControllerError(

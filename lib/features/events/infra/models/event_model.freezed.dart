@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$EventModel {
 
- String get id; String get slug; String get name;@JsonKey(name: 'user_id') String? get userId;@JsonKey(name: 'company_id') String? get companyId; String? get description;@JsonKey(unknownEnumValue: EventType.simple) EventType get type;@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') ReachLevel get reachLevel;@JsonKey(name: 'cover_img_url') String? get coverImgUrl; List<String> get categories;@JsonKey(name: 'start_date') DateTime get startDate;@JsonKey(name: 'end_date') DateTime get endDate;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;
+ String get id; String get slug; String get name;@JsonKey(name: 'owner_account_id') String get ownerAccountId; String? get description;@JsonKey(unknownEnumValue: EventType.simple) EventType get type;@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') ReachLevel get reachLevel;@JsonKey(name: 'cover_img_url') String? get coverImgUrl; List<String> get categories;@JsonKey(name: 'start_date') DateTime get startDate;@JsonKey(name: 'end_date') DateTime get endDate;@JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'updated_at') DateTime get updatedAt;
 /// Create a copy of EventModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $EventModelCopyWith<EventModel> get copyWith => _$EventModelCopyWithImpl<EventMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventModel&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.name, name) || other.name == name)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.description, description) || other.description == description)&&(identical(other.type, type) || other.type == type)&&(identical(other.reachLevel, reachLevel) || other.reachLevel == reachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventModel&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerAccountId, ownerAccountId) || other.ownerAccountId == ownerAccountId)&&(identical(other.description, description) || other.description == description)&&(identical(other.type, type) || other.type == type)&&(identical(other.reachLevel, reachLevel) || other.reachLevel == reachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,slug,name,userId,companyId,description,type,reachLevel,coverImgUrl,const DeepCollectionEquality().hash(categories),startDate,endDate,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,slug,name,ownerAccountId,description,type,reachLevel,coverImgUrl,const DeepCollectionEquality().hash(categories),startDate,endDate,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'EventModel(id: $id, slug: $slug, name: $name, userId: $userId, companyId: $companyId, description: $description, type: $type, reachLevel: $reachLevel, coverImgUrl: $coverImgUrl, categories: $categories, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'EventModel(id: $id, slug: $slug, name: $name, ownerAccountId: $ownerAccountId, description: $description, type: $type, reachLevel: $reachLevel, coverImgUrl: $coverImgUrl, categories: $categories, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $EventModelCopyWith<$Res>  {
   factory $EventModelCopyWith(EventModel value, $Res Function(EventModel) _then) = _$EventModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String slug, String name,@JsonKey(name: 'user_id') String? userId,@JsonKey(name: 'company_id') String? companyId, String? description,@JsonKey(unknownEnumValue: EventType.simple) EventType type,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') ReachLevel reachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'start_date') DateTime startDate,@JsonKey(name: 'end_date') DateTime endDate,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+ String id, String slug, String name,@JsonKey(name: 'owner_account_id') String ownerAccountId, String? description,@JsonKey(unknownEnumValue: EventType.simple) EventType type,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') ReachLevel reachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'start_date') DateTime startDate,@JsonKey(name: 'end_date') DateTime endDate,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
 });
 
 
@@ -65,14 +65,13 @@ class _$EventModelCopyWithImpl<$Res>
 
 /// Create a copy of EventModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? userId = freezed,Object? companyId = freezed,Object? description = freezed,Object? type = null,Object? reachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? ownerAccountId = null,Object? description = freezed,Object? type = null,Object? reachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String?,companyId: freezed == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,ownerAccountId: null == ownerAccountId ? _self.ownerAccountId : ownerAccountId // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as EventType,reachLevel: null == reachLevel ? _self.reachLevel : reachLevel // ignore: cast_nullable_to_non_nullable
 as ReachLevel,coverImgUrl: freezed == coverImgUrl ? _self.coverImgUrl : coverImgUrl // ignore: cast_nullable_to_non_nullable
@@ -166,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String slug,  String name, @JsonKey(name: 'user_id')  String? userId, @JsonKey(name: 'company_id')  String? companyId,  String? description, @JsonKey(unknownEnumValue: EventType.simple)  EventType type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level')  ReachLevel reachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'start_date')  DateTime startDate, @JsonKey(name: 'end_date')  DateTime endDate, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String slug,  String name, @JsonKey(name: 'owner_account_id')  String ownerAccountId,  String? description, @JsonKey(unknownEnumValue: EventType.simple)  EventType type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level')  ReachLevel reachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'start_date')  DateTime startDate, @JsonKey(name: 'end_date')  DateTime endDate, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EventModel() when $default != null:
-return $default(_that.id,_that.slug,_that.name,_that.userId,_that.companyId,_that.description,_that.type,_that.reachLevel,_that.coverImgUrl,_that.categories,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.slug,_that.name,_that.ownerAccountId,_that.description,_that.type,_that.reachLevel,_that.coverImgUrl,_that.categories,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -187,10 +186,10 @@ return $default(_that.id,_that.slug,_that.name,_that.userId,_that.companyId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String slug,  String name, @JsonKey(name: 'user_id')  String? userId, @JsonKey(name: 'company_id')  String? companyId,  String? description, @JsonKey(unknownEnumValue: EventType.simple)  EventType type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level')  ReachLevel reachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'start_date')  DateTime startDate, @JsonKey(name: 'end_date')  DateTime endDate, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String slug,  String name, @JsonKey(name: 'owner_account_id')  String ownerAccountId,  String? description, @JsonKey(unknownEnumValue: EventType.simple)  EventType type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level')  ReachLevel reachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'start_date')  DateTime startDate, @JsonKey(name: 'end_date')  DateTime endDate, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _EventModel():
-return $default(_that.id,_that.slug,_that.name,_that.userId,_that.companyId,_that.description,_that.type,_that.reachLevel,_that.coverImgUrl,_that.categories,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.slug,_that.name,_that.ownerAccountId,_that.description,_that.type,_that.reachLevel,_that.coverImgUrl,_that.categories,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +206,10 @@ return $default(_that.id,_that.slug,_that.name,_that.userId,_that.companyId,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String slug,  String name, @JsonKey(name: 'user_id')  String? userId, @JsonKey(name: 'company_id')  String? companyId,  String? description, @JsonKey(unknownEnumValue: EventType.simple)  EventType type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level')  ReachLevel reachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'start_date')  DateTime startDate, @JsonKey(name: 'end_date')  DateTime endDate, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String slug,  String name, @JsonKey(name: 'owner_account_id')  String ownerAccountId,  String? description, @JsonKey(unknownEnumValue: EventType.simple)  EventType type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level')  ReachLevel reachLevel, @JsonKey(name: 'cover_img_url')  String? coverImgUrl,  List<String> categories, @JsonKey(name: 'start_date')  DateTime startDate, @JsonKey(name: 'end_date')  DateTime endDate, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'updated_at')  DateTime updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _EventModel() when $default != null:
-return $default(_that.id,_that.slug,_that.name,_that.userId,_that.companyId,_that.description,_that.type,_that.reachLevel,_that.coverImgUrl,_that.categories,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.slug,_that.name,_that.ownerAccountId,_that.description,_that.type,_that.reachLevel,_that.coverImgUrl,_that.categories,_that.startDate,_that.endDate,_that.createdAt,_that.updatedAt);case _:
   return null;
 
 }
@@ -222,14 +221,13 @@ return $default(_that.id,_that.slug,_that.name,_that.userId,_that.companyId,_tha
 @JsonSerializable()
 
 class _EventModel extends EventModel {
-  const _EventModel({required this.id, required this.slug, required this.name, @JsonKey(name: 'user_id') this.userId, @JsonKey(name: 'company_id') this.companyId, this.description, @JsonKey(unknownEnumValue: EventType.simple) required this.type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') required this.reachLevel, @JsonKey(name: 'cover_img_url') this.coverImgUrl, final  List<String> categories = const [], @JsonKey(name: 'start_date') required this.startDate, @JsonKey(name: 'end_date') required this.endDate, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt}): _categories = categories,super._();
+  const _EventModel({required this.id, required this.slug, required this.name, @JsonKey(name: 'owner_account_id') required this.ownerAccountId, this.description, @JsonKey(unknownEnumValue: EventType.simple) required this.type, @JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') required this.reachLevel, @JsonKey(name: 'cover_img_url') this.coverImgUrl, final  List<String> categories = const [], @JsonKey(name: 'start_date') required this.startDate, @JsonKey(name: 'end_date') required this.endDate, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'updated_at') required this.updatedAt}): _categories = categories,super._();
   factory _EventModel.fromJson(Map<String, dynamic> json) => _$EventModelFromJson(json);
 
 @override final  String id;
 @override final  String slug;
 @override final  String name;
-@override@JsonKey(name: 'user_id') final  String? userId;
-@override@JsonKey(name: 'company_id') final  String? companyId;
+@override@JsonKey(name: 'owner_account_id') final  String ownerAccountId;
 @override final  String? description;
 @override@JsonKey(unknownEnumValue: EventType.simple) final  EventType type;
 @override@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') final  ReachLevel reachLevel;
@@ -259,16 +257,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventModel&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.name, name) || other.name == name)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.companyId, companyId) || other.companyId == companyId)&&(identical(other.description, description) || other.description == description)&&(identical(other.type, type) || other.type == type)&&(identical(other.reachLevel, reachLevel) || other.reachLevel == reachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventModel&&(identical(other.id, id) || other.id == id)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.name, name) || other.name == name)&&(identical(other.ownerAccountId, ownerAccountId) || other.ownerAccountId == ownerAccountId)&&(identical(other.description, description) || other.description == description)&&(identical(other.type, type) || other.type == type)&&(identical(other.reachLevel, reachLevel) || other.reachLevel == reachLevel)&&(identical(other.coverImgUrl, coverImgUrl) || other.coverImgUrl == coverImgUrl)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,slug,name,userId,companyId,description,type,reachLevel,coverImgUrl,const DeepCollectionEquality().hash(_categories),startDate,endDate,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,slug,name,ownerAccountId,description,type,reachLevel,coverImgUrl,const DeepCollectionEquality().hash(_categories),startDate,endDate,createdAt,updatedAt);
 
 @override
 String toString() {
-  return 'EventModel(id: $id, slug: $slug, name: $name, userId: $userId, companyId: $companyId, description: $description, type: $type, reachLevel: $reachLevel, coverImgUrl: $coverImgUrl, categories: $categories, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'EventModel(id: $id, slug: $slug, name: $name, ownerAccountId: $ownerAccountId, description: $description, type: $type, reachLevel: $reachLevel, coverImgUrl: $coverImgUrl, categories: $categories, startDate: $startDate, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt)';
 }
 
 
@@ -279,7 +277,7 @@ abstract mixin class _$EventModelCopyWith<$Res> implements $EventModelCopyWith<$
   factory _$EventModelCopyWith(_EventModel value, $Res Function(_EventModel) _then) = __$EventModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String slug, String name,@JsonKey(name: 'user_id') String? userId,@JsonKey(name: 'company_id') String? companyId, String? description,@JsonKey(unknownEnumValue: EventType.simple) EventType type,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') ReachLevel reachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'start_date') DateTime startDate,@JsonKey(name: 'end_date') DateTime endDate,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
+ String id, String slug, String name,@JsonKey(name: 'owner_account_id') String ownerAccountId, String? description,@JsonKey(unknownEnumValue: EventType.simple) EventType type,@JsonKey(unknownEnumValue: ReachLevel.local, name: 'reach_level') ReachLevel reachLevel,@JsonKey(name: 'cover_img_url') String? coverImgUrl, List<String> categories,@JsonKey(name: 'start_date') DateTime startDate,@JsonKey(name: 'end_date') DateTime endDate,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'updated_at') DateTime updatedAt
 });
 
 
@@ -296,14 +294,13 @@ class __$EventModelCopyWithImpl<$Res>
 
 /// Create a copy of EventModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? userId = freezed,Object? companyId = freezed,Object? description = freezed,Object? type = null,Object? reachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? slug = null,Object? name = null,Object? ownerAccountId = null,Object? description = freezed,Object? type = null,Object? reachLevel = null,Object? coverImgUrl = freezed,Object? categories = null,Object? startDate = null,Object? endDate = null,Object? createdAt = null,Object? updatedAt = null,}) {
   return _then(_EventModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,slug: null == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String?,companyId: freezed == companyId ? _self.companyId : companyId // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,ownerAccountId: null == ownerAccountId ? _self.ownerAccountId : ownerAccountId // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as EventType,reachLevel: null == reachLevel ? _self.reachLevel : reachLevel // ignore: cast_nullable_to_non_nullable
 as ReachLevel,coverImgUrl: freezed == coverImgUrl ? _self.coverImgUrl : coverImgUrl // ignore: cast_nullable_to_non_nullable

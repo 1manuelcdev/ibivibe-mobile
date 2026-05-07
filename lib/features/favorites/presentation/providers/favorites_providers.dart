@@ -5,7 +5,7 @@ import 'package:ibiapabaapp/features/favorites/data/datasources/favorites_local_
 import 'package:ibiapabaapp/features/favorites/data/datasources/favorites_remote_datasource.dart';
 import 'package:ibiapabaapp/features/favorites/data/repositories/favorites_repository_impl.dart';
 import 'package:ibiapabaapp/features/favorites/domain/repositories/favorites_repository.dart';
-import 'package:ibiapabaapp/features/favorites/domain/usecases/get_all_favorites_by_profile.dart';
+import 'package:ibiapabaapp/features/favorites/domain/usecases/get_all_favorites_by_account.dart';
 import 'package:ibiapabaapp/features/favorites/domain/usecases/pop_favorite.dart';
 import 'package:ibiapabaapp/features/favorites/domain/usecases/push_favorite.dart';
 import 'package:ibiapabaapp/features/favorites/infra/favorites_local_storage_impl.dart';
@@ -41,9 +41,9 @@ FavoritesRepository favoritesRepository(Ref ref) {
 
 // USECASES
 @riverpod
-GetAllFavoritesByProfile getAllFavoritesByProfile(Ref ref) {
+GetAllFavoritesByAccount getAllFavoritesByAccount(Ref ref) {
   final repository = ref.watch(favoritesRepositoryProvider);
-  return GetAllFavoritesByProfile(repository);
+  return GetAllFavoritesByAccount(repository);
 }
 
 @riverpod

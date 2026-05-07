@@ -1,9 +1,8 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ibiapabaapp/core/entities/entity_type.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/medias/domain/entity/media.dart';
 import 'package:ibiapabaapp/features/medias/domain/tags/medias_logtags.dart';
 import 'package:ibiapabaapp/features/medias/presentation/providers/medias_providers.dart';
@@ -22,7 +21,7 @@ class EntityMedias extends _$EntityMedias with ControllerLogHandler {
 
   @override
   Future<List<Media>> build(EntityType entityType, String entityId) async {
-    final user = ref.watch(appSessionProvider.select((s) => s.account));
+    final user = ref.watch(accountsStateProvider).activeAccount;
     if (user == null) return [];
 
     return _fetchRemote(entityType, entityId);

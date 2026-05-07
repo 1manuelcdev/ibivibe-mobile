@@ -3,82 +3,64 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/core/network/dio_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/home/presentation/widgets/explore_cities_section.dart';
 import 'package:ibiapabaapp/features/search/presentation/widgets/search_field_shell.dart';
-import 'package:ibiapabaapp/shared/ui/fragments/effects/default_shimmer_effect.dart';
 import 'package:ibiapabaapp/shared/ui/layout/items_grid.dart';
 import 'package:ibiapabaapp/shared/ui/layout/wrappers/main_wrapper.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-class SearchScreen extends ConsumerStatefulWidget {
+class SearchScreen extends ConsumerWidget {
   const SearchScreen({super.key});
 
   @override
-  ConsumerState<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends ConsumerState<SearchScreen> {
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) setState(() => _isLoading = false);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    const companiesCategories = [
-      "Restaurantes",
-      "Hotéis e pousadas",
-      "Postos de gasolina",
-      "Banhos",
-      "Comércio",
-      "Aventura",
-      "Temáticos",
-    ];
-    const eventsCategories = [
-      "Religiosos",
-      "Shows",
-      "Esportivos",
-      "Cultura e arte",
-      "Palestras",
-    ];
-
+  Widget build(BuildContext context, WidgetRef ref) {
     final dioClient = ref.watch(dioProvider);
+    final interests = ref.watch(accountsStateProvider).activeAccount?.interests;
+    final businessesInterests = interests?.businesses
+        .map((b) => b.name)
+        .toList();
+    final eventsInterests = interests?.events.map((b) => b.name).toList();
 
     return SafeArea(
       maintainBottomViewPadding: false,
       child: SingleChildScrollView(
-        child: Skeletonizer(
-          effect: customShimmerEffect(context),
-          enabled: _isLoading,
-          child: Column(
-            spacing: 16,
-            children: [
-              const _SearchHeader(),
-              MainWrapper(
-                hasTopPadding: false,
-                children: [
-                  ItemsGrid(
-                    title: "Empresas",
-                    items: companiesCategories,
-                    onItemTap: (_) => dioClient.get('/users'),
-                    onSeeAllTap: () => context.push('/app/businesses'),
-                  ),
-                  ItemsGrid(
-                    title: "Eventos",
-                    items: eventsCategories,
-                    onSeeAllTap: () => context.push('/app/events'),
-                  ),
-                ],
-              ),
-              const ExploreCitiesSection(),
-              const SizedBox(height: 24),
-            ],
-          ),
+        child: Column(
+          spacing: 16,
+          children: [
+            const _SearchHeader(),
+            MainWrapper(
+              hasTopPadding: false,
+              children: [
+                businessesInterests == null || businessesInterests.isEmpty
+                    ? Text(
+                        'Atualize seus interesses para ver recomendações de empresas',
+                        style: context.theme.typography.sm.copyWith(
+                          color: context.theme.colors.mutedForeground,
+                        ),
+                      )
+                    : ItemsGrid(
+                        title: "Empresas",
+                        items: businessesInterests,
+                        onItemTap: (_) => dioClient.get('/users'),
+                        onSeeAllTap: () => context.push('/app/businesses'),
+                      ),
+                eventsInterests == null || eventsInterests.isEmpty
+                    ? Text(
+                        'Atualize seus interesses para ver recomendações de eventos',
+                        style: context.theme.typography.sm.copyWith(
+                          color: context.theme.colors.mutedForeground,
+                        ),
+                      )
+                    : ItemsGrid(
+                        title: "Eventos",
+                        items: eventsInterests,
+                        onSeeAllTap: () => context.push('/app/events'),
+                      ),
+              ],
+            ),
+            const ExploreCitiesSection(),
+            const SizedBox(height: 24),
+          ],
         ),
       ),
     );

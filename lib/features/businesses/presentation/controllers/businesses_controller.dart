@@ -1,8 +1,7 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/businesses/domain/entities/business.dart';
 import 'package:ibiapabaapp/features/businesses/domain/tags/businesses_logtags.dart';
 import 'package:ibiapabaapp/features/businesses/presentation/providers/businesses_providers.dart';
@@ -21,9 +20,9 @@ class Businesses extends _$Businesses with ControllerLogHandler {
 
   @override
   Future<List<Business>> build() async {
-    ref.listen(appSessionProvider, (previous, next) {
-      final account = next.account;
-      final previousAccount = previous?.account;
+    ref.listen(accountsStateProvider, (previous, next) {
+      final account = next.activeAccount;
+      final previousAccount = previous?.activeAccount;
       if (account != null && previousAccount == null) {
         getAllBusinesses();
       } else if (account == null) {
@@ -31,7 +30,7 @@ class Businesses extends _$Businesses with ControllerLogHandler {
       }
     });
 
-    final user = ref.watch(appSessionProvider.select((s) => s.account));
+    final user = ref.watch(accountsStateProvider).activeAccount;
     if (user == null) return [];
     return _fetchRemote();
   }

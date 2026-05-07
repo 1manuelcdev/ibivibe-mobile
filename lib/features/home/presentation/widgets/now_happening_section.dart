@@ -13,6 +13,7 @@ final List<Event> _mockEvents = List.generate(
   3,
   (index) => Event(
     id: 'mock-$index',
+    ownerAccountId: 'mock-$index-account',
     name: 'Carregando evento...',
     slug: 'mock',
 

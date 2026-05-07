@@ -11,23 +11,23 @@ class FavoritesLocalStorageImpl extends BaseCacheStorage
   String get storeName => 'favorites';
 
   @override
-  Future<void> saveFavoritesByProfile({
-    required String profileId,
+  Future<void> saveFavoritesByAccount({
+    required String accountId,
     required List<Favorite> favorites,
   }) async {
     await saveList(
-      key: '$profileId.favorites',
+      key: '$accountId.favorites',
       items: favorites,
       toMap: (i) => FavoriteModel.toMap(i),
     );
   }
 
   @override
-  Future<List<Favorite>> loadFavoritesByProfile({
-    required String profileId,
+  Future<List<Favorite>> loadFavoritesByAccount({
+    required String accountId,
   }) async {
     return await getList(
-      key: '$profileId.favorites',
+      key: '$accountId.favorites',
       fromJson: (json) => FavoriteModel.fromJson(json),
     );
   }
@@ -35,13 +35,13 @@ class FavoritesLocalStorageImpl extends BaseCacheStorage
   @override
   Future<void> pushFavorite({required Favorite favorite}) async {
     final cachedFavorites = await getList<Favorite>(
-      key: '${favorite.profileId}.favorites',
+      key: '${favorite.accountId}.favorites',
       fromJson: (json) => FavoriteModel.fromJson(json),
     );
 
     cachedFavorites.add(favorite);
-    return saveFavoritesByProfile(
-      profileId: favorite.profileId,
+    return saveFavoritesByAccount(
+      accountId: favorite.accountId,
       favorites: cachedFavorites,
     );
   }
@@ -49,19 +49,19 @@ class FavoritesLocalStorageImpl extends BaseCacheStorage
   @override
   Future<void> popFavorite({required Favorite favorite}) async {
     final cachedFavorites = await getList<Favorite>(
-      key: '${favorite.profileId}.favorites',
+      key: '${favorite.accountId}.favorites',
       fromJson: (json) => FavoriteModel.fromJson(json),
     );
 
     cachedFavorites.removeWhere((fav) => fav.id == favorite.id);
-    return saveFavoritesByProfile(
-      profileId: favorite.profileId,
+    return saveFavoritesByAccount(
+      accountId: favorite.accountId,
       favorites: cachedFavorites,
     );
   }
 
   @override
-  Future<void> clearFavoritesByProfile({required String profileId}) async {
-    await clearKey('$profileId.favorites');
+  Future<void> clearFavoritesByAccount({required String accountId}) async {
+    await clearKey('$accountId.favorites');
   }
 }

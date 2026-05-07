@@ -27,21 +27,21 @@ class FavoritesRepositoryImpl
   LogFeature get feature => LogFeature.favorites;
 
   @override
-  Future<Either<AppFailure, List<Favorite>>> getAllFavoritesByProfile({
-    required String profileId,
+  Future<Either<AppFailure, List<Favorite>>> getAllFavoritesByAccount({
+    required String accountId,
   }) async {
     try {
-      final cachedFavorites = await localStorage.loadFavoritesByProfile(
-        profileId: profileId,
+      final cachedFavorites = await localStorage.loadFavoritesByAccount(
+        accountId: accountId,
       );
       if (cachedFavorites.isNotEmpty) return Right(cachedFavorites);
 
-      final result = await remoteDatasource.getAllFavoritesByProfile(
-        profileId: profileId,
+      final result = await remoteDatasource.getAllFavoritesByAccount(
+        accountId: accountId,
       );
-      await localStorage.saveFavoritesByProfile(
+      await localStorage.saveFavoritesByAccount(
         favorites: result,
-        profileId: profileId,
+        accountId: accountId,
       );
       return Right(result);
     } catch (e, stack) {
@@ -49,7 +49,7 @@ class FavoritesRepositoryImpl
         handleRepositoryError(
           exception: e,
           stackTrace: stack,
-          action: FavoriteAction.getAllFavoritesByProfile,
+          action: FavoriteAction.getAllFavoritesByAccount,
         ),
       );
     }

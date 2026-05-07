@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FavoriteModel {
 
-@JsonKey(name: 'id', includeIfNull: false) String? get id;@JsonKey(name: 'profile_id') String get profileId;@JsonKey(name: 'city_id', defaultValue: null) String? get cityId;@JsonKey(name: 'business_profile_id', defaultValue: null) String? get businessProfileId;@JsonKey(name: 'event_id', defaultValue: null) String? get eventId;
+@JsonKey(name: 'id', includeIfNull: false) String? get id;@JsonKey(name: 'account_id') String get accountId;@JsonKey(name: 'city_id', defaultValue: null) String? get cityId;@JsonKey(name: 'business_id', defaultValue: null) String? get businessId;@JsonKey(name: 'event_id', defaultValue: null) String? get eventId;
 /// Create a copy of FavoriteModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $FavoriteModelCopyWith<FavoriteModel> get copyWith => _$FavoriteModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteModel&&(identical(other.id, id) || other.id == id)&&(identical(other.profileId, profileId) || other.profileId == profileId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.businessProfileId, businessProfileId) || other.businessProfileId == businessProfileId)&&(identical(other.eventId, eventId) || other.eventId == eventId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FavoriteModel&&(identical(other.id, id) || other.id == id)&&(identical(other.accountId, accountId) || other.accountId == accountId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.businessId, businessId) || other.businessId == businessId)&&(identical(other.eventId, eventId) || other.eventId == eventId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,profileId,cityId,businessProfileId,eventId);
+int get hashCode => Object.hash(runtimeType,id,accountId,cityId,businessId,eventId);
 
 @override
 String toString() {
-  return 'FavoriteModel(id: $id, profileId: $profileId, cityId: $cityId, businessProfileId: $businessProfileId, eventId: $eventId)';
+  return 'FavoriteModel(id: $id, accountId: $accountId, cityId: $cityId, businessId: $businessId, eventId: $eventId)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $FavoriteModelCopyWith<$Res>  {
   factory $FavoriteModelCopyWith(FavoriteModel value, $Res Function(FavoriteModel) _then) = _$FavoriteModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id', includeIfNull: false) String? id,@JsonKey(name: 'profile_id') String profileId,@JsonKey(name: 'city_id', defaultValue: null) String? cityId,@JsonKey(name: 'business_profile_id', defaultValue: null) String? businessProfileId,@JsonKey(name: 'event_id', defaultValue: null) String? eventId
+@JsonKey(name: 'id', includeIfNull: false) String? id,@JsonKey(name: 'account_id') String accountId,@JsonKey(name: 'city_id', defaultValue: null) String? cityId,@JsonKey(name: 'business_id', defaultValue: null) String? businessId,@JsonKey(name: 'event_id', defaultValue: null) String? eventId
 });
 
 
@@ -65,12 +65,12 @@ class _$FavoriteModelCopyWithImpl<$Res>
 
 /// Create a copy of FavoriteModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? profileId = null,Object? cityId = freezed,Object? businessProfileId = freezed,Object? eventId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? accountId = null,Object? cityId = freezed,Object? businessId = freezed,Object? eventId = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,profileId: null == profileId ? _self.profileId : profileId // ignore: cast_nullable_to_non_nullable
+as String?,accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nullable_to_non_nullable
 as String,cityId: freezed == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
-as String?,businessProfileId: freezed == businessProfileId ? _self.businessProfileId : businessProfileId // ignore: cast_nullable_to_non_nullable
+as String?,businessId: freezed == businessId ? _self.businessId : businessId // ignore: cast_nullable_to_non_nullable
 as String?,eventId: freezed == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -157,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id', includeIfNull: false)  String? id, @JsonKey(name: 'profile_id')  String profileId, @JsonKey(name: 'city_id', defaultValue: null)  String? cityId, @JsonKey(name: 'business_profile_id', defaultValue: null)  String? businessProfileId, @JsonKey(name: 'event_id', defaultValue: null)  String? eventId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id', includeIfNull: false)  String? id, @JsonKey(name: 'account_id')  String accountId, @JsonKey(name: 'city_id', defaultValue: null)  String? cityId, @JsonKey(name: 'business_id', defaultValue: null)  String? businessId, @JsonKey(name: 'event_id', defaultValue: null)  String? eventId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FavoriteModel() when $default != null:
-return $default(_that.id,_that.profileId,_that.cityId,_that.businessProfileId,_that.eventId);case _:
+return $default(_that.id,_that.accountId,_that.cityId,_that.businessId,_that.eventId);case _:
   return orElse();
 
 }
@@ -178,10 +178,10 @@ return $default(_that.id,_that.profileId,_that.cityId,_that.businessProfileId,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id', includeIfNull: false)  String? id, @JsonKey(name: 'profile_id')  String profileId, @JsonKey(name: 'city_id', defaultValue: null)  String? cityId, @JsonKey(name: 'business_profile_id', defaultValue: null)  String? businessProfileId, @JsonKey(name: 'event_id', defaultValue: null)  String? eventId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id', includeIfNull: false)  String? id, @JsonKey(name: 'account_id')  String accountId, @JsonKey(name: 'city_id', defaultValue: null)  String? cityId, @JsonKey(name: 'business_id', defaultValue: null)  String? businessId, @JsonKey(name: 'event_id', defaultValue: null)  String? eventId)  $default,) {final _that = this;
 switch (_that) {
 case _FavoriteModel():
-return $default(_that.id,_that.profileId,_that.cityId,_that.businessProfileId,_that.eventId);case _:
+return $default(_that.id,_that.accountId,_that.cityId,_that.businessId,_that.eventId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +198,10 @@ return $default(_that.id,_that.profileId,_that.cityId,_that.businessProfileId,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id', includeIfNull: false)  String? id, @JsonKey(name: 'profile_id')  String profileId, @JsonKey(name: 'city_id', defaultValue: null)  String? cityId, @JsonKey(name: 'business_profile_id', defaultValue: null)  String? businessProfileId, @JsonKey(name: 'event_id', defaultValue: null)  String? eventId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id', includeIfNull: false)  String? id, @JsonKey(name: 'account_id')  String accountId, @JsonKey(name: 'city_id', defaultValue: null)  String? cityId, @JsonKey(name: 'business_id', defaultValue: null)  String? businessId, @JsonKey(name: 'event_id', defaultValue: null)  String? eventId)?  $default,) {final _that = this;
 switch (_that) {
 case _FavoriteModel() when $default != null:
-return $default(_that.id,_that.profileId,_that.cityId,_that.businessProfileId,_that.eventId);case _:
+return $default(_that.id,_that.accountId,_that.cityId,_that.businessId,_that.eventId);case _:
   return null;
 
 }
@@ -213,13 +213,13 @@ return $default(_that.id,_that.profileId,_that.cityId,_that.businessProfileId,_t
 @JsonSerializable()
 
 class _FavoriteModel extends FavoriteModel {
-  const _FavoriteModel({@JsonKey(name: 'id', includeIfNull: false) this.id, @JsonKey(name: 'profile_id') required this.profileId, @JsonKey(name: 'city_id', defaultValue: null) this.cityId, @JsonKey(name: 'business_profile_id', defaultValue: null) this.businessProfileId, @JsonKey(name: 'event_id', defaultValue: null) this.eventId}): super._();
+  const _FavoriteModel({@JsonKey(name: 'id', includeIfNull: false) this.id, @JsonKey(name: 'account_id') required this.accountId, @JsonKey(name: 'city_id', defaultValue: null) this.cityId, @JsonKey(name: 'business_id', defaultValue: null) this.businessId, @JsonKey(name: 'event_id', defaultValue: null) this.eventId}): super._();
   factory _FavoriteModel.fromJson(Map<String, dynamic> json) => _$FavoriteModelFromJson(json);
 
 @override@JsonKey(name: 'id', includeIfNull: false) final  String? id;
-@override@JsonKey(name: 'profile_id') final  String profileId;
+@override@JsonKey(name: 'account_id') final  String accountId;
 @override@JsonKey(name: 'city_id', defaultValue: null) final  String? cityId;
-@override@JsonKey(name: 'business_profile_id', defaultValue: null) final  String? businessProfileId;
+@override@JsonKey(name: 'business_id', defaultValue: null) final  String? businessId;
 @override@JsonKey(name: 'event_id', defaultValue: null) final  String? eventId;
 
 /// Create a copy of FavoriteModel
@@ -235,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavoriteModel&&(identical(other.id, id) || other.id == id)&&(identical(other.profileId, profileId) || other.profileId == profileId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.businessProfileId, businessProfileId) || other.businessProfileId == businessProfileId)&&(identical(other.eventId, eventId) || other.eventId == eventId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FavoriteModel&&(identical(other.id, id) || other.id == id)&&(identical(other.accountId, accountId) || other.accountId == accountId)&&(identical(other.cityId, cityId) || other.cityId == cityId)&&(identical(other.businessId, businessId) || other.businessId == businessId)&&(identical(other.eventId, eventId) || other.eventId == eventId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,profileId,cityId,businessProfileId,eventId);
+int get hashCode => Object.hash(runtimeType,id,accountId,cityId,businessId,eventId);
 
 @override
 String toString() {
-  return 'FavoriteModel(id: $id, profileId: $profileId, cityId: $cityId, businessProfileId: $businessProfileId, eventId: $eventId)';
+  return 'FavoriteModel(id: $id, accountId: $accountId, cityId: $cityId, businessId: $businessId, eventId: $eventId)';
 }
 
 
@@ -255,7 +255,7 @@ abstract mixin class _$FavoriteModelCopyWith<$Res> implements $FavoriteModelCopy
   factory _$FavoriteModelCopyWith(_FavoriteModel value, $Res Function(_FavoriteModel) _then) = __$FavoriteModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id', includeIfNull: false) String? id,@JsonKey(name: 'profile_id') String profileId,@JsonKey(name: 'city_id', defaultValue: null) String? cityId,@JsonKey(name: 'business_profile_id', defaultValue: null) String? businessProfileId,@JsonKey(name: 'event_id', defaultValue: null) String? eventId
+@JsonKey(name: 'id', includeIfNull: false) String? id,@JsonKey(name: 'account_id') String accountId,@JsonKey(name: 'city_id', defaultValue: null) String? cityId,@JsonKey(name: 'business_id', defaultValue: null) String? businessId,@JsonKey(name: 'event_id', defaultValue: null) String? eventId
 });
 
 
@@ -272,12 +272,12 @@ class __$FavoriteModelCopyWithImpl<$Res>
 
 /// Create a copy of FavoriteModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? profileId = null,Object? cityId = freezed,Object? businessProfileId = freezed,Object? eventId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? accountId = null,Object? cityId = freezed,Object? businessId = freezed,Object? eventId = freezed,}) {
   return _then(_FavoriteModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String?,profileId: null == profileId ? _self.profileId : profileId // ignore: cast_nullable_to_non_nullable
+as String?,accountId: null == accountId ? _self.accountId : accountId // ignore: cast_nullable_to_non_nullable
 as String,cityId: freezed == cityId ? _self.cityId : cityId // ignore: cast_nullable_to_non_nullable
-as String?,businessProfileId: freezed == businessProfileId ? _self.businessProfileId : businessProfileId // ignore: cast_nullable_to_non_nullable
+as String?,businessId: freezed == businessId ? _self.businessId : businessId // ignore: cast_nullable_to_non_nullable
 as String?,eventId: freezed == eventId ? _self.eventId : eventId // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

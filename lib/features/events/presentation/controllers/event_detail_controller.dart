@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ibiapabaapp/core/entities/entity_type.dart';
 import 'package:ibiapabaapp/core/errors/failures/failures.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/events/domain/entities/event.dart';
 import 'package:ibiapabaapp/features/events/domain/entities/event_detail_data.dart';
 import 'package:ibiapabaapp/features/events/domain/tags/events_logtags.dart';
@@ -28,7 +27,7 @@ class EventDetail extends _$EventDetail with ControllerLogHandler {
 
   @override
   Future<EventDetailData?> build(String id) async {
-    final user = ref.watch(appSessionProvider.select((s) => s.account));
+    final user = ref.watch(accountsStateProvider).activeAccount;
     if (user == null) return null;
 
     final results = await Future.wait([

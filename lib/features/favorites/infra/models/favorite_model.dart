@@ -10,10 +10,9 @@ abstract class FavoriteModel with _$FavoriteModel implements Favorite {
 
   const factory FavoriteModel({
     @JsonKey(name: 'id', includeIfNull: false) String? id,
-    @JsonKey(name: 'profile_id') required String profileId,
+    @JsonKey(name: 'account_id') required String accountId,
     @JsonKey(name: 'city_id', defaultValue: null) String? cityId,
-    @JsonKey(name: 'business_profile_id', defaultValue: null)
-    String? businessProfileId,
+    @JsonKey(name: 'business_id', defaultValue: null) String? businessId,
     @JsonKey(name: 'event_id', defaultValue: null) String? eventId,
   }) = _FavoriteModel;
 
@@ -28,13 +27,21 @@ abstract class FavoriteModel with _$FavoriteModel implements Favorite {
   }
 
   static Map<String, dynamic> toMap(Favorite favorite) {
-    if (favorite is FavoriteModel) return favorite.toJson();
-    return FavoriteModel(
-      id: favorite.id,
-      profileId: favorite.profileId,
-      cityId: favorite.cityId,
-      eventId: favorite.eventId,
-      businessProfileId: favorite.businessProfileId,
-    ).toJson();
+    return {
+      'id': favorite.id,
+      'account_id': favorite.accountId,
+      'city_id': favorite.cityId,
+      'business_id': favorite.businessId,
+      'event_id': favorite.eventId,
+    };
+  }
+
+  static Map<String, dynamic> mapPush(Favorite favorite) {
+    return {
+      'account_id': favorite.accountId,
+      'city_id': favorite.cityId,
+      'business_id': favorite.businessId,
+      'event_id': favorite.eventId,
+    };
   }
 }

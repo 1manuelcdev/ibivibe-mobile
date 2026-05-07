@@ -1,12 +1,12 @@
 import 'package:ibiapabaapp/features/favorites/domain/entities/favorite.dart';
 
 abstract class FavoritesLocalStorage {
-  Future<void> saveFavoritesByProfile({
-    required String profileId,
+  Future<void> saveFavoritesByAccount({
+    required String accountId,
     required List<Favorite> favorites,
   });
-  Future<List<Favorite>> loadFavoritesByProfile({required String profileId});
-  Future<void> clearFavoritesByProfile({required String profileId});
+  Future<List<Favorite>> loadFavoritesByAccount({required String accountId});
+  Future<void> clearFavoritesByAccount({required String accountId});
   Future<void> pushFavorite({required Favorite favorite});
   Future<void> popFavorite({required Favorite favorite});
 }

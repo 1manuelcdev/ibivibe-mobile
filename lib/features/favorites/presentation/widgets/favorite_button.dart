@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/favorites/domain/entities/favorite.dart';
 import 'package:ibiapabaapp/features/favorites/presentation/providers/favorites_state_provider.dart';
-import 'package:ibiapabaapp/features/profiles/presentation/providers/profile_state_provider.dart';
 
 class FavoriteButton extends ConsumerStatefulWidget {
   final String? cityId;
-  final String? businessProfileId;
+  final String? businessId;
   final String? eventId;
 
   const FavoriteButton({
     super.key,
     this.cityId,
-    this.businessProfileId,
+    this.businessId,
     this.eventId,
   });
 
@@ -29,8 +29,8 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
       (fav) =>
           (widget.cityId != null && fav.cityId == widget.cityId) ||
           (widget.eventId != null && fav.eventId == widget.eventId) ||
-          (widget.businessProfileId != null &&
-              fav.businessProfileId == widget.businessProfileId),
+          (widget.businessId != null &&
+              fav.businessId == widget.businessId),
     );
   }
 
@@ -40,8 +40,8 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
         (fav) =>
             (widget.cityId != null && fav.cityId == widget.cityId) ||
             (widget.eventId != null && fav.eventId == widget.eventId) ||
-            (widget.businessProfileId != null &&
-                fav.businessProfileId == widget.businessProfileId),
+            (widget.businessId != null &&
+                fav.businessId == widget.businessId),
       );
     } catch (_) {
       return null;
@@ -51,9 +51,9 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
   Future<void> _toggleFavorite(
     bool isFavorited,
     Favorite? favorite,
-    dynamic activeProfile,
+    dynamic activeAccount,
   ) async {
-    if (activeProfile == null || _isLoading) return;
+    if (activeAccount == null || _isLoading) return;
 
     setState(() => _isLoading = true);
 
@@ -63,10 +63,10 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
       } else {
         final newFavorite = Favorite(
           id: null,
-          profileId: activeProfile.id,
+          accountId: activeAccount.id,
           cityId: widget.cityId,
           eventId: widget.eventId,
-          businessProfileId: widget.businessProfileId,
+          businessId: widget.businessId,
         );
         await ref
             .read(favoritesStateProvider.notifier)
@@ -80,7 +80,7 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
   @override
   Widget build(BuildContext context) {
     final favoritesState = ref.watch(favoritesStateProvider);
-    final activeProfile = ref.watch(profileStateProvider).activeProfile;
+    final activeAccount = ref.watch(accountsStateProvider).activeAccount;
     final isFavorited = _isFavorited(favoritesState.favorites);
     final favorite = _getFavorite(favoritesState.favorites);
 
@@ -88,7 +88,7 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
       style: FButtonStyle.secondary(),
       onPress: _isLoading
           ? null
-          : () => _toggleFavorite(isFavorited, favorite, activeProfile),
+          : () => _toggleFavorite(isFavorited, favorite, activeAccount),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 150),
         transitionBuilder: (child, animation) => ScaleTransition(

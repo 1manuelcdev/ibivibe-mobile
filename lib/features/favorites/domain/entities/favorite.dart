@@ -1,15 +1,15 @@
 class Favorite {
   final String? id;
-  final String profileId;
+  final String accountId;
   final String? cityId;
   final String? eventId;
-  final String? businessProfileId;
+  final String? businessId;
 
   Favorite({
     this.id,
-    required this.profileId,
+    required this.accountId,
     required this.cityId,
     required this.eventId,
-    required this.businessProfileId,
+    required this.businessId,
   });
 }

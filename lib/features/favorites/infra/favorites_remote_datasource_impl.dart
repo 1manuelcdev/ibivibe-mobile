@@ -9,12 +9,12 @@ class FavoritesRemoteDatasourceImpl implements FavoritesRemoteDatasource {
   FavoritesRemoteDatasourceImpl(this.dio);
 
   @override
-  Future<List<Favorite>> getAllFavoritesByProfile({
-    required String profileId,
+  Future<List<Favorite>> getAllFavoritesByAccount({
+    required String accountId,
   }) async {
     final response = await dio.get(
       '/favorites',
-      queryParameters: {'profile_id': profileId},
+      queryParameters: {'account_id': accountId},
     );
     return FavoriteModel.fromJsonList(response.data);
   }
@@ -23,7 +23,7 @@ class FavoritesRemoteDatasourceImpl implements FavoritesRemoteDatasource {
   Future<Favorite> pushFavorite({required Favorite favorite}) async {
     final response = await dio.post(
       '/favorites',
-      data: FavoriteModel.toMap(favorite),
+      data: FavoriteModel.mapPush(favorite),
     );
     return FavoriteModel.fromJson(response.data);
   }

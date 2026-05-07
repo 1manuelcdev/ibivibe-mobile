@@ -34,6 +34,7 @@ enum LogStatus implements LogTag {
 
 enum LogFeature implements LogTag {
   auth('[AUTH]'),
+  accounts('[ACCOUNTS]'),
   cities('[CITIES]'),
   businesses('[COMPANIES]'),
   events('[EVENTS]'),

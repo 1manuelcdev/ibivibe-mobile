@@ -50,7 +50,7 @@ final class CityDetailProvider
   }
 }
 
-String _$cityDetailHash() => r'f914660a5088306d93c9a2980854bf4dce9cc299';
+String _$cityDetailHash() => r'5e656a34d97fac1a5db5b0c9e80e29e726f67ad2';
 
 final class CityDetailFamily extends $Family
     with

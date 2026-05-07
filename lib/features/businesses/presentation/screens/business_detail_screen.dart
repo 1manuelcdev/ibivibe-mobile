@@ -73,7 +73,7 @@ class _BusinessDetailContent extends StatelessWidget {
             ),
           ],
           suffixes: [
-            FavoriteButton(businessProfileId: detail?.business.profileId),
+            FavoriteButton(businessId: detail?.business.id),
           ],
         ),
         bodyChildren: [

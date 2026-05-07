@@ -153,53 +153,53 @@ final class FavoritesRepositoryProvider
 String _$favoritesRepositoryHash() =>
     r'120f9d97f77e275668e813e205f957f51e432631';
 
-@ProviderFor(getAllFavoritesByProfile)
-final getAllFavoritesByProfileProvider = GetAllFavoritesByProfileProvider._();
+@ProviderFor(getAllFavoritesByAccount)
+final getAllFavoritesByAccountProvider = GetAllFavoritesByAccountProvider._();
 
-final class GetAllFavoritesByProfileProvider
+final class GetAllFavoritesByAccountProvider
     extends
         $FunctionalProvider<
-          GetAllFavoritesByProfile,
-          GetAllFavoritesByProfile,
-          GetAllFavoritesByProfile
+          GetAllFavoritesByAccount,
+          GetAllFavoritesByAccount,
+          GetAllFavoritesByAccount
         >
-    with $Provider<GetAllFavoritesByProfile> {
-  GetAllFavoritesByProfileProvider._()
+    with $Provider<GetAllFavoritesByAccount> {
+  GetAllFavoritesByAccountProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'getAllFavoritesByProfileProvider',
+        name: r'getAllFavoritesByAccountProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$getAllFavoritesByProfileHash();
+  String debugGetCreateSourceHash() => _$getAllFavoritesByAccountHash();
 
   @$internal
   @override
-  $ProviderElement<GetAllFavoritesByProfile> $createElement(
+  $ProviderElement<GetAllFavoritesByAccount> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  GetAllFavoritesByProfile create(Ref ref) {
-    return getAllFavoritesByProfile(ref);
+  GetAllFavoritesByAccount create(Ref ref) {
+    return getAllFavoritesByAccount(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetAllFavoritesByProfile value) {
+  Override overrideWithValue(GetAllFavoritesByAccount value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<GetAllFavoritesByProfile>(value),
+      providerOverride: $SyncValueProvider<GetAllFavoritesByAccount>(value),
     );
   }
 }
 
-String _$getAllFavoritesByProfileHash() =>
-    r'21cd6acde96ee5b12bc5dcc14f8b666df249dc00';
+String _$getAllFavoritesByAccountHash() =>
+    r'7f24d9933c7f1c6d9e6b257e21b46f2759e977a0';
 
 @ProviderFor(pushFavorite)
 final pushFavoriteProvider = PushFavoriteProvider._();

@@ -59,8 +59,8 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
         .map((f) => f.cityId!)
         .toSet();
     final businessIds = favorites
-        .where((f) => f.businessProfileId != null)
-        .map((f) => f.businessProfileId!)
+        .where((f) => f.businessId != null)
+        .map((f) => f.businessId!)
         .toSet();
     final eventIds = favorites
         .where((f) => f.eventId != null)
@@ -73,9 +73,8 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
     );
 
     final businesses = businessesState.maybeWhen(
-      data: (list) => list
-          .where((business) => businessIds.contains(business.profileId))
-          .toList(),
+      data: (list) =>
+          list.where((business) => businessIds.contains(business.id)).toList(),
       orElse: () => <Business>[],
     );
 

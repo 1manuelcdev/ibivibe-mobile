@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibiapabaapp/core/session/app_session_notifier_provider.dart';
-import 'package:ibiapabaapp/features/profiles/presentation/dialogs/profile_switcher_dialog.dart';
-import 'package:ibiapabaapp/features/profiles/presentation/widgets/profile_photo.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/widgets/account_photo.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/widgets/dialogs/account_switcher_dialog.dart';
 
 class DestinationItem {
   final String label;
@@ -35,7 +35,7 @@ const List<DestinationItem> _destinations = [
     selectedIcon: Icons.favorite_rounded,
   ),
   DestinationItem(
-    label: 'Perfil',
+    label: 'Conta',
     icon: Icons.person_outline_rounded,
     selectedIcon: Icons.person_rounded,
   ),
@@ -47,7 +47,7 @@ class Navbar extends ConsumerWidget {
   int _locationToIndex(String location) {
     if (location.startsWith('/app/search')) return 1;
     if (location.startsWith('/app/favorites')) return 2;
-    if (location.startsWith('/app/profile')) return 3;
+    if (location.startsWith('/app/accounts')) return 3;
     return 0;
   }
 
@@ -81,8 +81,8 @@ class Navbar extends ConsumerWidget {
     final location = GoRouterState.of(context).uri.toString();
     final index = _locationToIndex(location);
     final theme = context.theme;
-    final session = ref.watch(appSessionProvider);
-    final activeProfile = session.activeProfile;
+    final accountsState = ref.watch(accountsStateProvider);
+    final activeAccount = accountsState.activeAccount;
 
     return NavigationBarTheme(
       data: _getNavbarThemeData(theme),
@@ -95,8 +95,8 @@ class Navbar extends ConsumerWidget {
         child: NavigationBar(
           selectedIndex: index,
           height: 64,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          labelPadding: const .fromLTRB(0, 4, 0, 0),
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          labelPadding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
           onDestinationSelected: (i) {
             if (i == index) return;
 
@@ -104,7 +104,7 @@ class Navbar extends ConsumerWidget {
               '/app/home',
               '/app/search',
               '/app/favorites',
-              '/app/profile',
+              '/app/accounts',
             ];
 
             i == 0 ? context.go(routes[i]) : context.push(routes[i]);
@@ -118,8 +118,8 @@ class Navbar extends ConsumerWidget {
               Widget wrapSpecialGestures(Widget child) {
                 if (!isProfile) return child;
                 return GestureDetector(
-                  onLongPress: () => showProfileSwitcherSheet(context, ref),
-                  onDoubleTap: () => showProfileSwitcherSheet(context, ref),
+                  onLongPress: () => showAccountSwitcherSheet(context, ref),
+                  onDoubleTap: () => showAccountSwitcherSheet(context, ref),
                   behavior: HitTestBehavior.opaque,
                   child: child,
                 );
@@ -128,18 +128,18 @@ class Navbar extends ConsumerWidget {
               return NavigationDestination(
                 icon: wrapSpecialGestures(
                   isProfile
-                      ? ProfilePhoto(profile: activeProfile, imgSize: 26)
-                      : Icon(dest.icon, size: 26),
+                      ? AccountPhoto(account: activeAccount, size: 28)
+                      : Icon(dest.icon, size: 28),
                 ),
                 selectedIcon: wrapSpecialGestures(
                   isProfile
-                      ? ProfilePhoto(
-                          profile: activeProfile,
-                          imgSize: 26,
+                      ? AccountPhoto(
+                          account: activeAccount,
+                          size: 28,
                           borderColor: context.theme.colors.foreground,
                           isSelected: true,
                         )
-                      : Icon(dest.selectedIcon, size: 26),
+                      : Icon(dest.selectedIcon, size: 28),
                 ),
                 label: dest.label,
               );

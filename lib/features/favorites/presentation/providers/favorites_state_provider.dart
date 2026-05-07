@@ -5,11 +5,11 @@ import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/features/favorites/domain/entities/favorite.dart';
 import 'package:ibiapabaapp/features/favorites/domain/tags/favorites_logtags.dart'
     as fav_tags;
-import 'package:ibiapabaapp/features/favorites/domain/usecases/get_all_favorites_by_profile.dart';
+import 'package:ibiapabaapp/features/favorites/domain/usecases/get_all_favorites_by_account.dart';
 import 'package:ibiapabaapp/features/favorites/domain/usecases/pop_favorite.dart';
 import 'package:ibiapabaapp/features/favorites/domain/usecases/push_favorite.dart';
 import 'package:ibiapabaapp/features/favorites/presentation/providers/favorites_providers.dart';
-import 'package:ibiapabaapp/features/profiles/presentation/providers/profile_state_provider.dart';
+import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -25,25 +25,25 @@ class FavoritesState extends _$FavoritesState with ControllerLogHandler {
 
   @override
   FavoritesStateData build() {
-    ref.listen(profileStateProvider, (previous, next) {
-      if (next.activeProfile != null &&
-          previous?.activeProfile?.id != next.activeProfile?.id) {
-        _onActiveProfileChanged(next.activeProfile!.id);
+    ref.listen(accountsStateProvider, (previous, next) {
+      if (next.activeAccount != null &&
+          previous?.activeAccount?.id != next.activeAccount?.id) {
+        _onActiveAccountChanged(next.activeAccount!.id);
       }
     });
 
     return const FavoritesStateData();
   }
 
-  Future<void> _onActiveProfileChanged(String profileId) async {
-    await _loadFavoritesForProfile(profileId);
+  Future<void> _onActiveAccountChanged(String accountId) async {
+    await _loadFavoritesForAccount(accountId);
   }
 
-  Future<void> _loadFavoritesForProfile(String profileId) async {
+  Future<void> _loadFavoritesForAccount(String accountId) async {
     try {
       final result = await ref
-          .read(getAllFavoritesByProfileProvider)
-          .call(GetAllFavoritesByProfileParams(profileId: profileId));
+          .read(getAllFavoritesByAccountProvider)
+          .call(GetAllFavoritesByAccountParams(accountId: accountId));
 
       if (!ref.mounted) return;
 
@@ -71,10 +71,10 @@ class FavoritesState extends _$FavoritesState with ControllerLogHandler {
 
   Future<void> restore() async {
     try {
-      final profileState = ref.read(profileStateProvider);
-      if (profileState.activeProfile == null) return;
+      final accountsState = ref.read(accountsStateProvider);
+      if (accountsState.activeAccount == null) return;
 
-      await _loadFavoritesForProfile(profileState.activeProfile!.id);
+      await _loadFavoritesForAccount(accountsState.activeAccount!.id);
       if (!state.hasError) {
         logControllerSuccess(action: fav_tags.FavoriteAction.restore);
       }
@@ -89,8 +89,8 @@ class FavoritesState extends _$FavoritesState with ControllerLogHandler {
 
   Future<void> pushFavorite(Favorite favorite) async {
     try {
-      final profileState = ref.read(profileStateProvider);
-      if (profileState.activeProfile == null) return;
+      final accountsState = ref.read(accountsStateProvider);
+      if (accountsState.activeAccount == null) return;
 
       final result = await ref
           .read(pushFavoriteProvider)
@@ -128,8 +128,8 @@ class FavoritesState extends _$FavoritesState with ControllerLogHandler {
 
   Future<void> popFavorite(Favorite favorite) async {
     try {
-      final profileState = ref.read(profileStateProvider);
-      if (profileState.activeProfile == null) return;
+      final accountsState = ref.read(accountsStateProvider);
+      if (accountsState.activeAccount == null) return;
 
       final result = await ref
           .read(popFavoriteProvider)
