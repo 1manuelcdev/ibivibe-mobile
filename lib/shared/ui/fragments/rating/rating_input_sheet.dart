@@ -102,12 +102,7 @@ class _FormState extends State<_Form> {
       context: context,
       duration: const Duration(seconds: 3),
       alignment: .bottomCenter,
-      title: Text(
-        'TODO: Falta implementar controller e comunicação com backend',
-        style: context.theme.typography.sm.copyWith(
-          color: context.theme.colors.foreground,
-        ),
-      ),
+      title: 'TODO: Falta implementar controller e comunicação com backend',
     );
     // widget.controller.login(email: _email, password: _password);
   }

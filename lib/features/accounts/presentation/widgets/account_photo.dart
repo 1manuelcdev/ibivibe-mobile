@@ -17,6 +17,42 @@ class AccountPhoto extends StatelessWidget {
     this.borderColor,
   });
 
+  Widget _getAccountPhoto(BuildContext context, Account? account, double size) {
+    if (account == null) {
+      return Icon(
+        Icons.device_unknown_rounded,
+        size: size / 1.5,
+        color: context.theme.colors.secondaryForeground,
+      );
+    }
+
+    if (account.avatarUrl == null) {
+      switch (account.type) {
+        case AccountType.personal:
+          return Icon(
+            Icons.person_rounded,
+            size: size / 1.5,
+            color: context.theme.colors.secondaryForeground,
+          );
+        case AccountType.business:
+          return Icon(
+            Icons.business_rounded,
+            size: size / 1.5,
+            color: context.theme.colors.secondaryForeground,
+          );
+      }
+    }
+
+    return ClipOval(
+      child: Image.network(
+        account.avatarUrl!,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,22 +65,12 @@ class AccountPhoto extends StatelessWidget {
           side: isSelected
               ? BorderSide(
                   color: borderColor ?? context.theme.colors.primary,
-                  width: 1.4,
+                  width: 2,
                 )
               : BorderSide.none,
         ),
       ),
-      child: Icon(
-        account == null
-            ? Icons.device_unknown_rounded
-            : account!.type == AccountType.personal
-            ? Icons.person_rounded
-            : account!.type == AccountType.business
-            ? Icons.business_rounded
-            : Icons.person_rounded,
-        size: size / 1.5,
-        color: context.theme.colors.secondaryForeground,
-      ),
+      child: _getAccountPhoto(context, account, size),
     );
   }
 }

@@ -46,7 +46,7 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
     return SafeArea(
       child: Container(
         constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height * 0.5,
+          minHeight: MediaQuery.of(context).size.height * 0.7,
           maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         decoration: BoxDecoration(
@@ -66,7 +66,6 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const FDivider(),
 
               // ─── Contas pessoais ────────────────────────────────────────────
               if (personalAccounts.isNotEmpty) ...[
@@ -108,6 +107,7 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                 ),
               ],
 
+              const SizedBox(height: 16),
               const FDivider(),
 
               // ─── Adicionar nova conta ──────────────────────────────────────
@@ -123,9 +123,7 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                     ),
                   ),
                 ),
-                onPress: () {
-                  context.push('/welcome');
-                },
+                onPress: () => context.push('/auth/login'),
                 prefix: Container(
                   width: 40,
                   height: 40,
@@ -192,7 +190,7 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
 
   Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 16, 12, 8),
+      padding: const EdgeInsets.fromLTRB(4, 16, 12, 8),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(

@@ -15,7 +15,6 @@ class AccountScreen extends ConsumerWidget {
     final account = ref.watch(accountsStateProvider).activeAccount;
 
     return SafeArea(
-      top: true,
       child: FScaffold(
         child: SingleChildScrollView(
           child: Column(

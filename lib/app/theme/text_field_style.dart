@@ -15,7 +15,7 @@ FTextFieldStyle textFieldStyle({
     style: style,
   ).ghost;
 
-  final textStyle = typography.sm.copyWith(
+  final textStyle = typography.base.copyWith(
     fontFamily: typography.defaultFontFamily,
     color: colors.foreground,
   );
@@ -59,7 +59,7 @@ FTextFieldStyle textFieldStyle({
       WidgetState.any: textStyle.copyWith(color: colors.primary),
     }),
     filled: true,
-    fillColor: colors.barrier.withAlpha(128),
+    fillColor: colors.secondary.withAlpha(200),
     cursorColor: colors.primary,
     border: FWidgetStateMap({
       WidgetState.error: OutlineInputBorder(

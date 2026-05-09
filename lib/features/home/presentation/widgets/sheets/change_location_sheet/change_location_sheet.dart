@@ -121,14 +121,12 @@ class _ChangeLocationSheetState extends ConsumerState<_ChangeLocationSheet> {
           icon: Icon(
             cityChanged ? Icons.location_on : Icons.location_on_outlined,
           ),
-          title: Text(
-            cityChanged ? 'Localização atualizada' : 'Localização confirmada',
-          ),
-          description: Text(
-            cityChanged
-                ? 'Você agora está em ${newCity.name}'
-                : 'Você continua em ${newCity?.name ?? 'sua cidade atual'}',
-          ),
+          title: cityChanged
+              ? 'Localização atualizada'
+              : 'Localização confirmada',
+          description: cityChanged
+              ? 'Você agora está em ${newCity.name}'
+              : 'Você continua em ${newCity?.name ?? 'sua cidade atual'}',
         );
       },
     );
@@ -166,8 +164,8 @@ class _ChangeLocationSheetState extends ConsumerState<_ChangeLocationSheet> {
         alignment: .topCenter,
         context: context,
         icon: const Icon(Icons.location_off_outlined),
-        title: Text(title),
-        description: Text(failure.message),
+        title: title,
+        description: failure.message,
       );
     } else {
       setState(() => _loadingLocation = false);
@@ -181,14 +179,12 @@ class _ChangeLocationSheetState extends ConsumerState<_ChangeLocationSheet> {
         icon: Icon(
           cityChanged ? Icons.location_on : Icons.location_on_outlined,
         ),
-        title: Text(
-          cityChanged ? 'Localização atualizada' : 'Localização confirmada',
-        ),
-        description: Text(
-          cityChanged
-              ? 'Você agora está em ${newCity.name}'
-              : 'Você continua em ${newCity?.name ?? ', sua cidade atual'}',
-        ),
+        title: cityChanged
+            ? 'Localização atualizada'
+            : 'Localização confirmada',
+        description: cityChanged
+            ? 'Você agora está em ${newCity.name}'
+            : 'Você continua em ${newCity?.name ?? ', sua cidade atual'}',
       );
     }
   }

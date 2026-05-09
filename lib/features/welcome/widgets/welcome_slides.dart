@@ -13,14 +13,19 @@ class Slide {
 final List<Slide> carouselSlides = [
   Slide(
     title: 'Onde é hoje?',
-    description:
-        'Descubra o que há de melhor na Ibiapaba em poucos toques, aproveite promoções e saiba em primeira mão sobre eventos do seu interesse.',
+    description: 'Descubra o que há de melhor na Ibiapaba em poucos toques',
     imageAssetUri: 'assets/images/highlights-1.webp',
   ),
   Slide(
-    title: 'Lorem Ipsum Dolor',
+    title: 'Recomendações com base em seus interesses',
     description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'Priorizamos os empreendimentos e eventos que te interessam para recomendações certeiras usando Inteligência Artificial',
+    imageAssetUri: 'assets/images/highlights_placeholder.png',
+  ),
+  Slide(
+    title: 'Anuncie no lugar e hora certos',
+    description:
+        'Traga sua empresa para nosso catálogo e anuncie diretamente para quem realmente te procura - no momento certo',
     imageAssetUri: 'assets/images/highlights_placeholder.png',
   ),
 ];

@@ -21,6 +21,11 @@ class SearchScreen extends ConsumerWidget {
         .toList();
     final eventsInterests = interests?.events.map((b) => b.name).toList();
 
+    final hasNoInterests =
+        businessesInterests == null ||
+        businessesInterests.isEmpty && eventsInterests == null ||
+        eventsInterests!.isEmpty;
+
     return SafeArea(
       maintainBottomViewPadding: false,
       child: SingleChildScrollView(
@@ -31,6 +36,11 @@ class SearchScreen extends ConsumerWidget {
             MainWrapper(
               hasTopPadding: false,
               children: [
+                hasNoInterests
+                    ? const Text(
+                        'Atualize seus interesses para ver recomendações certeiras',
+                      )
+                    : const SizedBox.shrink(),
                 businessesInterests == null || businessesInterests.isEmpty
                     ? Text(
                         'Atualize seus interesses para ver recomendações de empresas',

@@ -52,10 +52,7 @@ class _BusinessesOverviewScreenState
               onPress: () {
                 showAppToast(
                   context: context,
-                  title: Text(
-                    'TODO: Implementar redirect para expandedSearch',
-                    style: context.theme.typography.sm,
-                  ),
+                  title: 'TODO: Implementar redirect para expandedSearch',
                 );
               },
               child: const Icon(Icons.search, size: 24),

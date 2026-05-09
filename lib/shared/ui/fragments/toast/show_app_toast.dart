@@ -3,9 +3,9 @@ import 'package:forui/forui.dart';
 
 void showAppToast({
   required BuildContext context,
-  required Widget title,
+  required String title,
+  String? description,
   Widget? icon,
-  Widget? description,
   FToastAlignment? alignment,
   Duration? duration = const Duration(seconds: 5),
 }) {
@@ -39,20 +39,20 @@ void showAppToast({
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
+                      spacing: 4,
                       children: [
-                        DefaultTextStyle(
-                          style: style.titleTextStyle,
-                          maxLines: 100,
-                          child: title,
-                        ),
-                        if (description != null) ...[
-                          SizedBox(height: style.titleSpacing),
-                          DefaultTextStyle(
-                            style: style.descriptionTextStyle,
-                            maxLines: 100,
-                            child: description,
+                        Text(
+                          title,
+                          style: context.theme.typography.base.copyWith(
+                            fontWeight: .w600,
                           ),
-                        ],
+                        ),
+                        description != null
+                            ? Text(
+                                description,
+                                style: context.theme.typography.xs,
+                              )
+                            : const SizedBox.shrink(),
                       ],
                     ),
                   ),

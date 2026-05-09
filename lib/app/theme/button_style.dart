@@ -24,7 +24,7 @@ FButtonStyles getButtonStyles({
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
                   TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: colors.primaryForeground,
                   ),
@@ -43,7 +43,7 @@ FButtonStyles getButtonStyles({
           contentStyle: base.contentStyle
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
-                  const TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 16),
                 ),
               )
               .call,
@@ -59,7 +59,7 @@ FButtonStyles getButtonStyles({
           contentStyle: base.contentStyle
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
-                  const TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 16),
                 ),
               )
               .call,
@@ -76,12 +76,13 @@ FButtonStyles getButtonStyles({
             BoxDecoration(
               border: BoxBorder.all(color: colors.border),
               borderRadius: .circular(24),
+              color: colors.secondary,
             ),
           ),
           contentStyle: base.contentStyle
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
-                  const TextStyle(fontSize: 14),
+                  const TextStyle(fontSize: 16),
                 ),
               )
               .call,
@@ -98,7 +99,7 @@ FButtonStyles getButtonStyles({
               .copyWith(
                 textStyle: FWidgetStateMap<TextStyle>.all(
                   TextStyle(
-                    fontSize: 14,
+                    fontSize: 16,
                     color: colors.destructiveForeground,
                     fontWeight: .w600,
                   ),

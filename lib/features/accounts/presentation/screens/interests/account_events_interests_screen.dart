@@ -111,15 +111,15 @@ class _AccountEventsInterestsScreenState
       showAppToast(
         icon: const Icon(FIcons.check),
         context: context,
-        title: const Text('Interesses enviados'),
-        description: const Text('Seus interesses foram salvos com sucesso!'),
+        title: 'Interesses enviados',
+        description: 'Seus interesses foram salvos com sucesso!',
       );
     } else {
       showAppToast(
         icon: const Icon(FIcons.circleX),
         context: context,
-        title: const Text('Interesses limpos'),
-        description: const Text('Você não verá recomendações personalizadas'),
+        title: 'Interesses limpos',
+        description: 'Você não verá recomendações personalizadas',
       );
     }
   }
@@ -143,10 +143,9 @@ class _AccountEventsInterestsScreenState
       if (controllerState.status == AccountInterestsStatus.error) {
         showAppToast(
           context: context,
-          title: const Text('Erro ao enviar interesses'),
-          description: Text(
-            controllerState.errorMessage ?? 'Ocorreu um erro inesperado',
-          ),
+          title: 'Erro ao enviar interesses',
+          description:
+              controllerState.errorMessage ?? 'Ocorreu um erro inesperado',
         );
         return;
       }

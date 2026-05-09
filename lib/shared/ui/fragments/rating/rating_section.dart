@@ -64,12 +64,7 @@ class _RatingSectionState extends State<RatingSection> {
                 GestureDetector(
                   onTap: () => showAppToast(
                     context: context,
-                    title: Text(
-                      'TODO: implementar redirecionamento para avaliações',
-                      style: context.theme.typography.sm.copyWith(
-                        color: context.theme.colors.foreground,
-                      ),
-                    ),
+                    title: 'TODO: implementar redirecionamento para avaliações',
                   ),
                   child: Text(
                     "(${widget.ratingQuantity})",

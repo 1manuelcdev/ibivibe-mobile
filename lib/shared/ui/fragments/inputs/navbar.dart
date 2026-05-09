@@ -89,62 +89,67 @@ class Navbar extends ConsumerWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: theme.colors.border, width: 0.7),
+            top: BorderSide(
+              color: theme.colors.border.withAlpha(72),
+              width: 0.7,
+            ),
           ),
         ),
-        child: NavigationBar(
-          selectedIndex: index,
-          height: 64,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          labelPadding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
-          onDestinationSelected: (i) {
-            if (i == index) return;
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: NavigationBar(
+            selectedIndex: index,
+            height: 60,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            onDestinationSelected: (i) {
+              if (i == index) return;
 
-            final routes = [
-              '/app/home',
-              '/app/search',
-              '/app/favorites',
-              '/app/accounts',
-            ];
+              final routes = [
+                '/app/home',
+                '/app/search',
+                '/app/favorites',
+                '/app/accounts',
+              ];
 
-            i == 0 ? context.go(routes[i]) : context.push(routes[i]);
-          },
-          destinations: [
-            ..._destinations.asMap().entries.map((entry) {
-              final i = entry.key;
-              final dest = entry.value;
-              final isProfile = i == 3;
+              i == 0 ? context.go(routes[i]) : context.push(routes[i]);
+            },
+            destinations: [
+              ..._destinations.asMap().entries.map((entry) {
+                final i = entry.key;
+                final dest = entry.value;
+                final isProfile = i == 3;
 
-              Widget wrapSpecialGestures(Widget child) {
-                if (!isProfile) return child;
-                return GestureDetector(
-                  onLongPress: () => showAccountSwitcherSheet(context, ref),
-                  onDoubleTap: () => showAccountSwitcherSheet(context, ref),
-                  behavior: HitTestBehavior.opaque,
-                  child: child,
+                Widget wrapSpecialGestures(Widget child) {
+                  if (!isProfile) return child;
+                  return GestureDetector(
+                    onLongPress: () => showAccountSwitcherSheet(context, ref),
+                    onDoubleTap: () => showAccountSwitcherSheet(context, ref),
+                    behavior: HitTestBehavior.opaque,
+                    child: child,
+                  );
+                }
+
+                return NavigationDestination(
+                  icon: wrapSpecialGestures(
+                    isProfile
+                        ? AccountPhoto(account: activeAccount, size: 28)
+                        : Icon(dest.icon, size: 28),
+                  ),
+                  selectedIcon: wrapSpecialGestures(
+                    isProfile
+                        ? AccountPhoto(
+                            account: activeAccount,
+                            size: 28,
+                            borderColor: context.theme.colors.foreground,
+                            isSelected: true,
+                          )
+                        : Icon(dest.selectedIcon, size: 28),
+                  ),
+                  label: dest.label,
                 );
-              }
-
-              return NavigationDestination(
-                icon: wrapSpecialGestures(
-                  isProfile
-                      ? AccountPhoto(account: activeAccount, size: 28)
-                      : Icon(dest.icon, size: 28),
-                ),
-                selectedIcon: wrapSpecialGestures(
-                  isProfile
-                      ? AccountPhoto(
-                          account: activeAccount,
-                          size: 28,
-                          borderColor: context.theme.colors.foreground,
-                          isSelected: true,
-                        )
-                      : Icon(dest.selectedIcon, size: 28),
-                ),
-                label: dest.label,
-              );
-            }),
-          ],
+              }),
+            ],
+          ),
         ),
       ),
     );

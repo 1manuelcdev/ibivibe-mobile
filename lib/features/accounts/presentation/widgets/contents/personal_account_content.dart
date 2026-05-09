@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ibiapabaapp/core/beta/presentation/screens/under_development_screen.dart';
 import 'package:ibiapabaapp/features/accounts/domain/entities/account.dart';
 import 'package:ibiapabaapp/features/accounts/presentation/widgets/contents/sections/business_sections.dart';
 import 'package:ibiapabaapp/features/accounts/presentation/widgets/contents/sections/personal_sections.dart';
@@ -19,7 +20,7 @@ class PersonalAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Sua Atividade',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Sua Atividade'),
+          onSeeAllTap: () => redirectToUnderDevelopment(context, 'Sua Atividade'),
         ),
         const InsightsSection(),
 
@@ -27,7 +28,7 @@ class PersonalAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Interações',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Interações'),
+          onSeeAllTap: () => redirectToUnderDevelopment(context, 'Interações'),
         ),
         const InteractionsSection(),
 
@@ -43,7 +44,7 @@ class PersonalAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Expedição Ibiapaba',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Expedição'),
+          onSeeAllTap: () => redirectToUnderDevelopment(context, 'Expedição'),
         ),
         const ExpeditionSection(),
 
@@ -51,7 +52,7 @@ class PersonalAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Configurações rápidas',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Configurações'),
+          onSeeAllTap: () => redirectToUnderDevelopment(context, 'Configurações'),
         ),
         const QuickSettingsSection(),
 
@@ -59,14 +60,10 @@ class PersonalAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Informações do Aplicativo',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Informações'),
+          onSeeAllTap: () => redirectToUnderDevelopment(context, 'Informações'),
         ),
         const AppInfoSection(),
       ],
     );
-  }
-
-  void _showUnderDevelopment(BuildContext context, String feature) {
-    // TODO: Implementar navegação para tela de "em desenvolvimento"
   }
 }

@@ -16,16 +16,17 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      maintainBottomViewPadding: false,
       child: SingleChildScrollView(
         child: Column(
           children: [
             _HomeHeader(),
-            QuickCategoriesList(),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
 
             const SponsoredHighlights(),
             const SizedBox(height: 24),
+
+            const QuickCategoriesList(),
+            const SizedBox(height: 16),
 
             const NowHappeningSection(),
             const SizedBox(height: 24),

@@ -61,10 +61,7 @@ class _EventsOverviewScreenState extends ConsumerState<EventsOverviewScreen> {
               onPress: () {
                 showAppToast(
                   context: context,
-                  title: Text(
-                    'TODO: Implementar redirect para busca',
-                    style: context.theme.typography.sm,
-                  ),
+                  title: 'TODO: Implementar redirect para busca',
                 );
               },
               child: const Icon(Icons.search, size: 24),

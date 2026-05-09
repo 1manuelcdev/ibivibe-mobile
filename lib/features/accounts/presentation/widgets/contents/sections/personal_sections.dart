@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/app/theme/flat_button_style.dart';
 import 'package:ibiapabaapp/shared/ui/layout/unimplemented_wrapper.dart';
 
@@ -66,15 +67,13 @@ class InteractionsSection extends StatelessWidget {
             child: Text('Roteiros', style: context.theme.typography.base),
           ),
         ),
-        UnimplementedWrapper(
-          child: FButton(
-            style: flatButtonStyle,
-            onPress: () {},
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            prefix: const Icon(FIcons.heart, size: 24),
-            child: Text('Favoritos', style: context.theme.typography.base),
-          ),
+        FButton(
+          style: flatButtonStyle,
+          onPress: () => context.push('/app/favorites'),
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          prefix: const Icon(FIcons.heart, size: 24),
+          child: Text('Favoritos', style: context.theme.typography.base),
         ),
         UnimplementedWrapper(
           child: FButton(

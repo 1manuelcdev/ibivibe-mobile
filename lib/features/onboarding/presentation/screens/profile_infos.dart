@@ -9,7 +9,6 @@ class OnboardingProfileInfosScreen extends StatefulWidget {
       _OnboardingProfileScreenState();
 }
 
-// TODO: criação de perfil
 class _OnboardingProfileScreenState
     extends State<OnboardingProfileInfosScreen> {
   @override

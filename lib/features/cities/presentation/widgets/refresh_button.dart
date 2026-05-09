@@ -63,7 +63,7 @@ class _RefreshButtonState extends State<RefreshButton>
       if (mounted) {
         showAppToast(
           context: context,
-          title: Text('Limite atingido. Tente novamente após às $waitTime'),
+          title: 'Limite atingido. Tente novamente após às $waitTime',
         );
       }
       return;
@@ -82,21 +82,13 @@ class _RefreshButtonState extends State<RefreshButton>
       if (mounted) {
         showAppToast(
           context: context,
-          title: const Row(
-            children: [
-              Icon(Icons.check_circle, color: Colors.green, size: 16),
-              SizedBox(width: 8),
-              Text('Dados atualizados!'),
-            ],
-          ),
+          icon: const Icon(Icons.check_circle, color: Colors.green, size: 16),
+          title: 'Dados atualizados!',
         );
       }
     } catch (e) {
       if (mounted) {
-        showAppToast(
-          context: context,
-          title: const Text('Falha na sincronização.'),
-        );
+        showAppToast(context: context, title: 'Falha na sincronização.');
       }
     } finally {
       if (mounted) {

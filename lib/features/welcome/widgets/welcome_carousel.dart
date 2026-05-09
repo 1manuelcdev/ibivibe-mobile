@@ -65,17 +65,21 @@ class _WelcomeCarouselState extends State<WelcomeCarousel> {
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               key: ValueKey(activeIndex),
-              spacing: 12,
+              crossAxisAlignment: .start,
+              spacing: 8,
               children: [
                 Text(
                   carouselSlides[activeIndex].title,
-                  style: theme.typography.xl2.copyWith(fontWeight: .w600),
-                  textAlign: .center,
+                  style: theme.typography.xl2.copyWith(
+                    fontWeight: .w800,
+                    letterSpacing: -0.5,
+                  ),
+                  textAlign: .start,
                 ),
                 Text(
                   carouselSlides[activeIndex].description,
-                  style: theme.typography.sm,
-                  textAlign: .center,
+                  style: theme.typography.base,
+                  textAlign: .start,
                 ),
               ],
             ),

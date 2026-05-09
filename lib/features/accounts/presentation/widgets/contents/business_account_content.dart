@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:ibiapabaapp/core/beta/presentation/screens/under_development_screen.dart';
 import 'package:ibiapabaapp/features/accounts/domain/entities/account.dart';
 import 'package:ibiapabaapp/features/accounts/presentation/widgets/contents/sections/business_sections.dart';
 import 'package:ibiapabaapp/shared/ui/layout/section_header.dart';
@@ -17,7 +18,8 @@ class BusinessAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Dados da Empresa',
           seeAllText: 'Editar',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Dados da Empresa'),
+          onSeeAllTap: () =>
+              redirectToUnderDevelopment(context, 'Dados da Empresa'),
         ),
         BusinessDataSection(account: account),
 
@@ -25,7 +27,8 @@ class BusinessAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Gerenciamento',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Gerenciamento'),
+          onSeeAllTap: () =>
+              redirectToUnderDevelopment(context, 'Gerenciamento'),
         ),
         const BusinessManagementSection(),
 
@@ -33,7 +36,8 @@ class BusinessAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Configurações rápidas',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Configurações'),
+          onSeeAllTap: () =>
+              redirectToUnderDevelopment(context, 'Configurações'),
         ),
         const QuickSettingsSection(),
 
@@ -41,14 +45,10 @@ class BusinessAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Informações do Aplicativo',
           seeAllText: 'Ajuda',
-          onSeeAllTap: () => _showUnderDevelopment(context, 'Informações'),
+          onSeeAllTap: () => redirectToUnderDevelopment(context, 'Informações'),
         ),
         const AppInfoSection(),
       ],
     );
-  }
-
-  void _showUnderDevelopment(BuildContext context, String feature) {
-    // TODO: Implementar navegação para tela de "em desenvolvimento"
   }
 }

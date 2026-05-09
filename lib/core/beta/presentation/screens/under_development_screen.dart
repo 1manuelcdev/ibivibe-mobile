@@ -3,6 +3,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 
+void redirectToUnderDevelopment(BuildContext context, String feature) {
+  context.push(
+    '/app/beta/under-development',
+    extra: UnderDevelopmentArgs(featureName: feature),
+  );
+}
+
 class UnderDevelopmentArgs {
   const UnderDevelopmentArgs({
     required this.featureName,

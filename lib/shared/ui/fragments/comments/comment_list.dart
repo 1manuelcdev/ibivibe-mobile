@@ -18,10 +18,7 @@ class CommentList extends StatelessWidget {
           onPress: () {
             showAppToast(
               context: context,
-              title: Text(
-                'TODO: página com todos os comentários',
-                style: context.theme.typography.sm,
-              ),
+              title: 'TODO: página com todos os comentários',
             );
           },
           child: Text(

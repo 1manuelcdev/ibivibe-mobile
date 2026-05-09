@@ -34,7 +34,7 @@ FThemeData customZincLight() {
     mutedForeground: Color(0xFF71717A),
     destructive: Color(0xFFEF4444),
     destructiveForeground: Color(0xFFFAFAFA),
-    error: Color(0xFFEF4444),
+    error: Color.fromARGB(255, 171, 50, 50),
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFFCCCCCC),
   );
@@ -110,7 +110,7 @@ FThemeData customZincDark() {
     mutedForeground: Color(0xFF71717A),
     destructive: Color(0xFFEF4444),
     destructiveForeground: Color(0xFFFAFAFA),
-    error: Color(0xFFEF4444),
+    error: Color.fromARGB(255, 232, 91, 91),
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFF4D4D56),
   );

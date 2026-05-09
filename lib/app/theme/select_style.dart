@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:forui/forui.dart';
@@ -24,7 +23,6 @@ FSelectStyle selectStyle({
     typography: typography,
     style: style,
   ),
-
   contentStyle: .inherit(
     colors: colors,
     typography: typography,
@@ -34,7 +32,7 @@ FSelectStyle selectStyle({
         colors: colors,
         typography: typography,
         style: style,
-      ).call,
+      ).copyWith(fillColor: Colors.red, filled: true).call,
     ),
   ),
   emptyTextStyle: typography.sm,

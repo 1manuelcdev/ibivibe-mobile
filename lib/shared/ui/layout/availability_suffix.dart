@@ -17,7 +17,7 @@ class AvailabilitySuffix extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: SizedBox.square(
-          dimension: 18,
+          dimension: 14,
           child: CircularProgressIndicator(
             strokeWidth: 2,
             color: context.theme.colors.foreground,

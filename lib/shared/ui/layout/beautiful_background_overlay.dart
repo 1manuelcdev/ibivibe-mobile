@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BeautifulBackgroundOverlay extends StatelessWidget {
+  final bool? childBelow;
   final AlignmentGeometry alignment;
   final Widget child;
   final double opacity;
@@ -10,12 +11,14 @@ class BeautifulBackgroundOverlay extends StatelessWidget {
     required this.child,
     this.opacity = 0.24,
     this.alignment = Alignment.center,
+    this.childBelow = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        childBelow == true ? child : const SizedBox.shrink(),
         Positioned.fill(
           child: IgnorePointer(
             child: Transform.scale(
@@ -36,7 +39,7 @@ class BeautifulBackgroundOverlay extends StatelessWidget {
             ),
           ),
         ),
-        child,
+        childBelow == false ? child : const SizedBox.shrink(),
       ],
     );
   }
