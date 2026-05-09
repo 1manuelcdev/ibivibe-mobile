@@ -20,7 +20,7 @@ final class LocationStateProvider
         argument: null,
         retry: null,
         name: r'locationStateProvider',
-        isAutoDispose: false,
+        isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -41,7 +41,7 @@ final class LocationStateProvider
   }
 }
 
-String _$locationStateHash() => r'2d923a5cecd33cc8451429ad285eae21a5e9e025';
+String _$locationStateHash() => r'df5ea509920e873bed769c17288f1850cf77b44e';
 
 abstract class _$LocationState extends $Notifier<LocationData> {
   LocationData build();
