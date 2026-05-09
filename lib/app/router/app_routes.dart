@@ -15,10 +15,11 @@ import 'package:ibiapabaapp/features/webviews/routes/webviews_routes.dart';
 import 'package:ibiapabaapp/features/welcome/routes/welcome_routes.dart';
 
 final List<RouteBase> appRoutes = [
-  ...welcomeRoutes,
-  ...onboardingRoutes,
-  ...authRoutes,
   ...betaRoutes,
+  ...welcomeRoutes,
+  ...authRoutes,
+  ...onboardingRoutes,
+
   ShellRoute(
     builder: (context, state, child) => AppShell(child: child),
     routes: [

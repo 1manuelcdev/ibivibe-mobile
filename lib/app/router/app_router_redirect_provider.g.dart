@@ -48,4 +48,4 @@ final class RouterRedirectProvider
   }
 }
 
-String _$routerRedirectHash() => r'0263c94f1a10af7c4447a23d9429cb471661fc21';
+String _$routerRedirectHash() => r'c2aab1d0a8adc6474228b9a617adc77c3ca2edad';

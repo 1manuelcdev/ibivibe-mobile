@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/inputs/navbar.dart';
 import 'package:ibiapabaapp/shared/ui/fragments/toast/show_app_toast.dart';
@@ -53,12 +52,7 @@ class _AppShellState extends ConsumerState<AppShell> {
             duration: const Duration(seconds: 3),
             alignment: .bottomCenter,
             context: context,
-            title: Text(
-              'Volte novamente para sair',
-              style: context.theme.typography.sm.copyWith(
-                color: context.theme.colors.foreground,
-              ),
-            ),
+            title: 'Volte novamente para sair',
           );
         } else {
           exit(0);
