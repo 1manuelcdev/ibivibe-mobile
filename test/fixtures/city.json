@@ -6,7 +6,6 @@
   "cover_img_url": "https://example.com/city.jpg",
   "categories": ["tourism", "culture"],
   "location": {
-    "latitude": -12.9714,
-    "longitude": -38.5124
+    "coordinates": [-38.5124, -12.9714]
   }
 }
