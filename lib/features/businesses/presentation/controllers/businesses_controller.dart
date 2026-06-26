@@ -36,46 +36,30 @@ class Businesses extends _$Businesses with ControllerLogHandler {
   }
 
   Future<List<Business>> _fetchRemote() async {
-    final getAllBusinessesUsecase = ref.read(getAllBusinessesProvider);
-    final result = await getAllBusinessesUsecase();
-
-    if (!ref.mounted) throw Exception('Provider disposed');
-
-    return result.fold(
-      (failure) {
-        logControllerError(
-          action: BusinessAction.getAllBusinesses,
-          failure: failure,
-        );
-        throw Exception(failure.message);
-      },
-      (businesses) {
-        logControllerSuccess(action: BusinessAction.getAllBusinesses);
-        return businesses;
-      },
-    );
+    final repository = ref.read(businessesRepositoryProvider);
+    try {
+      final businesses = await repository.getAllBusinesses();
+      if (!ref.mounted) throw Exception('Provider disposed');
+      logControllerSuccess(action: BusinessAction.getAllBusinesses);
+      return businesses;
+    } catch (e) {
+      logControllerError(action: BusinessAction.getAllBusinesses, failure: e);
+      throw Exception(e.toString());
+    }
   }
 
   Future<void> getAllBusinesses() async {
     state = const AsyncLoading();
-    final usecase = ref.read(getAllBusinessesProvider);
-    final result = await usecase();
-
-    if (!ref.mounted) return;
-
-    result.fold(
-      (failure) {
-        logControllerError(
-          action: BusinessAction.getAllBusinesses,
-          failure: failure,
-        );
-        state = AsyncError(failure.message, StackTrace.current);
-      },
-      (businesses) {
-        logControllerSuccess(action: BusinessAction.getAllBusinesses);
-        state = AsyncData(businesses);
-      },
-    );
+    final repository = ref.read(businessesRepositoryProvider);
+    try {
+      final businesses = await repository.getAllBusinesses();
+      if (!ref.mounted) return;
+      logControllerSuccess(action: BusinessAction.getAllBusinesses);
+      state = AsyncData(businesses);
+    } catch (e) {
+      logControllerError(action: BusinessAction.getAllBusinesses, failure: e);
+      state = AsyncError(e.toString(), StackTrace.current);
+    }
   }
 
   Future<void> getBusinessById(String id) async {
@@ -83,35 +67,27 @@ class Businesses extends _$Businesses with ControllerLogHandler {
     final currentBusinesses = (state as AsyncData<List<Business>>).value;
 
     state = const AsyncLoading();
-    final usecase = ref.read(getBusinessByIdProvider);
-    final result = await usecase(id);
-
-    if (!ref.mounted) return;
-
-    result.fold(
-      (failure) {
-        logControllerError(
-          action: BusinessAction.getBusinessById,
-          failure: failure,
-        );
-        state = AsyncError(failure.message, StackTrace.current);
-      },
-      (business) {
-        logControllerSuccess(action: BusinessAction.getBusinessById);
-        if (business != null) {
-          final updated = [...currentBusinesses];
-          final index = updated.indexWhere((b) => b.id == business.id);
-          if (index >= 0) {
-            updated[index] = business;
-          } else {
-            updated.add(business);
-          }
-          state = AsyncData(updated);
+    final repository = ref.read(businessesRepositoryProvider);
+    try {
+      final business = await repository.getBusinessById(id);
+      if (!ref.mounted) return;
+      logControllerSuccess(action: BusinessAction.getBusinessById);
+      if (business != null) {
+        final updated = [...currentBusinesses];
+        final index = updated.indexWhere((b) => b.id == business.id);
+        if (index >= 0) {
+          updated[index] = business;
         } else {
-          state = AsyncData(currentBusinesses);
+          updated.add(business);
         }
-      },
-    );
+        state = AsyncData(updated);
+      } else {
+        state = AsyncData(currentBusinesses);
+      }
+    } catch (e) {
+      logControllerError(action: BusinessAction.getBusinessById, failure: e);
+      state = AsyncError(e.toString(), StackTrace.current);
+    }
   }
 
   Future<void> refresh() async {
