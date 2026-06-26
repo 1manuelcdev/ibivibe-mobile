@@ -4,7 +4,7 @@ import 'package:ibiapabaapp/core/errors/failures/failures.dart';
 import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
-import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/shared/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/shared/models/event.dart';
 import 'package:ibiapabaapp/features/events/domain/entities/event_detail_data.dart';
 import 'package:ibiapabaapp/features/events/domain/tags/events_logtags.dart';

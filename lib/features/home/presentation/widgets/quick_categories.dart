@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
-import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/shared/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/shared/ui/layout/horizontal_infinite_carousel.dart';
 import 'package:ibiapabaapp/shared/utils/show_todo_toast.dart';
 

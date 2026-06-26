@@ -3,7 +3,7 @@ import 'package:ibiapabaapp/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibiapabaapp/core/logger/log_tags.dart';
 import 'package:ibiapabaapp/core/logger/logger.dart';
 import 'package:ibiapabaapp/core/storage/token_storage_provider.dart';
-import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/shared/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/auth/domain/entities/auth_result.dart';
 import 'package:ibiapabaapp/features/auth/domain/tags/auth_logtags.dart';
 import 'package:ibiapabaapp/features/auth/presentation/providers/auth_providers.dart';

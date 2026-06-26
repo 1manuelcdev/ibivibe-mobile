@@ -9,7 +9,7 @@ import 'package:ibiapabaapp/features/favorites/domain/usecases/get_all_favorites
 import 'package:ibiapabaapp/features/favorites/domain/usecases/pop_favorite.dart';
 import 'package:ibiapabaapp/features/favorites/domain/usecases/push_favorite.dart';
 import 'package:ibiapabaapp/features/favorites/presentation/providers/favorites_providers.dart';
-import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/shared/providers/accounts_state_provider.dart';
 import 'package:logger/logger.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

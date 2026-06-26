@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/app/theme/custom_styles/inverted_badge.dart';
 import 'package:ibiapabaapp/shared/models/account.dart';
 import 'package:ibiapabaapp/shared/models/account_type.dart';
-import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/shared/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/features/accounts/presentation/widgets/account_photo/account_photo.dart';
 import 'package:ibiapabaapp/shared/ui/layout/sheet_drag_indicator.dart';
 

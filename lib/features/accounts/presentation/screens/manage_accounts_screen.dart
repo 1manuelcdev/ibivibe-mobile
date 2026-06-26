@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibiapabaapp/shared/models/account.dart';
-import 'package:ibiapabaapp/features/accounts/presentation/providers/accounts_state_provider.dart';
+import 'package:ibiapabaapp/shared/providers/accounts_state_provider.dart';
 import 'package:ibiapabaapp/shared/ui/layout/beautiful_background_overlay.dart';
 
 class ManageAccountsScreen extends ConsumerWidget {
