@@ -11,11 +11,12 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  await dotenv.load(fileName: ".env");
+
   // container temporário para o warm-up
   final container = ProviderContainer();
 
   try {
-    await dotenv.load(fileName: ".env");
     await container.read(initializedCacheServiceProvider.future);
     await container.read(appSessionProvider.notifier).restore();
 
