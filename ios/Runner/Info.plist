@@ -58,12 +58,12 @@
 		<string>117545807767-56qlhpg9jgifnnu4oonptkenaob8sbn5.apps.googleusercontent.com</string>
 		<key>CFBundleURLTypes</key>
 		<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-			<string>com.googleusercontent.apps.117545807767-56qlhpg9jgifnnu4oonptkenaob8sbn5</string>
-			</array>
-		</dict>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.117545807767-56qlhpg9jgifnnu4oonptkenaob8sbn5</string>
+				</array>
+			</dict>
 		</array>
 	</dict>
 </plist>
