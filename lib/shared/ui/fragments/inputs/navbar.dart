@@ -135,20 +135,20 @@ class Navbar extends ConsumerWidget {
                         ? AccountPhoto(
                             key: ValueKey(activeAccount?.id),
                             account: activeAccount,
-                            size: 28,
+                            size: 26,
                           )
-                        : Icon(dest.icon, size: 28),
+                        : Icon(dest.icon, size: 26),
                   ),
                   selectedIcon: wrapSpecialGestures(
                     isProfile
                         ? AccountPhoto(
                             key: ValueKey(activeAccount?.id),
                             account: activeAccount,
-                            size: 28,
+                            size: 26,
                             borderColor: context.theme.colors.foreground,
                             isSelected: true,
                           )
-                        : Icon(dest.selectedIcon, size: 28),
+                        : Icon(dest.selectedIcon, size: 26),
                   ),
                   label: dest.label,
                 );
