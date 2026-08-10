@@ -20,8 +20,6 @@ Dio dio(Ref ref) {
     BaseOptions(
       baseUrl: dotenv.env['API_BASE_URL']!,
       connectTimeout: const Duration(seconds: 6),
-      sendTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'ibivibe/1.0',
