@@ -104,7 +104,7 @@ class _DefaultErrorPlaceholder extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: context.theme.colors.muted,
+        color: context.theme.colors.background,
       ),
       width: double.infinity,
       height: height,

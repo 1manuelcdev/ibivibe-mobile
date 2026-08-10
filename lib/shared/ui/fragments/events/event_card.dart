@@ -145,7 +145,7 @@ class EventCard extends StatelessWidget {
       source: NetworkMedia(url: coverImgUrl ?? ''),
       fit: BoxFit.cover,
       errorWidget: Container(
-        color: theme.colors.muted,
+        color: theme.colors.background,
         child: Icon(
           getEntityIcon(.event),
           color: theme.colors.mutedForeground,
