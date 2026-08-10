@@ -36,9 +36,7 @@ class _AccountEventsInterestsScreenState
   @override
   void initState() {
     super.initState();
-    final interests = ref
-        .read(accountInterestsViewModelProvider)
-        .interestsData;
+    final interests = ref.read(accountInterestsViewModelProvider).interestsData;
     _selected = getInterestsIdsSet(interests);
   }
 
@@ -59,6 +57,9 @@ class _AccountEventsInterestsScreenState
         );
 
         final result = await controller.submitInterests();
+        await ref
+            .read(userPreferencesStateProvider.notifier)
+            .setNeedsOnboarding(false);
         if (mounted) {
           showResultToast(result ?? AccountInterestsResponse(count: 0));
         }
@@ -79,6 +80,9 @@ class _AccountEventsInterestsScreenState
                 entityType: InterestEntityType.event,
               );
               final result = await controller.submitInterests();
+              await ref
+                  .read(userPreferencesStateProvider.notifier)
+                  .setNeedsOnboarding(false);
               if (mounted) {
                 showResultToast(result ?? AccountInterestsResponse(count: 0));
               }
@@ -135,8 +139,8 @@ class _AccountEventsInterestsScreenState
         );
         return;
       }
-      ref
-          .watch(userPreferencesStateProvider.notifier)
+      await ref
+          .read(userPreferencesStateProvider.notifier)
           .setNeedsOnboarding(false);
 
       showResultToast(result ?? AccountInterestsResponse(count: 0));
