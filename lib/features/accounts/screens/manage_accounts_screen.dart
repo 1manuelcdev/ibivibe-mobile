@@ -29,7 +29,7 @@ class ManageAccountsScreen extends ConsumerWidget {
               FButton(
                 style: FButtonStyle.outline(),
                 onPress: () {
-                  context.push('/app/auth/register');
+                  context.push('/auth/register');
                 },
                 child: const Text('Adicionar conta'),
               ),

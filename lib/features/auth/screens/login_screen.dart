@@ -4,8 +4,6 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibivibe/features/auth/providers/auth_providers.dart';
 import 'package:ibivibe/features/auth/widgets/login_form.dart';
-import 'package:ibivibe/features/auth/widgets/google_oauth_button.dart';
-import 'package:ibivibe/features/auth/widgets/text_between_dividers.dart';
 import 'package:ibivibe/shared/ui/layout/beautiful_background_overlay.dart';
 import 'package:ibivibe/shared/ui/layout/form_topbar.dart';
 
@@ -46,8 +44,6 @@ class LoginScreen extends ConsumerWidget {
                   onPress: () => context.push('/auth/register'),
                   child: const Text('Ainda não tenho conta'),
                 ),
-                const TextBetweenDividers(text: 'ou'),
-                const GoogleOAuthButton(),
               ],
             ),
           ),

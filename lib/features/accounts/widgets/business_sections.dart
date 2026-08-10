@@ -15,7 +15,7 @@ class QuickSettingsSection extends StatelessWidget {
       children: [
         FButton(
           style: flatButtonStyle,
-          onPress: () => context.push('/app/account/interests'),
+          onPress: () => context.push('/app/accounts/interests/businesses'),
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           prefix: const Icon(FIcons.userStar, size: 24),
