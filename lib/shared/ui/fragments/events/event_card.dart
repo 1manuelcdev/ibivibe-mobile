@@ -27,13 +27,7 @@ class EventCard extends StatelessWidget {
               color: context.theme.colors.border.withAlpha(190),
             ),
             borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(45),
-                blurRadius: 8,
-                offset: const Offset(0, 3),
-              ),
-            ],
+            boxShadow: const [],
           ),
         ),
         child: Column(

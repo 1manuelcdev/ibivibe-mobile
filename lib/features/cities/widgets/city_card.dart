@@ -14,58 +14,73 @@ class CityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: .start,
-      crossAxisAlignment: .start,
-      spacing: 8,
-      children: [
-        GestureDetector(
-          onTap: () => context.push('/app/cities/${city.id}'),
-          child: SizedBox(
-            height: 140,
-            width: .infinity,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Stack(
-                children: [
-                  getCityImage(context: context, coverImgUrl: city.coverImgUrl),
-                  const Positioned(
-                    top: 8,
-                    left: 8,
-                    child: EntityBadge(type: EntityType.city),
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: () => context.push('/app/cities/${city.id}'),
+      child: FCard(
+        style: (style) => style.copyWith(
+          contentStyle: (s) => s.copyWith(padding: const EdgeInsets.all(12)),
+          decoration: style.decoration.copyWith(
+            color: context.theme.colors.secondary,
+            border: Border.all(
+              width: 1,
+              color: context.theme.colors.border.withAlpha(190),
             ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [],
           ),
         ),
-
-        Text(
-          city.name,
-          style: context.theme.typography.base.copyWith(fontWeight: .w500),
-        ),
-
-        Wrap(
-          runSpacing: 6,
-          spacing: 6,
-          clipBehavior: .hardEdge,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...city.tags
-                .map(
-                  (cat) => FBadge(
-                    style: FBadgeStyle.secondary(),
-                    child: Text(
-                      cat,
-                      style: context.theme.typography.xs.copyWith(
-                        fontWeight: .normal,
-                      ),
+            SizedBox(
+              height: 140,
+              width: double.infinity,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Stack(
+                  children: [
+                    getCityImage(
+                      context: context,
+                      coverImgUrl: city.coverImgUrl,
                     ),
-                  ),
-                )
-                .take(3),
+                    const Positioned(
+                      top: 8,
+                      left: 8,
+                      child: EntityBadge(type: EntityType.city),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              city.name,
+              style: context.theme.typography.base.copyWith(fontWeight: .w500),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              runSpacing: 6,
+              spacing: 6,
+              clipBehavior: .hardEdge,
+              children: [
+                ...city.tags
+                    .map(
+                      (cat) => FBadge(
+                        style: FBadgeStyle.secondary(),
+                        child: Text(
+                          cat,
+                          style: context.theme.typography.xs.copyWith(
+                            fontWeight: .normal,
+                          ),
+                        ),
+                      ),
+                    )
+                    .take(3),
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -76,7 +91,7 @@ Widget getCityImage({
   Widget? fallback,
 }) {
   final errorPlaceholder =
-      fallback ?? const _DefaultErrorPlaceholder(height: 160);
+      fallback ?? const _DefaultErrorPlaceholder(height: 140);
 
   if (coverImgUrl == null ||
       coverImgUrl.isEmpty ||
@@ -104,6 +119,7 @@ class _DefaultErrorPlaceholder extends StatelessWidget {
       ),
       width: double.infinity,
       height: height,
+      alignment: Alignment.center,
       child: Icon(
         getEntityIcon(EntityType.city),
         size: 48,
