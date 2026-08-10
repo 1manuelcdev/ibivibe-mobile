@@ -114,6 +114,10 @@ class AuthViewModel extends _$AuthViewModel with ControllerLogHandler {
 
     if (accountId != null) {
       await ref.read(accountsViewModelProvider.notifier).onLogout(accountId);
+    } else {
+      // Mesmo sem uma conta autenticada, a restauração inicial precisa sair
+      // do estado de loading para que o router possa exibir o Welcome.
+      ref.read(accountsViewModelProvider.notifier).markLoadingDone();
     }
 
     state = const AuthData();

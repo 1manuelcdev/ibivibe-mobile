@@ -7,9 +7,11 @@ import 'package:ibivibe/shared/models/account.dart';
 import 'package:ibivibe/shared/models/account_type.dart';
 import 'package:ibivibe/shared/providers/accounts_viewmodel.dart';
 import 'package:ibivibe/features/accounts/widgets/account_photo.dart';
+import 'package:ibivibe/shared/ui/fragments/toast/show_app_toast.dart';
 import 'package:ibivibe/shared/ui/layout/sheet_drag_indicator.dart';
 
 void showAccountSwitcherSheet(BuildContext context, WidgetRef ref) {
+  final parentContext = context;
   showModalBottomSheet(
     context: context,
     useRootNavigator: true,
@@ -17,23 +19,21 @@ void showAccountSwitcherSheet(BuildContext context, WidgetRef ref) {
     enableDrag: true,
     isDismissible: true,
     isScrollControlled: true,
-    builder: (context) => const _AccountSwitcherSheetContent(),
+    builder: (_) => _AccountSwitcherSheetContent(parentContext: parentContext),
   );
 }
 
 // ─── Sheet ────────────────────────────────────────────────────────────────────
 class _AccountSwitcherSheetContent extends ConsumerWidget {
-  const _AccountSwitcherSheetContent();
+  final BuildContext parentContext;
+
+  const _AccountSwitcherSheetContent({required this.parentContext});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final accountsState = ref.watch(accountsViewModelProvider);
     final activeAccount = accountsState.activeAccount;
     final cachedAccounts = accountsState.cachedAccounts;
-
-    if (cachedAccounts.isEmpty) {
-      return const SafeArea(child: Center(child: CircularProgressIndicator()));
-    }
 
     final personalAccounts = cachedAccounts.where(
       (a) => a.type == AccountType.personal,
@@ -50,8 +50,20 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
           maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colors.background,
+          color: context.theme.colors.secondary,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border(
+            top: BorderSide(
+              color: context.theme.colors.border.withAlpha(180),
+            ),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(28),
+              blurRadius: 18,
+              offset: const Offset(0, -6),
+            ),
+          ],
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: SingleChildScrollView(
@@ -67,6 +79,12 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                 ),
               ),
 
+              if (accountsState.isLoading && cachedAccounts.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.only(top: 24),
+                  child: CircularProgressIndicator(),
+                ),
+
               // ─── Contas pessoais ────────────────────────────────────────────
               if (personalAccounts.isNotEmpty) ...[
                 _buildSectionHeader(context, 'Contas pessoais'),
@@ -76,11 +94,22 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                     name: account.displayName,
                     subtitle: '@${account.slug}',
                     isSelected: activeAccount?.id == account.id,
-                    onTap: () {
-                      ref
+                    onTap: () async {
+                      if (activeAccount?.id == account.id) return;
+
+                      final switched = await ref
                           .read(accountsViewModelProvider.notifier)
                           .switchAccount(account.id);
-                      context.pop();
+
+                      if (!context.mounted) return;
+                      if (switched) {
+                        Navigator.of(context).pop();
+                      } else {
+                        showAppToast(
+                          context: context,
+                          title: 'Não foi possível alterar a conta',
+                        );
+                      }
                     },
                   ),
                 ),
@@ -97,11 +126,22 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                         ? 'CNPJ: ${_formatCnpj(account.business!.document!)}'
                         : 'Conta empresarial',
                     isSelected: activeAccount?.id == account.id,
-                    onTap: () {
-                      ref
+                    onTap: () async {
+                      if (activeAccount?.id == account.id) return;
+
+                      final switched = await ref
                           .read(accountsViewModelProvider.notifier)
                           .switchAccount(account.id);
-                      context.pop();
+
+                      if (!context.mounted) return;
+                      if (switched) {
+                        Navigator.of(context).pop();
+                      } else {
+                        showAppToast(
+                          context: context,
+                          title: 'Não foi possível alterar a conta',
+                        );
+                      }
                     },
                   ),
                 ),
@@ -124,7 +164,8 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                   ),
                 ),
                 onPress: () {
-                  context.push('/auth/login');
+                  Navigator.of(context).pop();
+                  parentContext.push('/auth/login?mode=add-account');
                 },
                 prefix: Container(
                   width: 40,
@@ -139,7 +180,43 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                   ),
                 ),
                 title: Text(
-                  'Adicionar conta',
+                  'Entrar com outra conta',
+                  style: context.theme.typography.sm.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+
+              FTile(
+                style: (style) => style.copyWith(
+                  decoration: FWidgetStateMap.all(
+                    BoxDecoration(color: context.theme.colors.background),
+                  ),
+                  contentStyle: (style) => style.copyWith(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 16,
+                    ),
+                  ),
+                ),
+                onPress: () {
+                  Navigator.of(context).pop();
+                  parentContext.push('/auth/register?mode=add-account');
+                },
+                prefix: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: context.theme.colors.secondary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    FIcons.userPlus,
+                    color: context.theme.colors.secondaryForeground,
+                  ),
+                ),
+                title: Text(
+                  'Criar nova conta',
                   style: context.theme.typography.sm.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -160,8 +237,8 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
                   ),
                 ),
                 onPress: () {
-                  context.push('/app/accounts/manage');
-                  context.pop();
+                  Navigator.of(context).pop();
+                  parentContext.push('/app/accounts/manage');
                 },
                 prefix: Container(
                   width: 40,
