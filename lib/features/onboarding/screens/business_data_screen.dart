@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ibivibe/core/preferences/user_preferences_state_provider.dart';
 import 'package:ibivibe/shared/models/city.dart';
 import 'package:ibivibe/features/onboarding/viewmodels/business_data_viewmodel.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -30,16 +29,6 @@ class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
   //   }
   // }
 
-  void _handleComplete() {
-    if (widget.onComplete != null) {
-      widget.onComplete!();
-      return;
-    }
-
-    ref.read(userPreferencesStateProvider.notifier).setNeedsOnboarding(false);
-    context.go('/app/home');
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -56,7 +45,7 @@ class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
         footer: Padding(
           padding: const EdgeInsets.all(16),
           child: FButton(
-            onPress: _handleComplete,
+            onPress: widget.onComplete,
             child: const Text('Concluir'),
           ),
         ),

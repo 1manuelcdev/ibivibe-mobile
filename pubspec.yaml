@@ -92,7 +92,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-  - .env
   - assets/images/
   - assets/icons/
 
@@ -129,17 +128,17 @@ flutter:
   
 flutter_native_splash: # dart run flutter_native_splash:create
   color: "#FFFFFF"
-  image: assets/images/splash-light.png
+  image: assets/images/ib-light.png
 
   color_dark: "#000000"
-  image_dark: assets/images/splash-dark.png
+  image_dark: assets/images/ib-dark.png
 
   android_12:
     color: "#FFFFFF"
-    image: assets/images/splash-light.png
+    image: assets/images/ib-light.png
 
     color_dark: "#000000"
-    image_dark: assets/images/splash-dark.png
+    image_dark: assets/images/ib-dark.png
 
   ios: true
   android: true

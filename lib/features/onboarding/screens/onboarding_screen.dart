@@ -12,9 +12,9 @@ class OnboardingScreen extends ConsumerWidget {
     return OnboardingProfileScreen(
       onProfileSelected: (type) {
         if (type == ProfileType.user) {
-          context.push('/onboarding/interests/businesses');
+          context.push('/app/interests/businesses');
         } else {
-          context.push('/onboarding/business-data');
+          context.push('/app/businesses/basic-data');
         }
       },
     );

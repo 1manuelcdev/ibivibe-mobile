@@ -36,7 +36,7 @@ class PersonalAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Interesses',
           seeAllText: 'Editar',
-          onSeeAllTap: () => context.push('/app/accounts/interests/businesses'),
+          onSeeAllTap: () => context.push('/app/account/interests'),
         ),
         const InterestsSection(),
 

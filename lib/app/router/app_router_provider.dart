@@ -27,8 +27,9 @@ GoRouter appRouter(Ref ref) {
         RedirectTarget.loading => isInAuthFlow ? null : '/loading',
         RedirectTarget.welcome => isInAuthFlow ? null : '/welcome',
         RedirectTarget.onboarding =>
-          isInAuthFlow ? null : '/onboarding/profile-select',
+          isInAuthFlow ? null : '/onboarding/newcomer',
         RedirectTarget.home => isInAuthFlow ? '/app/home' : null,
+        RedirectTarget.none => null,
       };
     },
     routes: appRoutes,

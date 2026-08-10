@@ -1,36 +1,36 @@
 import 'package:go_router/go_router.dart';
 import 'package:ibivibe/app/router/transitions/fade_through_page.dart';
-import 'package:ibivibe/features/accounts/screens/interests/account_businesses_interests_screen.dart';
-import 'package:ibivibe/features/accounts/screens/interests/account_events_interests_screen.dart';
-import 'package:ibivibe/features/onboarding/screens/business_data_screen.dart';
+import 'package:ibivibe/features/onboarding/screens/google_account_type_screen.dart';
+import 'package:ibivibe/features/onboarding/screens/google_slug_gender_screen.dart';
+import 'package:ibivibe/features/onboarding/screens/onboarding_newcomer_screen.dart';
 import 'package:ibivibe/features/onboarding/screens/onboarding_screen.dart';
 
 final List<RouteBase> onboardingRoutes = [
+  GoRoute(
+    path: '/onboarding/newcomer',
+    builder: (context, state) => const OnboardingNewcomerScreen(),
+  ),
+  GoRoute(
+    path: '/onboarding/profile-info',
+    pageBuilder: (context, state) =>
+        FadeThroughPage(child: const OnboardingScreen(), key: state.pageKey),
+  ),
   GoRoute(
     path: '/onboarding/profile-select',
     pageBuilder: (context, state) =>
         FadeThroughPage(child: const OnboardingScreen(), key: state.pageKey),
   ),
   GoRoute(
-    path: '/onboarding/interests/businesses',
+    path: '/onboarding/google-slug-and-gender',
     pageBuilder: (context, state) => FadeThroughPage(
-      child: const AccountBusinessesInterestsScreen(
-        nextRoute: '/onboarding/interests/events',
-      ),
+      child: const GoogleSlugGenderScreen(),
       key: state.pageKey,
     ),
   ),
   GoRoute(
-    path: '/onboarding/interests/events',
+    path: '/onboarding/google-account-type',
     pageBuilder: (context, state) => FadeThroughPage(
-      child: const AccountEventsInterestsScreen(),
-      key: state.pageKey,
-    ),
-  ),
-  GoRoute(
-    path: '/onboarding/business-data',
-    pageBuilder: (context, state) => FadeThroughPage(
-      child: const BusinessDataScreen(),
+      child: const GoogleAccountTypeScreen(),
       key: state.pageKey,
     ),
   ),
