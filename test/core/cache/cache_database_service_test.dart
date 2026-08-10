@@ -35,6 +35,13 @@ void main() {
       test('should initialize database successfully', () {
         expect(service, isA<CacheDatabaseService>());
       });
+
+      test('should reuse the initialized database when called again', () async {
+        final first = await service.init();
+        final second = await service.init();
+
+        expect(second, same(first));
+      });
     });
 
     group('saveObject and getObject', () {

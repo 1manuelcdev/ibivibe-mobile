@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:ibivibe/core/errors/failures/failures.dart';
+import 'package:ibivibe/core/cache/cache_database_provider.dart';
 import 'package:ibivibe/core/logger/handlers/controller_log_handler.dart';
 import 'package:ibivibe/core/logger/log_tags.dart';
 import 'package:ibivibe/core/logger/logger.dart';
@@ -24,6 +25,10 @@ class AccountsViewModel extends _$AccountsViewModel with ControllerLogHandler {
   AccountsData build() => const AccountsData();
 
   Future<void> onAuthSuccess(Account account) async {
+    // O cache é inicializado em segundo plano no boot. Login e refresh podem
+    // concluir antes dele, então a persistência da sessão deve aguardar o DB.
+    await ref.read(initializedCacheServiceProvider.future);
+
     final repository = ref.read(accountsRepositoryProvider);
     final interests = await _getAccountInterests(account.id);
 

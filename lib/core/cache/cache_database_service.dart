@@ -11,6 +11,7 @@ class CacheDatabaseService {
   final Directory? _cacheDirectory;
   final CacheDirectoryProvider? _cacheDirectoryProvider;
   late final Database _db;
+  Future<Database>? _initialization;
 
   CacheDatabaseService({
     required Logger logger,
@@ -20,7 +21,9 @@ class CacheDatabaseService {
        _cacheDirectory = cacheDirectory,
        _cacheDirectoryProvider = cacheDirectoryProvider;
 
-  Future<Database> init() async {
+  Future<Database> init() => _initialization ??= _initialize();
+
+  Future<Database> _initialize() async {
     final cacheDirectory = _cacheDirectory;
     final cacheDirectoryProvider = _cacheDirectoryProvider;
     final Directory appDir;
