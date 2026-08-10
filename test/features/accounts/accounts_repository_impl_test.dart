@@ -80,8 +80,9 @@ void main() {
           type: AccountType.personal,
         ),
       ];
-      when(() => mockLocalStorage.getCachedAccounts())
-          .thenAnswer((_) async => accounts);
+      when(
+        () => mockLocalStorage.getCachedAccounts(),
+      ).thenAnswer((_) async => accounts);
 
       final result = await sut.getCachedAccounts();
 
@@ -104,8 +105,9 @@ void main() {
         displayName: 'Test',
         type: AccountType.personal,
       );
-      when(() => mockLocalStorage.addCachedAccount(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockLocalStorage.addCachedAccount(any()),
+      ).thenAnswer((_) async {});
 
       await sut.addCachedAccount(account);
 
@@ -115,8 +117,9 @@ void main() {
 
   group('removeCachedAccount', () {
     test('delegates to local storage', () async {
-      when(() => mockLocalStorage.removeCachedAccount('1'))
-          .thenAnswer((_) async {});
+      when(
+        () => mockLocalStorage.removeCachedAccount('1'),
+      ).thenAnswer((_) async {});
 
       await sut.removeCachedAccount('1');
 
@@ -126,10 +129,12 @@ void main() {
 
   group('removeAccount', () {
     test('calls delete endpoint and removes from cache', () async {
-      when(() => mockDio.delete('/accounts/1'))
-          .thenAnswer((_) async => makeResponse(null));
-      when(() => mockLocalStorage.removeCachedAccount('1'))
-          .thenAnswer((_) async {});
+      when(
+        () => mockDio.delete('/accounts/1'),
+      ).thenAnswer((_) async => makeResponse(null));
+      when(
+        () => mockLocalStorage.removeCachedAccount('1'),
+      ).thenAnswer((_) async {});
 
       await sut.removeAccount('1');
 
@@ -155,10 +160,14 @@ void main() {
 
   group('updateAccount', () {
     test('returns updated account on success', () async {
-      when(() => mockDio.patch('/accounts/1', data: {'name': 'New Name'}))
-          .thenAnswer((_) async => makeResponse({...accountJson, 'name': 'New Name'}));
-      when(() => mockLocalStorage.addCachedAccount(any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockDio.patch('/accounts/1', data: {'name': 'New Name'}),
+      ).thenAnswer(
+        (_) async => makeResponse({...accountJson, 'name': 'New Name'}),
+      );
+      when(
+        () => mockLocalStorage.addCachedAccount(any()),
+      ).thenAnswer((_) async {});
 
       final result = await sut.updateAccount(
         accountId: '1',
@@ -170,8 +179,9 @@ void main() {
     });
 
     test('throws mapped exception on DioException', () async {
-      when(() => mockDio.patch('/accounts/1', data: any(named: 'data')))
-          .thenThrow(
+      when(
+        () => mockDio.patch('/accounts/1', data: any(named: 'data')),
+      ).thenThrow(
         DioException(
           requestOptions: RequestOptions(path: '/accounts/1'),
           response: Response(
@@ -199,8 +209,9 @@ void main() {
           {'id': 'e1', 'name': 'Event 1'},
         ],
       };
-      when(() => mockDio.get('/accounts/1/interests'))
-          .thenAnswer((_) async => makeResponse(interestsJson));
+      when(
+        () => mockDio.get('/accounts/1/interests'),
+      ).thenAnswer((_) async => makeResponse(interestsJson));
 
       final result = await sut.getAccountInterests('1');
 
@@ -234,8 +245,9 @@ void main() {
         businesses: [const Interest(id: 'b1', name: 'Business 1')],
         events: [const Interest(id: 'e1', name: 'Event 1')],
       );
-      when(() => mockDio.post('/accounts/1/interests', data: any(named: 'data')))
-          .thenAnswer((_) async => makeResponse({'count': 2}));
+      when(
+        () => mockDio.patch('/accounts/1/interests', data: any(named: 'data')),
+      ).thenAnswer((_) async => makeResponse({'count': 2}));
 
       final result = await sut.updateAccountInterests(
         accountId: '1',
@@ -248,8 +260,9 @@ void main() {
 
     test('throws mapped exception on DioException', () async {
       final interests = AccountInterests(businesses: [], events: []);
-      when(() => mockDio.post('/accounts/1/interests', data: any(named: 'data')))
-          .thenThrow(
+      when(
+        () => mockDio.patch('/accounts/1/interests', data: any(named: 'data')),
+      ).thenThrow(
         DioException(
           requestOptions: RequestOptions(path: '/accounts/1/interests'),
           response: Response(
@@ -269,8 +282,9 @@ void main() {
 
   group('saveActiveAccountId', () {
     test('delegates to local storage', () async {
-      when(() => mockLocalStorage.saveActiveAccountId('1'))
-          .thenAnswer((_) async {});
+      when(
+        () => mockLocalStorage.saveActiveAccountId('1'),
+      ).thenAnswer((_) async {});
 
       await sut.saveActiveAccountId('1');
 
@@ -280,8 +294,9 @@ void main() {
 
   group('getActiveAccountId', () {
     test('returns active account id from local storage', () async {
-      when(() => mockLocalStorage.getActiveAccountId())
-          .thenAnswer((_) async => '1');
+      when(
+        () => mockLocalStorage.getActiveAccountId(),
+      ).thenAnswer((_) async => '1');
 
       final result = await sut.getActiveAccountId();
 
@@ -291,8 +306,9 @@ void main() {
 
   group('clearActiveAccountId', () {
     test('delegates to local storage', () async {
-      when(() => mockLocalStorage.clearActiveAccountId())
-          .thenAnswer((_) async {});
+      when(
+        () => mockLocalStorage.clearActiveAccountId(),
+      ).thenAnswer((_) async {});
 
       await sut.clearActiveAccountId();
 

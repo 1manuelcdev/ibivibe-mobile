@@ -60,10 +60,7 @@ class AccountsRepositoryImpl
     required Map<String, dynamic> updates,
   }) async {
     try {
-      final response = await _dio.patch(
-        '/accounts/$accountId',
-        data: updates,
-      );
+      final response = await _dio.patch('/accounts/$accountId', data: updates);
       final result = AccountModel.fromJson(response.data);
       await localStorage.addCachedAccount(result);
       return result;
@@ -89,7 +86,7 @@ class AccountsRepositoryImpl
     required AccountInterests interests,
   }) async {
     try {
-      final response = await _dio.post(
+      final response = await _dio.patch(
         '/accounts/$accountId/interests',
         data: AccountInterestsModel.toMap(interests),
       );
