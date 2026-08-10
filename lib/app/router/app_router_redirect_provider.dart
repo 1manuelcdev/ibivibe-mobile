@@ -13,8 +13,7 @@ RedirectTarget routerRedirect(Ref ref) {
 
   // Aguarda carregamento antes de decidir destino
   if (!isAuthenticated) {
-    final isLoading =
-        ref.watch(accountsViewModelProvider).isLoading;
+    final isLoading = ref.watch(accountsViewModelProvider).isLoading;
 
     if (isLoading) return RedirectTarget.loading;
 
@@ -25,12 +24,10 @@ RedirectTarget routerRedirect(Ref ref) {
   final needsOnboarding = ref
       .watch(userPreferencesStateProvider)
       .needsOnboarding;
-  final hasAccounts = ref
-      .watch(accountsViewModelProvider)
-      .cachedAccounts
-      .isNotEmpty;
-
-  if (needsOnboarding && !hasAccounts) return RedirectTarget.onboarding;
+  // A conta recém-criada já é adicionada ao cache antes da navegação para o
+  // onboarding. Portanto, a presença de contas não significa que o fluxo foi
+  // concluído; o indicador persistido é a fonte de verdade.
+  if (needsOnboarding) return RedirectTarget.onboarding;
 
   return RedirectTarget.home;
 }

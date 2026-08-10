@@ -28,8 +28,11 @@ GoRouter appRouter(Ref ref) {
       return switch (target) {
         RedirectTarget.loading => isInAuthFlow ? null : '/loading',
         RedirectTarget.welcome => isInAuthFlow ? null : '/welcome',
-        RedirectTarget.onboarding =>
-          isInAuthFlow ? null : '/onboarding/profile-select',
+        RedirectTarget.onboarding => isAddingAccount
+            ? '/app/home'
+            : isInAuthFlow
+            ? null
+            : '/onboarding/profile-select',
         RedirectTarget.home => isInAuthFlow && !isAddingAccount
             ? '/app/home'
             : null,
