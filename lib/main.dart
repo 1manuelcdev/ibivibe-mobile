@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,21 +13,27 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // container temporário para o warm-up
   final container = ProviderContainer();
 
+  runApp(UncontrolledProviderScope(container: container, child: const App()));
+  FlutterNativeSplash.remove();
+
+  // O app deve renderizar antes de qualquer acesso a banco, rede ou localização.
+  unawaited(_restoreApp(container));
+}
+
+Future<void> _restoreApp(ProviderContainer container) async {
   try {
     await dotenv.load(fileName: ".env");
     await container.read(initializedCacheServiceProvider.future);
     await container.read(appSessionProvider.notifier).restore();
-
-    runApp(UncontrolledProviderScope(container: container, child: const App()));
   } catch (e, stack) {
     container
         .read(loggerProvider)
-        .e('Erro fatal na main', error: e, stackTrace: stack);
-    runApp(UncontrolledProviderScope(container: container, child: const App()));
-  } finally {
-    FlutterNativeSplash.remove();
+        .e(
+          'Erro ao restaurar sessão em segundo plano',
+          error: e,
+          stackTrace: stack,
+        );
   }
 }

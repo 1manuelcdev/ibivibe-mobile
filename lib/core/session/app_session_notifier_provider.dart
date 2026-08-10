@@ -42,7 +42,6 @@ class AppSessionNotifier extends _$AppSessionNotifier
       await Future.wait([
         ref.read(authViewModelProvider.notifier).restore(),
         ref.read(userPreferencesStateProvider.notifier).restore(),
-        ref.read(locationStateProvider.notifier).restore(),
         ref.read(searchViewModelProvider.notifier).restore(),
       ]);
 
