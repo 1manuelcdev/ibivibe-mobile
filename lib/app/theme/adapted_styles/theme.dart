@@ -16,8 +16,8 @@ import 'package:ibivibe/app/theme/adapted_styles/text_field_style.dart';
 import 'package:ibivibe/app/theme/adapted_styles/tile_group_style.dart';
 import 'package:ibivibe/app/theme/adapted_styles/tile_style.dart';
 
-const brandPrimaryLight = Color(0xFF376208);
-const brandPrimaryDark = Color(0xFFB9FF70);
+const brandPrimaryLight = Color(0xFF2A7B00);
+const brandPrimaryDark = Color(0xFF9FFF8B);
 
 FThemeData customZincLight() {
   const colors = FColors(
@@ -25,7 +25,7 @@ FThemeData customZincLight() {
     systemOverlayStyle: SystemUiOverlayStyle.dark,
     barrier: Color.fromARGB(160, 0, 0, 0),
     background: Color(0xFFFFFFFF),
-    foreground: Color(0xFF09090B),
+    foreground: Color(0xFF000000),
     primary: brandPrimaryLight,
     primaryForeground: Colors.white,
     secondary: Color(0xFFF4F4F5),
@@ -100,7 +100,7 @@ FThemeData customZincDark() {
     brightness: Brightness.dark,
     systemOverlayStyle: SystemUiOverlayStyle.light,
     barrier: Color.fromARGB(160, 0, 0, 0),
-    background: Color(0xFF18181B),
+    background: Color(0xFF0a0a0a),
     foreground: Color(0xFFFFFFFF),
     primary: brandPrimaryDark,
     primaryForeground: Colors.black,

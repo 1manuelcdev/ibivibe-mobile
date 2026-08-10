@@ -7,7 +7,6 @@ import 'package:ibivibe/features/auth/register_state.dart';
 import 'package:ibivibe/features/auth/widgets/basic_info_step.dart';
 import 'package:ibivibe/features/auth/widgets/credentials_step.dart';
 import 'package:ibivibe/shared/ui/fragments/toast/show_app_toast.dart';
-import 'package:ibivibe/shared/ui/layout/beautiful_background_overlay.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -70,7 +69,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           alignment: FToastAlignment.bottomCenter,
           duration: const Duration(seconds: 4),
         );
-        context.go('/onboarding');
+        context.go('/onboarding/profile-select');
       }
 
       if (nextState.status == RegisterStatus.error &&
@@ -108,18 +107,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: Column(
             children: [
               Expanded(
-                child: BeautifulBackgroundOverlay(
-                  childBelow: true,
-                  opacity: 0.1,
-                  child: PageView(
-                    controller: pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      CredentialsStep(onNext: next),
-                      BasicInfoStep(onNext: next),
-                      // AccountTypeStep(onSubmit: _submit)
-                    ],
-                  ),
+                child: PageView(
+                  controller: pageController,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    CredentialsStep(onNext: next),
+                    BasicInfoStep(onNext: next),
+                    // AccountTypeStep(onSubmit: _submit)
+                  ],
                 ),
               ),
             ],

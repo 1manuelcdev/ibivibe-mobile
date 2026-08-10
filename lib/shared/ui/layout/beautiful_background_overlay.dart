@@ -27,7 +27,7 @@ class BeautifulBackgroundOverlay extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: const AssetImage(
-                      "assets/images/blob-gradient-bg-min.png",
+                      "assets/images/blob-gradient-bg.png",
                     ),
                     fit: BoxFit.cover,
                     opacity: opacity,
