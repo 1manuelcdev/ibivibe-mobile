@@ -18,6 +18,9 @@ import 'package:ibivibe/app/theme/adapted_styles/tile_style.dart';
 
 const brandPrimaryLight = Color(0xFF376208);
 const brandPrimaryDark = Color(0xFFB9FF70);
+const darkAppBackground = Color(0xFF040404);
+const darkSurface = Color(0xFF121212);
+const darkMutedSurface = Color(0xFF1C1C1C);
 
 FThemeData customZincLight() {
   const colors = FColors(
@@ -100,19 +103,19 @@ FThemeData customZincDark() {
     brightness: Brightness.dark,
     systemOverlayStyle: SystemUiOverlayStyle.light,
     barrier: Color.fromARGB(160, 0, 0, 0),
-    background: Color(0xFF18181B),
+    background: darkAppBackground,
     foreground: Color(0xFFFFFFFF),
     primary: brandPrimaryDark,
     primaryForeground: Colors.black,
-    secondary: Color(0xFF27272A),
+    secondary: darkSurface,
     secondaryForeground: Color(0xFFF4F4F5),
-    muted: Color(0xFF27272A),
+    muted: darkMutedSurface,
     mutedForeground: Color(0xFF71717A),
     destructive: Color(0xFFEF4444),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color.fromARGB(255, 232, 91, 91),
     errorForeground: Color(0xFFFAFAFA),
-    border: Color(0xFF4D4D56),
+    border: Color(0xFF363636),
   );
 
   final typography = _typography(colors: colors);

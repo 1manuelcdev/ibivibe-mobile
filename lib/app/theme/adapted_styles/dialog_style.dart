@@ -20,7 +20,9 @@ FDialogStyle dialogStyle({
     decoration: BoxDecoration(
       border: BoxBorder.all(color: colors.border, width: 0.5, style: .solid),
       borderRadius: style.borderRadius,
-      color: colors.background,
+      color: colors.brightness == Brightness.dark
+          ? colors.secondary
+          : colors.background,
     ),
     horizontalStyle: FDialogContentStyle(
       titleTextStyle: title,
