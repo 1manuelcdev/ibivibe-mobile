@@ -4,8 +4,6 @@ import 'package:forui/forui.dart';
 import 'package:ibivibe/features/auth/viewmodels/register_viewmodel.dart';
 import 'package:ibivibe/shared/ui/forms/fields/password/create_password_fields.dart';
 import 'package:ibivibe/shared/ui/forms/fields/email/create_email_field.dart';
-import 'package:ibivibe/features/auth/widgets/google_oauth_button.dart';
-import 'package:ibivibe/features/auth/widgets/text_between_dividers.dart';
 import 'package:ibivibe/shared/ui/layout/form_topbar.dart';
 
 class CredentialsStep extends ConsumerStatefulWidget {
@@ -46,11 +44,6 @@ class _CredentialsStepState extends ConsumerState<CredentialsStep> {
           const CreatePasswordFields(),
 
           const SizedBox(height: 4),
-          const TextBetweenDividers(text: 'ou'),
-          const SizedBox(height: 4),
-          const GoogleOAuthButton(),
-
-          const Spacer(),
           FButton(
             onPress: _isFormValid ? widget.onNext : null,
             child: const Text('Continuar'),

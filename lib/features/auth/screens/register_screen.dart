@@ -69,7 +69,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           alignment: FToastAlignment.bottomCenter,
           duration: const Duration(seconds: 4),
         );
-        context.go('/onboarding');
+        context.go('/onboarding/profile-select');
       }
 
       if (nextState.status == RegisterStatus.error &&
