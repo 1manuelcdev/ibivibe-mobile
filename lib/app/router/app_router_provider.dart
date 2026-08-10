@@ -17,6 +17,8 @@ GoRouter appRouter(Ref ref) {
     redirect: (context, state) {
       final target = ref.read(routerRedirectProvider);
       final loc = state.matchedLocation;
+      final isAddingAccount =
+          state.uri.queryParameters['mode'] == 'add-account';
 
       final isInAuthFlow =
           loc.startsWith('/welcome') ||
@@ -28,7 +30,9 @@ GoRouter appRouter(Ref ref) {
         RedirectTarget.welcome => isInAuthFlow ? null : '/welcome',
         RedirectTarget.onboarding =>
           isInAuthFlow ? null : '/onboarding/profile-select',
-        RedirectTarget.home => isInAuthFlow ? '/app/home' : null,
+        RedirectTarget.home => isInAuthFlow && !isAddingAccount
+            ? '/app/home'
+            : null,
       };
     },
     routes: appRoutes,

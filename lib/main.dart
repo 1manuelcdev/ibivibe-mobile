@@ -15,6 +15,15 @@ void main() async {
 
   final container = ProviderContainer();
 
+  // O logger e o Dio podem ser criados durante a montagem inicial do router.
+  // O .env precisa estar disponível antes do runApp, mas isso não acessa
+  // banco, rede ou localização.
+  try {
+    await dotenv.load(fileName: '.env', isOptional: true);
+  } catch (_) {
+    dotenv.loadFromString(isOptional: true);
+  }
+
   runApp(UncontrolledProviderScope(container: container, child: const App()));
   FlutterNativeSplash.remove();
 
@@ -24,7 +33,6 @@ void main() async {
 
 Future<void> _restoreApp(ProviderContainer container) async {
   try {
-    await dotenv.load(fileName: ".env");
     await container.read(initializedCacheServiceProvider.future);
     await container.read(appSessionProvider.notifier).restore();
   } catch (e, stack) {

@@ -136,28 +136,36 @@ class AccountsViewModel extends _$AccountsViewModel with ControllerLogHandler {
     }
   }
 
-  Future<void> switchAccount(String accountId) async {
+  Future<bool> switchAccount(String accountId) async {
+    final account = state.cachedAccounts.firstWhereOrNull(
+      (cachedAccount) => cachedAccount.id == accountId,
+    );
+
+    if (account == null) {
+      return false;
+    }
+
     try {
       final repository = ref.read(accountsRepositoryProvider);
       await repository.saveActiveAccountId(accountId);
-      if (!ref.mounted) return;
+      if (!ref.mounted) return false;
 
       state = state.copyWith(
         isLoading: false,
         activeAccountId: accountId,
-        activeAccount: state.cachedAccounts.firstWhereOrNull(
-          (a) => a.id == accountId,
-        ),
+        activeAccount: account,
       );
       logControllerSuccess(action: AccountsAction.switchAccount);
+      return true;
     } catch (e) {
-      if (!ref.mounted) return;
+      if (!ref.mounted) return false;
       final failure = e is AppFailure ? e : InternalFailure(e.toString());
       logControllerError(
         action: AccountsAction.switchAccount,
         failure: failure,
       );
       state = state.copyWith(isLoading: false);
+      return false;
     }
   }
 

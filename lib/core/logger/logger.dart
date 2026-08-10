@@ -6,9 +6,13 @@ part 'logger.g.dart';
 
 @Riverpod(keepAlive: true)
 Logger logger(Ref ref) {
+  final configuredLevel = dotenv.isInitialized
+      ? dotenv.env['LOGGER_LEVEL']
+      : null;
+
   return Logger(
     level: Level.values.firstWhere(
-      (level) => level.name == dotenv.env['LOGGER_LEVEL'],
+      (level) => level.name == configuredLevel,
       orElse: () => Level.error,
     ),
     printer: PrettyPrinter(
