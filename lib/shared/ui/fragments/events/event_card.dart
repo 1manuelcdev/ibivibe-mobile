@@ -21,8 +21,19 @@ class EventCard extends StatelessWidget {
         style: (style) => style.copyWith(
           contentStyle: (s) => s.copyWith(padding: const EdgeInsets.all(12)),
           decoration: style.decoration.copyWith(
-            border: Border.all(width: 0, color: Colors.transparent),
+            color: context.theme.colors.secondary,
+            border: Border.all(
+              width: 1,
+              color: context.theme.colors.border.withAlpha(190),
+            ),
             borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(45),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
         ),
         child: Column(
@@ -96,9 +107,7 @@ class EventCard extends StatelessWidget {
 
                             final remainingSlots = maxBadges - 1;
                             if (remainingSlots > 0) {
-                              badges.addAll(
-                                tagBadges.take(remainingSlots),
-                              );
+                              badges.addAll(tagBadges.take(remainingSlots));
                             }
                           } else {
                             if (maxBadges > 1) {
