@@ -32,6 +32,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   void next() {
+    if (currentStep >= 1) {
+      if (ref.read(registerViewModelProvider).status ==
+          RegisterStatus.loading) {
+        return;
+      }
+
+      ref.read(registerViewModelProvider.notifier).submit();
+      return;
+    }
+
     setState(() => currentStep++);
     pageController.animateToPage(
       currentStep,
@@ -61,6 +71,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isAddingAccount =
+        GoRouterState.of(context).uri.queryParameters['mode'] == 'add-account';
+
     ref.listen(registerViewModelProvider, (previous, nextState) {
       if (nextState.status == RegisterStatus.success) {
         showAppToast(
@@ -70,7 +83,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           alignment: FToastAlignment.bottomCenter,
           duration: const Duration(seconds: 4),
         );
-        context.go('/onboarding/profile-select');
+        context.go(
+          isAddingAccount ? '/app/home' : '/onboarding/profile-select',
+        );
       }
 
       if (nextState.status == RegisterStatus.error &&
