@@ -22,65 +22,53 @@ class ManageAccountsScreen extends ConsumerWidget {
         child: BeautifulBackgroundOverlay(
           opacity: .12,
           childBelow: true,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-            child: Column(
-              crossAxisAlignment: .start,
-              spacing: 16,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: FButton(
-                    style: FButtonStyle.outline(),
-                    onPress: () =>
-                        context.push('/auth/register?mode=add-account'),
-                    prefix: const Icon(Icons.person_add_alt_1_outlined),
-                    child: const Text('Adicionar conta'),
-                  ),
-                ),
-                Expanded(
-                  child: isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : accounts.isEmpty
-                      ? _EmptyAccountsState(
-                          onAddAccount: () =>
-                              context.push('/auth/register?mode=add-account'),
-                        )
-                      : ListView.separated(
-                          padding: EdgeInsets.zero,
-                          itemCount: accounts.length,
-                          separatorBuilder: (_, _) =>
-                              const SizedBox(height: 12),
-                          itemBuilder: (context, index) {
-                            final account = accounts[index];
-                            final isActive = account.id == activeAccountId;
+          child: Column(
+            crossAxisAlignment: .start,
+            spacing: 16,
+            children: [
+              _AccountAuthActions(
+                onLogin: () => context.push('/auth/login?mode=add-account'),
+                onRegister: () =>
+                    context.push('/auth/register?mode=add-account'),
+              ),
+              Expanded(
+                child: isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : accounts.isEmpty
+                    ? const _EmptyAccountsState()
+                    : ListView.separated(
+                        padding: EdgeInsets.zero,
+                        itemCount: accounts.length,
+                        separatorBuilder: (_, _) => const SizedBox(height: 12),
+                        itemBuilder: (context, index) {
+                          final account = accounts[index];
+                          final isActive = account.id == activeAccountId;
 
-                            return _AccountManagementCard(
-                              account: account,
-                              isActive: isActive,
-                              onSelect: () async {
-                                if (isActive) return;
+                          return _AccountManagementCard(
+                            account: account,
+                            isActive: isActive,
+                            onSelect: () async {
+                              if (isActive) return;
 
-                                final switched = await ref
-                                    .read(accountsViewModelProvider.notifier)
-                                    .switchAccount(account.id);
-                                if (context.mounted && switched) {
-                                  context.pop();
-                                }
-                              },
-                              onDelete: isActive
-                                  ? null
-                                  : () => _showDeleteConfirmation(
-                                      context,
-                                      ref,
-                                      account,
-                                    ),
-                            );
-                          },
-                        ),
-                ),
-              ],
-            ),
+                              final switched = await ref
+                                  .read(accountsViewModelProvider.notifier)
+                                  .switchAccount(account.id);
+                              if (context.mounted && switched) {
+                                context.pop();
+                              }
+                            },
+                            onDelete: isActive
+                                ? null
+                                : () => _showDeleteConfirmation(
+                                    context,
+                                    ref,
+                                    account,
+                                  ),
+                          );
+                        },
+                      ),
+              ),
+            ],
           ),
         ),
       ),
@@ -279,9 +267,7 @@ class _AccountManagementCard extends StatelessWidget {
 }
 
 class _EmptyAccountsState extends StatelessWidget {
-  final VoidCallback onAddAccount;
-
-  const _EmptyAccountsState({required this.onAddAccount});
+  const _EmptyAccountsState();
 
   @override
   Widget build(BuildContext context) {
@@ -296,14 +282,39 @@ class _EmptyAccountsState extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Text('Nenhuma conta encontrada'),
-          const SizedBox(height: 16),
-          FButton(
-            style: FButtonStyle.outline(),
-            onPress: onAddAccount,
-            child: const Text('Adicionar conta'),
-          ),
         ],
       ),
+    );
+  }
+}
+
+class _AccountAuthActions extends StatelessWidget {
+  final VoidCallback onLogin;
+  final VoidCallback onRegister;
+
+  const _AccountAuthActions({required this.onLogin, required this.onRegister});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: FButton(
+            style: FButtonStyle.outline(),
+            onPress: onLogin,
+            prefix: const Icon(Icons.login_outlined),
+            child: const Text('Entrar'),
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: FButton(
+            onPress: onRegister,
+            prefix: const Icon(Icons.person_add_alt_1_outlined),
+            child: const Text('Criar conta'),
+          ),
+        ),
+      ],
     );
   }
 }

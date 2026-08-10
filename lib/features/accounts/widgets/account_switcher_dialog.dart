@@ -46,16 +46,14 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
     return SafeArea(
       child: Container(
         constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height * 0.7,
+          minHeight: 0,
           maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         decoration: BoxDecoration(
           color: context.theme.colors.secondary,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(
-            top: BorderSide(
-              color: context.theme.colors.border.withAlpha(180),
-            ),
+            top: BorderSide(color: context.theme.colors.border.withAlpha(180)),
           ),
           boxShadow: [
             BoxShadow(
@@ -323,7 +321,12 @@ class _AccountTile extends StatelessWidget {
         ),
       ),
       onPress: onTap,
-      prefix: AccountPhoto(key: ValueKey(account.id), account: account, size: 40, isSelected: isSelected),
+      prefix: AccountPhoto(
+        key: ValueKey(account.id),
+        account: account,
+        size: 40,
+        isSelected: isSelected,
+      ),
       title: Text(
         name,
         style: context.theme.typography.sm.copyWith(
