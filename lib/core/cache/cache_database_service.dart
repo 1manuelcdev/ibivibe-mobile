@@ -1,16 +1,38 @@
+import 'dart:io';
+
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast_io.dart';
+
+typedef CacheDirectoryProvider = Future<Directory> Function();
 
 class CacheDatabaseService {
   final Logger _logger;
+  final Directory? _cacheDirectory;
+  final CacheDirectoryProvider? _cacheDirectoryProvider;
   late final Database _db;
 
-  CacheDatabaseService({required Logger logger}) : _logger = logger;
+  CacheDatabaseService({
+    required Logger logger,
+    Directory? cacheDirectory,
+    CacheDirectoryProvider? cacheDirectoryProvider,
+  }) : _logger = logger,
+       _cacheDirectory = cacheDirectory,
+       _cacheDirectoryProvider = cacheDirectoryProvider;
 
   Future<Database> init() async {
-    final appDir = await getApplicationCacheDirectory();
+    final cacheDirectory = _cacheDirectory;
+    final cacheDirectoryProvider = _cacheDirectoryProvider;
+    final Directory appDir;
+    if (cacheDirectory != null) {
+      appDir = cacheDirectory;
+    } else if (cacheDirectoryProvider != null) {
+      appDir = await cacheDirectoryProvider();
+    } else {
+      throw StateError(
+        'CacheDatabaseService requires a cache directory provider',
+      );
+    }
     final dbPath = join(appDir.path, 'ibivibe_cache.db');
 
     _db = await databaseFactoryIo.openDatabase(dbPath);
