@@ -5,6 +5,7 @@ import 'package:ibivibe/shared/models/business.dart';
 import 'package:ibivibe/shared/ui/fragments/media/content_media.dart';
 import 'package:ibivibe/shared/ui/fragments/media/sources.dart';
 import 'package:ibivibe/shared/ui/layout/entity_badge.dart';
+import 'package:ibivibe/shared/ui/layout/tag_badge.dart';
 import 'package:ibivibe/shared/utils/get_entity_icon.dart';
 
 class BusinessCard extends StatelessWidget {
@@ -63,19 +64,7 @@ class BusinessCard extends StatelessWidget {
               runSpacing: 6,
               spacing: 6,
               children: [
-                ...business.tags
-                    .map(
-                      (cat) => FBadge(
-                        style: FBadgeStyle.secondary(),
-                        child: Text(
-                          cat,
-                          style: context.theme.typography.xs.copyWith(
-                            fontWeight: .normal,
-                          ),
-                        ),
-                      ),
-                    )
-                    .take(2),
+                ...business.tags.map((cat) => TagBadge(label: cat)).take(2),
               ],
             ),
           ],

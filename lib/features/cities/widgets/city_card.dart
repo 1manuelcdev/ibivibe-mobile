@@ -6,6 +6,7 @@ import 'package:ibivibe/shared/models/city.dart';
 import 'package:ibivibe/shared/ui/fragments/media/content_media.dart';
 import 'package:ibivibe/shared/ui/fragments/media/sources.dart';
 import 'package:ibivibe/shared/ui/layout/entity_badge.dart';
+import 'package:ibivibe/shared/ui/layout/tag_badge.dart';
 import 'package:ibivibe/shared/utils/get_entity_icon.dart';
 
 class CityCard extends StatelessWidget {
@@ -63,19 +64,7 @@ class CityCard extends StatelessWidget {
               spacing: 6,
               clipBehavior: .hardEdge,
               children: [
-                ...city.tags
-                    .map(
-                      (cat) => FBadge(
-                        style: FBadgeStyle.secondary(),
-                        child: Text(
-                          cat,
-                          style: context.theme.typography.xs.copyWith(
-                            fontWeight: .normal,
-                          ),
-                        ),
-                      ),
-                    )
-                    .take(3),
+                ...city.tags.map((cat) => TagBadge(label: cat)).take(3),
               ],
             ),
           ],
