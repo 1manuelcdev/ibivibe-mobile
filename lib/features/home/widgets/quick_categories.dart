@@ -21,7 +21,10 @@ class QuickCategoriesList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
 
-    final interests = ref.watch(accountsViewModelProvider).activeAccount?.interests;
+    final interests = ref
+        .watch(accountsViewModelProvider)
+        .activeAccount
+        ?.interests;
     final businessesInterests = interests?.businesses
         .map((b) => b.name)
         .toList();
@@ -55,7 +58,7 @@ class QuickCategoriesList extends ConsumerWidget {
           separator: Container(width: 6),
           itemBuilder: (context, category) => FButton(
             onPress: () => showTodoToast(context, 'Categoria "$category"'),
-            style: FButtonStyle.secondary(),
+            style: FButtonStyle.outline(),
             child: Text(category, style: const TextStyle(fontSize: 14)),
           ),
         ),
