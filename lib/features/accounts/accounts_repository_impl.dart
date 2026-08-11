@@ -45,7 +45,7 @@ class AccountsRepositoryImpl
   }
 
   @override
-  Future<void> removeAccount(String accountId) async {
+  Future<void> deleteAccountPermanently(String accountId) async {
     try {
       await _dio.delete('/accounts/$accountId');
     } on DioException catch (e) {

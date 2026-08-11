@@ -118,7 +118,7 @@ class ManageAccountsScreen extends ConsumerWidget {
                   const SizedBox(height: 12),
                   Text(
                     'Deseja remover ${account.displayName} deste dispositivo? '
-                    'Esta ação não pode ser desfeita.',
+                    'Os dados da conta permanecerão salvos.',
                     style: context.theme.typography.base.copyWith(
                       color: context.theme.colors.mutedForeground,
                     ),

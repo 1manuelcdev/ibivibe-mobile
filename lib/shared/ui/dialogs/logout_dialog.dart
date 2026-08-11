@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
@@ -10,6 +12,10 @@ void showLogoutDialog(BuildContext context, WidgetRef ref) {
 
   showFDialog(
     context: context,
+    routeStyle: (style) => style.copyWith(
+      barrierFilter: (animation) =>
+          ImageFilter.blur(sigmaX: 2 * animation, sigmaY: 2 * animation),
+    ),
     builder: (context, style, animation) => FTheme(
       data: foruiTheme,
       child: FDialog(

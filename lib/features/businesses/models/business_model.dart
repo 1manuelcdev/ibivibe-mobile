@@ -8,6 +8,9 @@ part 'business_model.g.dart';
 class BusinessModel extends Equatable implements Business {
   @override
   final String id;
+  @override
+  @JsonKey(name: 'account_id')
+  final String accountId;
   @JsonKey(defaultValue: '', name: 'profile_id')
   final String profileId;
   @override
@@ -33,6 +36,7 @@ class BusinessModel extends Equatable implements Business {
 
   const BusinessModel({
     this.id = '',
+    this.accountId = '',
     this.profileId = '',
     this.slug = '',
     this.cnpj,
@@ -61,6 +65,7 @@ class BusinessModel extends Equatable implements Business {
     if (business is BusinessModel) return business.toJson();
     return BusinessModel(
       id: business.id,
+      accountId: business.accountId,
       name: business.name,
       slug: business.slug,
       bio: business.bio,
@@ -73,16 +78,17 @@ class BusinessModel extends Equatable implements Business {
 
   @override
   List<Object?> get props => [
-        id,
-        profileId,
-        slug,
-        cnpj,
-        name,
-        bio,
-        avatar,
-        maxReachLevel,
-        coverImgUrl,
-        tags,
-        createdAt,
-      ];
+    id,
+    accountId,
+    profileId,
+    slug,
+    cnpj,
+    name,
+    bio,
+    avatar,
+    maxReachLevel,
+    coverImgUrl,
+    tags,
+    createdAt,
+  ];
 }

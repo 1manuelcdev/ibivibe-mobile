@@ -29,6 +29,7 @@ class _EmailFieldState extends ConsumerState<EmailField> {
       hint: 'exemplo@email.com',
       keyboardType: TextInputType.emailAddress,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      textInputAction: TextInputAction.next,
       validator: (v) => authValidator.validateField(AuthFields.email, v),
     );
   }

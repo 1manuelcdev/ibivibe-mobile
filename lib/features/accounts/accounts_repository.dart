@@ -9,7 +9,7 @@ abstract class AccountsRepository {
 
   Future<void> removeCachedAccount(String accountId);
 
-  Future<void> removeAccount(String accountId);
+  Future<void> deleteAccountPermanently(String accountId);
 
   Future<Account> updateAccount({
     required String accountId,

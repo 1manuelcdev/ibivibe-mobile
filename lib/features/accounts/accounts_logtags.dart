@@ -3,7 +3,7 @@ import 'package:ibivibe/core/logger/log_tags.dart';
 enum AccountsAction implements LogTag {
   getCachedAccounts('[GET_CACHED_ACCOUNTS]'),
   addCachedAccount('[ADD_CACHED_ACCOUNT]'),
-  removeAccount('[REMOVE_ACCOUNT]'),
+  deleteAccountPermanently('[DELETE_ACCOUNT_PERMANENTLY]'),
   removeCachedAccount('[REMOVE_CACHED_ACCOUNT]'),
   updateAccount('[UPDATE_ACCOUNT]'),
   getAccountInterests('[GET_ACCOUNT_INTERESTS]'),

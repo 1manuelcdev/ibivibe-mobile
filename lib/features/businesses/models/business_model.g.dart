@@ -9,6 +9,7 @@ part of 'business_model.dart';
 BusinessModel _$BusinessModelFromJson(Map<String, dynamic> json) =>
     BusinessModel(
       id: json['id'] as String? ?? '',
+      accountId: json['account_id'] as String? ?? '',
       profileId: json['profile_id'] as String? ?? '',
       slug: json['slug'] as String? ?? '',
       cnpj: json['cnpj'] as String?,
@@ -30,6 +31,7 @@ BusinessModel _$BusinessModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$BusinessModelToJson(BusinessModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'account_id': instance.accountId,
       'profile_id': instance.profileId,
       'slug': instance.slug,
       'cnpj': instance.cnpj,

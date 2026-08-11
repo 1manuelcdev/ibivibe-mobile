@@ -19,7 +19,11 @@ class AccountCard extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       spacing: 12,
       children: [
-        AccountPhoto(key: ValueKey(account.id), account: account, size: 48),
+        AccountPhoto(
+          key: ValueKey(account.id),
+          account: account,
+          size: account.type == AccountType.business ? 40 : 48,
+        ),
         _AccountInfo(account: account),
         FButton.icon(
           style: FButtonStyle.ghost(),
@@ -51,10 +55,8 @@ class _AccountInfo extends StatelessWidget {
             account.displayName,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.start,
-            style: TextStyle(
-              color: context.theme.colors.foreground,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
+            style: context.theme.typography.lg.copyWith(
+              fontWeight: FontWeight.w500,
             ),
           ),
           if (account.type == AccountType.personal)
@@ -69,30 +71,17 @@ class _AccountInfo extends StatelessWidget {
               ),
             ),
           if (account.type == AccountType.business)
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                FBadge(
-                  style: getInvertedBadgeStyle(
-                    context.theme.colors,
-                    context.theme.typography,
-                  ).call,
-                  child: Text(
-                    'Empresa',
-                    style: context.theme.typography.xs.copyWith(
-                      color: context.theme.colors.primaryForeground,
-                    ),
-                  ),
+            FBadge(
+              style: getInvertedBadgeStyle(
+                context.theme.colors,
+                context.theme.typography,
+              ).call,
+              child: Text(
+                'Empresa',
+                style: context.theme.typography.xs.copyWith(
+                  color: context.theme.colors.primaryForeground,
                 ),
-                Text(
-                  'via @${account.slug}',
-                  style: context.theme.typography.xs.copyWith(
-                    color: context.theme.colors.mutedForeground,
-                  ),
-                ),
-              ],
+              ),
             ),
         ],
       ),

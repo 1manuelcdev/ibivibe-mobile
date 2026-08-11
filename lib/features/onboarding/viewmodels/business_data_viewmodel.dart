@@ -5,6 +5,7 @@ import 'package:ibivibe/core/logger/logger.dart';
 import 'package:ibivibe/shared/providers/accounts_viewmodel.dart';
 import 'package:ibivibe/shared/models/city.dart';
 import 'package:ibivibe/features/cities/providers/cities_providers.dart';
+import 'package:ibivibe/features/businesses/providers/businesses_providers.dart';
 import 'package:ibivibe/features/onboarding/onboarding_logtags.dart';
 import 'package:ibivibe/features/onboarding/business_data_states.dart';
 import 'package:logger/logger.dart';
@@ -28,13 +29,12 @@ class BusinessDataViewModel extends _$BusinessDataViewModel
     List<City> citiesList = [];
     try {
       final repository = ref.read(citiesRepositoryProvider);
-      citiesList = await repository.getAllCities();
+      // O onboarding precisa refletir imediatamente as cidades cadastradas no
+      // backend, sem reutilizar uma lista antiga do cache.
+      citiesList = await repository.getAllCities(forceRefresh: true);
       logControllerSuccess(action: OnboardingAction.getCities);
     } catch (e) {
-      logControllerError(
-        action: OnboardingAction.getCities,
-        failure: e,
-      );
+      logControllerError(action: OnboardingAction.getCities, failure: e);
     }
 
     return BusinessDataState(
@@ -43,12 +43,17 @@ class BusinessDataViewModel extends _$BusinessDataViewModel
     );
   }
 
-  Future<bool> submit() async {
+  Future<bool> submit({
+    required String name,
+    required String cnpj,
+    required String headquartersCityId,
+    required List<String> branchCityIds,
+  }) async {
     final account = ref.read(accountsViewModelProvider).activeAccount;
 
     if (account == null) {
       logControllerError(
-        action: OnboardingAction.submitInterests,
+        action: OnboardingAction.submitBusinessData,
         failure: const InternalFailure(
           'Falha no envio: Usuário não encontrado na sessão',
         ),
@@ -56,6 +61,24 @@ class BusinessDataViewModel extends _$BusinessDataViewModel
       return false;
     }
 
-    return true;
+    try {
+      await ref
+          .read(businessesRepositoryProvider)
+          .createBusiness(
+            accountId: account.id,
+            name: name,
+            cnpj: cnpj,
+            headquartersCityId: headquartersCityId,
+            branchCityIds: branchCityIds,
+          );
+      logControllerSuccess(action: OnboardingAction.submitBusinessData);
+      return true;
+    } catch (e) {
+      logControllerError(
+        action: OnboardingAction.submitBusinessData,
+        failure: e,
+      );
+      return false;
+    }
   }
 }
