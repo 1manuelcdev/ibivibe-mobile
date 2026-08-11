@@ -29,4 +29,4 @@ jobs:
       # `.env` is local-only and ignored; Flutter still requires the declared
       # asset to exist while building the test bundle.
       - run: cp .env.example .env
-      - run: bash tool/test_safe.sh --coverage --reporter expanded
+      - run: flutter test --coverage --reporter expanded

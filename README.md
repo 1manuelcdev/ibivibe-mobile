@@ -236,11 +236,10 @@ flutter test --coverage
 flutter test test/features/auth_test.dart
 ```
 
-`tool/test_safe.sh` executa os testes com um processo por vez, timeout por
-teste e limites de CPU/memória no Linux. Isso evita que múltiplos compiladores
-Dart consumam toda a memória da máquina e encerrem o terminal ou o VS Code.
-Feche execuções de `flutter run`, debug e test watchers no VS Code antes de
-iniciar a suíte completa.
+O arquivo `dart_test.yaml` limita a suíte a um processo por vez. Isso evita
+que múltiplos compiladores Dart consumam toda a memória da máquina e encerrem
+o terminal ou o VS Code. Feche execuções de `flutter run`, debug e test
+watchers no VS Code antes de iniciar a suíte completa.
 
 ## 🐛 Debug & Logs
 
