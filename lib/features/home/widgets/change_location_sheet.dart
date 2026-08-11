@@ -20,7 +20,7 @@ void showChangeLocationSheet({required BuildContext context}) {
     useRootNavigator: true,
     isScrollControlled: true,
     context: context,
-    barrierColor: Colors.black45,
+    barrierColor: Colors.black54,
     isDismissible: true,
     builder: (context) => const _ChangeLocationSheet(),
   );
@@ -202,7 +202,7 @@ class _ChangeLocationSheetState extends ConsumerState<_ChangeLocationSheet> {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.72,
         decoration: BoxDecoration(
-          color: theme.colors.secondary,
+          color: theme.colors.background,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(
             top: BorderSide(color: theme.colors.border.withAlpha(180)),
