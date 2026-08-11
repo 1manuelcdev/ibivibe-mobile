@@ -14,12 +14,33 @@ Future<String?>? _pendingRefresh;
 int _globalRetryCount = 0;
 const int _maxGlobalRetries = 3;
 
+bool _isPublicAuthPath(String path) {
+  return switch (path) {
+    '/auth/login' ||
+    '/auth/register' ||
+    '/auth/check-unique' ||
+    '/auth/refresh' ||
+    '/auth/google' ||
+    '/auth/google/complete' => true,
+    _ => false,
+  };
+}
+
 @Riverpod(keepAlive: true)
 Dio dio(Ref ref) {
+  final baseUrl = dotenv.env['API_BASE_URL'];
+  if (baseUrl == null || baseUrl.trim().isEmpty) {
+    throw StateError(
+      'API_BASE_URL não configurada. Verifique se o asset .env está incluído.',
+    );
+  }
+
   final dio = Dio(
     BaseOptions(
-      baseUrl: dotenv.env['API_BASE_URL']!,
+      baseUrl: baseUrl,
       connectTimeout: const Duration(seconds: 6),
+      sendTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'ibivibe/1.0',
@@ -35,8 +56,7 @@ Dio dio(Ref ref) {
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final isAuthPath = options.path.contains('/auth/');
-        if (isAuthPath) return handler.next(options);
+        if (_isPublicAuthPath(options.path)) return handler.next(options);
 
         try {
           // Se há um refresh em andamento, aguarda antes de pegar o token
@@ -62,7 +82,7 @@ Dio dio(Ref ref) {
       onError: (DioException e, handler) async {
         final is401 = e.response?.statusCode == 401;
         // Rotas de auth nunca devem entrar no fluxo de retry
-        final isAuthPath = e.requestOptions.path.contains('/auth/');
+        final isAuthPath = _isPublicAuthPath(e.requestOptions.path);
         final alreadyRetried = e.requestOptions.extra['_retried'] == true;
 
         if (!is401 || isAuthPath || alreadyRetried || !ref.mounted) {

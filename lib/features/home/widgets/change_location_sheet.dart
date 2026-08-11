@@ -80,9 +80,7 @@ class _ChangeLocationSheetState extends ConsumerState<_ChangeLocationSheet> {
     final previousCity = ref.read(appSessionProvider).currentCity;
 
     try {
-      final cities = await ref
-          .read(citiesRepositoryProvider)
-          .getAllCities();
+      final cities = await ref.read(citiesRepositoryProvider).getAllCities();
 
       if (!mounted) return;
 
@@ -204,8 +202,18 @@ class _ChangeLocationSheetState extends ConsumerState<_ChangeLocationSheet> {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.72,
         decoration: BoxDecoration(
-          color: theme.colors.background,
+          color: theme.colors.secondary,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border(
+            top: BorderSide(color: theme.colors.border.withAlpha(180)),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(28),
+              blurRadius: 18,
+              offset: const Offset(0, -6),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),

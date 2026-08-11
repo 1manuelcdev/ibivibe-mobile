@@ -1,11 +1,9 @@
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:ibivibe/core/cache/cache_database_service.dart';
 import 'package:logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
-
+import 'package:test/test.dart';
 
 class MockLogger extends Mock implements Logger {}
 
@@ -15,27 +13,14 @@ void main() {
   late Directory tempDir;
 
   setUpAll(() {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/path_provider'),
-      (MethodCall methodCall) async {
-        if (methodCall.method == 'getApplicationCacheDirectory') {
-          return tempDir.path;
-        }
-        return null;
-      },
-    );
-
     registerFallbackValue(Level.info);
     registerFallbackValue(StackTrace.empty);
   });
 
   setUp(() async {
     logger = MockLogger();
-    tempDir = Directory.systemTemp.createTempSync('cache_test_');
-    service = CacheDatabaseService(logger: logger);
+    tempDir = await Directory.systemTemp.createTemp('cache_test_');
+    service = CacheDatabaseService(logger: logger, cacheDirectory: tempDir);
     await service.init();
   });
 
@@ -49,6 +34,13 @@ void main() {
     group('init', () {
       test('should initialize database successfully', () {
         expect(service, isA<CacheDatabaseService>());
+      });
+
+      test('should reuse the initialized database when called again', () async {
+        final first = await service.init();
+        final second = await service.init();
+
+        expect(second, same(first));
       });
     });
 
@@ -200,7 +192,9 @@ void main() {
       test('should use custom key', () async {
         await service.saveList<Map<String, dynamic>>(
           storeName: 'keyed_store',
-          items: [{'id': '1'}],
+          items: [
+            {'id': '1'},
+          ],
           toMap: (item) => item,
           key: 'custom_key',
         );
@@ -217,7 +211,9 @@ void main() {
       test('should return expired list as empty with maxAge', () async {
         await service.saveList<Map<String, dynamic>>(
           storeName: 'ttl_list',
-          items: [{'id': '1'}],
+          items: [
+            {'id': '1'},
+          ],
           toMap: (item) => item,
         );
 
@@ -240,10 +236,7 @@ void main() {
           toMap: (item) => item,
         );
 
-        await service.clearKey(
-          storeName: 'clear_store',
-          key: 'to_delete',
-        );
+        await service.clearKey(storeName: 'clear_store', key: 'to_delete');
 
         final result = await service.getObject<Map<String, dynamic>>(
           storeName: 'clear_store',

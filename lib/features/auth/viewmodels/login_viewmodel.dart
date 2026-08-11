@@ -49,7 +49,6 @@ class LoginViewModel extends ChangeNotifier
   @override
   bool isEmailChecking() => false;
 
-
   // ─── Submit ────────────────────────────────────────────────────────────────
   Future<void> login({required String email, required String password}) async {
     _state = LoginLoading();
@@ -63,11 +62,12 @@ class LoginViewModel extends ChangeNotifier
       logControllerSuccess(action: AuthAction.login);
       await authState.initSession(authResult);
       _state = LoginSuccess();
-    } catch (e) {
+    } catch (e, stackTrace) {
       final message = e is AppFailure ? e.message : 'Erro inesperado';
       logControllerError(
         action: AuthAction.login,
         failure: e is AppFailure ? e : InternalFailure(message),
+        stackTrace: stackTrace,
       );
       _state = LoginError(message);
     }

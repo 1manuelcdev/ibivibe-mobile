@@ -22,6 +22,26 @@ class HomeScreen extends StatelessWidget {
             _HomeHeader(),
             const SizedBox(height: 8),
 
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: FButton(
+                  style: FButtonStyle.outline(),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  prefix: const Icon(FIcons.search),
+                  onPress: () => context.push('/app/search/expanded'),
+                  child: Text(
+                    'O que vamos fazer hoje na Ibiapaba?',
+                    style: context.theme.typography.sm.copyWith(
+                      color: context.theme.colors.mutedForeground,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+
             const SponsoredHighlights(),
             const SizedBox(height: 24),
 
@@ -53,11 +73,11 @@ class _HomeHeader extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       scrolledUnderElevation: 0,
       backgroundColor: Colors.transparent,
-      titleSpacing: 24,
+      titleSpacing: 16,
       title: _ActualCityButton(),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 24),
+          padding: const EdgeInsets.only(right: 16),
           child: _NotificationButton(),
         ),
       ],

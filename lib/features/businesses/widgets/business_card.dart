@@ -5,6 +5,7 @@ import 'package:ibivibe/shared/models/business.dart';
 import 'package:ibivibe/shared/ui/fragments/media/content_media.dart';
 import 'package:ibivibe/shared/ui/fragments/media/sources.dart';
 import 'package:ibivibe/shared/ui/layout/entity_badge.dart';
+import 'package:ibivibe/shared/ui/layout/tag_badge.dart';
 import 'package:ibivibe/shared/utils/get_entity_icon.dart';
 
 class BusinessCard extends StatelessWidget {
@@ -13,61 +14,62 @@ class BusinessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: .start,
-      crossAxisAlignment: .start,
-      mainAxisSize: .min,
-      spacing: 8,
-      children: [
-        GestureDetector(
-          onTap: () => context.push('/app/businesses/${business.id}'),
-          child: SizedBox(
-            height: 140,
-            width: .infinity,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Stack(
-                children: [
-                  getBusinessImage(
-                    context: context,
-                    coverImgUrl: business.avatar,
-                  ),
-                  const Positioned(
-                    top: 8,
-                    left: 8,
-                    child: EntityBadge(type: .business),
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: () => context.push('/app/businesses/${business.id}'),
+      child: FCard(
+        style: (style) => style.copyWith(
+          contentStyle: (s) => s.copyWith(padding: const EdgeInsets.all(12)),
+          decoration: style.decoration.copyWith(
+            color: context.theme.colors.secondary,
+            border: Border.all(
+              width: 1,
+              color: context.theme.colors.border.withAlpha(190),
             ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: const [],
           ),
         ),
-        Text(
-          business.name,
-          style: context.theme.typography.base.copyWith(fontWeight: .w500),
-          maxLines: 1,
-          overflow: .ellipsis,
-        ),
-        Wrap(
-          runSpacing: 6,
-          spacing: 6,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ...business.tags
-                .map(
-                  (cat) => FBadge(
-                    style: FBadgeStyle.secondary(),
-                    child: Text(
-                      cat,
-                      style: context.theme.typography.xs.copyWith(
-                        fontWeight: .normal,
-                      ),
+            SizedBox(
+              height: 140,
+              width: double.infinity,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Stack(
+                  children: [
+                    getBusinessImage(
+                      context: context,
+                      coverImgUrl: business.avatar,
                     ),
-                  ),
-                )
-                .take(2),
+                    const Positioned(
+                      top: 8,
+                      left: 8,
+                      child: EntityBadge(type: .business),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              business.name,
+              style: context.theme.typography.base.copyWith(fontWeight: .w500),
+              maxLines: 1,
+              overflow: .ellipsis,
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              runSpacing: 6,
+              spacing: 6,
+              children: [
+                ...business.tags.map((cat) => TagBadge(label: cat)).take(2),
+              ],
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
@@ -78,7 +80,7 @@ Widget getBusinessImage({
   Widget? fallback,
 }) {
   final errorPlaceholder =
-      fallback ?? const _DefaultErrorPlaceholder(height: 160);
+      fallback ?? const _DefaultErrorPlaceholder(height: 140);
 
   if (coverImgUrl == null || coverImgUrl.isEmpty) {
     return errorPlaceholder;
@@ -106,10 +108,11 @@ class _DefaultErrorPlaceholder extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: context.theme.colors.muted,
+        color: context.theme.colors.background,
       ),
       width: double.infinity,
       height: height,
+      alignment: Alignment.center,
       child: Icon(
         getEntityIcon(.business),
         size: 48,

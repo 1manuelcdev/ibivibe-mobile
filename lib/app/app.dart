@@ -19,6 +19,14 @@ class App extends ConsumerWidget {
 
     final customLightTheme = customZincLight();
     final customDarkTheme = customZincDark();
+    final darkMaterialTheme = customDarkTheme
+        .toApproximateMaterialTheme()
+        .copyWith(
+          dialogTheme: const DialogThemeData(backgroundColor: darkSurface),
+          bottomSheetTheme: const BottomSheetThemeData(
+            backgroundColor: darkSurface,
+          ),
+        );
 
     return MaterialApp.router(
       title: 'IbiapabaApp',
@@ -33,7 +41,7 @@ class App extends ConsumerWidget {
       routerConfig: router,
       themeMode: favoriteThemeMode,
       theme: customLightTheme.toApproximateMaterialTheme(),
-      darkTheme: customDarkTheme.toApproximateMaterialTheme(),
+      darkTheme: darkMaterialTheme,
 
       builder: (context, child) {
         final brightness = switch (favoriteThemeMode) {

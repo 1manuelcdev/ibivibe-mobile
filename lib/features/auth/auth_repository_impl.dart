@@ -54,6 +54,35 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> requestPasswordReset({required String email}) async {
+    try {
+      await _dio.post('/auth/forgot-password', data: {'email': email.trim()});
+    } on DioException catch (e) {
+      throw DioExceptionToAppExceptionMapper.map(e);
+    }
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String token,
+    required String password,
+    required String passwordConfirmation,
+  }) async {
+    try {
+      await _dio.post(
+        '/auth/reset-password',
+        data: {
+          'token': token.trim(),
+          'password': password,
+          'password_confirm': passwordConfirmation,
+        },
+      );
+    } on DioException catch (e) {
+      throw DioExceptionToAppExceptionMapper.map(e);
+    }
+  }
+
+  @override
   Future<CheckAvailability> checkAvailability({
     required AvailabilityField field,
     required String value,

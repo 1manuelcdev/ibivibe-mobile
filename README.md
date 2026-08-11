@@ -161,7 +161,7 @@ flutter pub run build_runner clean  # Limpar arquivos gerados
 
 # Análise & Testes
 flutter analyze                     # Análise estática
-flutter test                        # Rodar testes unitários
+flutter test                        # Testes unitários (concorrência segura)
 flutter test --coverage             # Testes com cobertura
 
 # Build para Produção
@@ -235,6 +235,11 @@ flutter test --coverage
 # Testes específicos
 flutter test test/features/auth_test.dart
 ```
+
+O arquivo `dart_test.yaml` limita a suíte a um processo por vez. Isso evita
+que múltiplos compiladores Dart consumam toda a memória da máquina e encerrem
+o terminal ou o VS Code. Feche execuções de `flutter run`, debug e test
+watchers no VS Code antes de iniciar a suíte completa.
 
 ## 🐛 Debug & Logs
 

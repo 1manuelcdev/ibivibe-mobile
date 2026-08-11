@@ -100,7 +100,6 @@ class AccountModel extends Equatable implements Account {
   }
 
   static Map<String, dynamic> toMap(Account account) {
-    if (account is AccountModel) return account.toJson();
     return {
       'id': account.id,
       'email': account.email,

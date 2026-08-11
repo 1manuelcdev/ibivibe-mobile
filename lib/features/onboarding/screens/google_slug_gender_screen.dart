@@ -18,8 +18,6 @@ class _GoogleSlugGenderScreenState
     extends ConsumerState<GoogleSlugGenderScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  
-
   void _submit() {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
@@ -60,7 +58,7 @@ class _GoogleSlugGenderScreenState
             spacing: 24,
             children: [
               const _Heading(),
-              
+
               _GenderSelection(
                 selectedGender: state.gender,
                 onGenderSelected: (gender) {

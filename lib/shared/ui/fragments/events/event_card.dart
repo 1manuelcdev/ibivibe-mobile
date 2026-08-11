@@ -6,6 +6,7 @@ import 'package:ibivibe/shared/models/event.dart';
 import 'package:ibivibe/shared/ui/fragments/media/content_media.dart';
 import 'package:ibivibe/shared/ui/fragments/media/sources.dart';
 import 'package:ibivibe/shared/ui/layout/entity_badge.dart';
+import 'package:ibivibe/shared/ui/layout/tag_badge.dart';
 import 'package:ibivibe/shared/utils/get_entity_icon.dart';
 
 class EventCard extends StatelessWidget {
@@ -21,8 +22,13 @@ class EventCard extends StatelessWidget {
         style: (style) => style.copyWith(
           contentStyle: (s) => s.copyWith(padding: const EdgeInsets.all(12)),
           decoration: style.decoration.copyWith(
-            border: Border.all(width: 0, color: Colors.transparent),
+            color: context.theme.colors.secondary,
+            border: Border.all(
+              width: 1,
+              color: context.theme.colors.border.withAlpha(190),
+            ),
             borderRadius: BorderRadius.circular(12),
+            boxShadow: const [],
           ),
         ),
         child: Column(
@@ -96,9 +102,7 @@ class EventCard extends StatelessWidget {
 
                             final remainingSlots = maxBadges - 1;
                             if (remainingSlots > 0) {
-                              badges.addAll(
-                                tagBadges.take(remainingSlots),
-                              );
+                              badges.addAll(tagBadges.take(remainingSlots));
                             }
                           } else {
                             if (maxBadges > 1) {
@@ -129,13 +133,7 @@ class EventCard extends StatelessWidget {
   }
 
   Widget _buildBadge(BuildContext context, String text) {
-    return FBadge(
-      style: FBadgeStyle.secondary(),
-      child: Text(
-        text,
-        style: context.theme.typography.xs.copyWith(fontWeight: .normal),
-      ),
-    );
+    return TagBadge(label: text);
   }
 
   Widget _getEventImage({
@@ -147,7 +145,7 @@ class EventCard extends StatelessWidget {
       source: NetworkMedia(url: coverImgUrl ?? ''),
       fit: BoxFit.cover,
       errorWidget: Container(
-        color: theme.colors.muted,
+        color: theme.colors.background,
         child: Icon(
           getEntityIcon(.event),
           color: theme.colors.mutedForeground,

@@ -17,7 +17,9 @@ final _mockTagGroups = [
 ];
 
 class AccountBusinessesInterestsScreen extends ConsumerStatefulWidget {
-  const AccountBusinessesInterestsScreen({super.key});
+  const AccountBusinessesInterestsScreen({super.key, this.nextRoute});
+
+  final String? nextRoute;
 
   @override
   ConsumerState<AccountBusinessesInterestsScreen> createState() =>
@@ -48,7 +50,9 @@ class _AccountBusinessesInterestsScreenState
       await ref
           .read(accountInterestsViewModelProvider.notifier)
           .saveInterests(selected: [], entityType: InterestEntityType.business);
-      if (mounted) context.push('/app/interests/events');
+      if (mounted) {
+        context.push(widget.nextRoute ?? '/app/accounts/interests/events');
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -64,7 +68,9 @@ class _AccountBusinessesInterestsScreenState
             entityType: InterestEntityType.business,
           );
 
-      if (mounted) context.push('/app/interests/events');
+      if (mounted) {
+        context.push(widget.nextRoute ?? '/app/accounts/interests/events');
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

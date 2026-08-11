@@ -60,11 +60,30 @@ class _ImagePlayerWrapper extends StatelessWidget {
           placeholder: (context, url) =>
               Container(color: context.theme.colors.muted),
           errorWidget: (context, url, error) =>
-              errorWidget ?? const Icon(Icons.broken_image),
+              errorWidget ?? const _NeutralMediaFallback(),
         ),
         AssetMedia a => Image.asset(a.url, fit: fit, width: double.infinity),
         FileMedia f => Image.file(f.file, fit: fit, width: double.infinity),
       },
+    );
+  }
+}
+
+class _NeutralMediaFallback extends StatelessWidget {
+  const _NeutralMediaFallback();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      color: context.theme.colors.muted,
+      alignment: Alignment.center,
+      child: Icon(
+        Icons.image_not_supported_outlined,
+        size: 32,
+        color: context.theme.colors.mutedForeground,
+      ),
     );
   }
 }

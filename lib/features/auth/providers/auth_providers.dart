@@ -3,6 +3,7 @@ import 'package:ibivibe/core/network/dio_provider.dart';
 import 'package:ibivibe/core/storage/token_storage_provider.dart';
 import 'package:ibivibe/features/auth/auth_repository.dart';
 import 'package:ibivibe/features/auth/viewmodels/login_viewmodel.dart';
+import 'package:ibivibe/features/auth/viewmodels/password_recovery_viewmodel.dart';
 import 'package:ibivibe/features/auth/viewmodels/auth_viewmodel.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ibivibe/features/auth/auth_repository_impl.dart';
@@ -28,5 +29,12 @@ LoginViewModel loginViewModel(Ref ref) {
     repository: repository,
     authState: authState,
     logger: logger,
+  );
+}
+
+@riverpod
+PasswordRecoveryViewModel passwordRecoveryViewModel(Ref ref) {
+  return PasswordRecoveryViewModel(
+    repository: ref.watch(authRepositoryProvider),
   );
 }
