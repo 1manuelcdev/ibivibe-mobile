@@ -178,7 +178,7 @@ class AccountsViewModel extends _$AccountsViewModel with ControllerLogHandler {
     state = state.copyWith(isLoading: true);
     try {
       final repository = ref.read(accountsRepositoryProvider);
-      await repository.removeAccount(accountId);
+      await repository.removeCachedAccount(accountId);
       if (!ref.mounted) return;
 
       final updated = state.cachedAccounts
