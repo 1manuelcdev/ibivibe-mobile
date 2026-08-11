@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:ibivibe/app/theme/custom_styles/fselect_item_style.dart';
 import 'package:ibivibe/shared/models/gender.dart';
 import 'package:ibivibe/features/onboarding/viewmodels/google_onboarding_viewmodel.dart';
-import 'package:ibivibe/shared/ui/layout/beautiful_background_overlay.dart';
 
 class GoogleSlugGenderScreen extends ConsumerStatefulWidget {
   const GoogleSlugGenderScreen({super.key});
@@ -18,8 +17,6 @@ class GoogleSlugGenderScreen extends ConsumerStatefulWidget {
 class _GoogleSlugGenderScreenState
     extends ConsumerState<GoogleSlugGenderScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  
 
   void _submit() {
     FocusScope.of(context).unfocus();
@@ -54,26 +51,21 @@ class _GoogleSlugGenderScreenState
             ),
           ),
         ),
-        child: BeautifulBackgroundOverlay(
-          childBelow: true,
-          opacity: 0.12,
-          alignment: .bottomCenter,
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 24,
-              children: [
-                const _Heading(),
-                
-                _GenderSelection(
-                  selectedGender: state.gender,
-                  onGenderSelected: (gender) {
-                    controller.setGender(gender);
-                  },
-                ),
-              ],
-            ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 24,
+            children: [
+              const _Heading(),
+
+              _GenderSelection(
+                selectedGender: state.gender,
+                onGenderSelected: (gender) {
+                  controller.setGender(gender);
+                },
+              ),
+            ],
           ),
         ),
       ),
