@@ -8,7 +8,6 @@ import 'package:ibivibe/features/onboarding/widgets/profile_type_tile.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibivibe/core/preferences/user_preferences_state_provider.dart';
 import 'package:ibivibe/shared/ui/fragments/toast/show_app_toast.dart';
-import 'package:ibivibe/shared/ui/layout/beautiful_background_overlay.dart';
 import 'package:ibivibe/shared/ui/layout/form_topbar.dart';
 
 class GoogleAccountTypeScreen extends ConsumerStatefulWidget {
@@ -42,33 +41,28 @@ class _GoogleAccountTypeScreenState
     return SafeArea(
       child: FScaffold(
         header: const FHeader.nested(),
-        child: BeautifulBackgroundOverlay(
-          childBelow: true,
-          opacity: 0.12,
-          alignment: .bottomCenter,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              spacing: 32,
-              children: [
-                const _Heading(),
-                _buildProfileSelector(),
-                FAlert(
-                  style: (style) => style.copyWith(
-                    decoration: style.decoration.copyWith(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  icon: const Icon(FIcons.info),
-                  title: Text(
-                    'Dica: Você pode alternar entre seus perfis a qualquer momento em "Perfil"',
-                    style: context.theme.typography.sm.copyWith(
-                      fontWeight: FontWeight.normal,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: 32,
+            children: [
+              const _Heading(),
+              _buildProfileSelector(),
+              FAlert(
+                style: (style) => style.copyWith(
+                  decoration: style.decoration.copyWith(
+                    borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-              ],
-            ),
+                icon: const Icon(FIcons.info),
+                title: Text(
+                  'Dica: Você pode alternar entre seus perfis a qualquer momento em "Perfil"',
+                  style: context.theme.typography.sm.copyWith(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

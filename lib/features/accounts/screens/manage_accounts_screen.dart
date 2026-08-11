@@ -4,7 +4,6 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibivibe/shared/models/account.dart';
 import 'package:ibivibe/shared/providers/accounts_viewmodel.dart';
-import 'package:ibivibe/shared/ui/layout/beautiful_background_overlay.dart';
 
 class ManageAccountsScreen extends ConsumerWidget {
   const ManageAccountsScreen({super.key});
@@ -19,57 +18,52 @@ class ManageAccountsScreen extends ConsumerWidget {
     return SafeArea(
       child: FScaffold(
         header: _getHeader(context),
-        child: BeautifulBackgroundOverlay(
-          opacity: .12,
-          childBelow: true,
-          child: Column(
-            crossAxisAlignment: .start,
-            spacing: 16,
-            children: [
-              _AccountAuthActions(
-                onLogin: () => context.push('/auth/login?mode=add-account'),
-                onRegister: () =>
-                    context.push('/auth/register?mode=add-account'),
-              ),
-              Expanded(
-                child: isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : accounts.isEmpty
-                    ? const _EmptyAccountsState()
-                    : ListView.separated(
-                        padding: EdgeInsets.zero,
-                        itemCount: accounts.length,
-                        separatorBuilder: (_, _) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final account = accounts[index];
-                          final isActive = account.id == activeAccountId;
+        child: Column(
+          crossAxisAlignment: .start,
+          spacing: 16,
+          children: [
+            _AccountAuthActions(
+              onLogin: () => context.push('/auth/login?mode=add-account'),
+              onRegister: () => context.push('/auth/register?mode=add-account'),
+            ),
+            Expanded(
+              child: isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : accounts.isEmpty
+                  ? const _EmptyAccountsState()
+                  : ListView.separated(
+                      padding: EdgeInsets.zero,
+                      itemCount: accounts.length,
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final account = accounts[index];
+                        final isActive = account.id == activeAccountId;
 
-                          return _AccountManagementCard(
-                            account: account,
-                            isActive: isActive,
-                            onSelect: () async {
-                              if (isActive) return;
+                        return _AccountManagementCard(
+                          account: account,
+                          isActive: isActive,
+                          onSelect: () async {
+                            if (isActive) return;
 
-                              final switched = await ref
-                                  .read(accountsViewModelProvider.notifier)
-                                  .switchAccount(account.id);
-                              if (context.mounted && switched) {
-                                context.pop();
-                              }
-                            },
-                            onDelete: isActive
-                                ? null
-                                : () => _showDeleteConfirmation(
-                                    context,
-                                    ref,
-                                    account,
-                                  ),
-                          );
-                        },
-                      ),
-              ),
-            ],
-          ),
+                            final switched = await ref
+                                .read(accountsViewModelProvider.notifier)
+                                .switchAccount(account.id);
+                            if (context.mounted && switched) {
+                              context.pop();
+                            }
+                          },
+                          onDelete: isActive
+                              ? null
+                              : () => _showDeleteConfirmation(
+                                  context,
+                                  ref,
+                                  account,
+                                ),
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
       ),
     );

@@ -4,7 +4,6 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ibivibe/features/auth/providers/auth_providers.dart';
 import 'package:ibivibe/features/auth/widgets/login_form.dart';
-import 'package:ibivibe/shared/ui/layout/beautiful_background_overlay.dart';
 import 'package:ibivibe/shared/ui/layout/form_topbar.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -24,28 +23,23 @@ class LoginScreen extends ConsumerWidget {
             ),
           ],
         ),
-        child: BeautifulBackgroundOverlay(
-          childBelow: true,
-          opacity: 0.12,
-          alignment: .bottomCenter,
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 16,
-              children: [
-                const FormTopbar(
-                  subtitle: 'Bem vindo(a) de volta!',
-                  title: 'Entrar',
-                ),
-                LoginForm(controller: controller),
-                FButton(
-                  style: FButtonStyle.ghost(),
-                  onPress: () => context.push('/auth/register'),
-                  child: const Text('Ainda não tenho conta'),
-                ),
-              ],
-            ),
+        child: SingleChildScrollView(
+          physics: const ClampingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 16,
+            children: [
+              const FormTopbar(
+                subtitle: 'Bem vindo(a) de volta!',
+                title: 'Entrar',
+              ),
+              LoginForm(controller: controller),
+              FButton(
+                style: FButtonStyle.ghost(),
+                onPress: () => context.push('/auth/register'),
+                child: const Text('Ainda não tenho conta'),
+              ),
+            ],
           ),
         ),
       ),
