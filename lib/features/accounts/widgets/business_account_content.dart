@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ibivibe/core/beta/presentation/screens/under_development_screen.dart';
 import 'package:ibivibe/shared/models/account.dart';
 import 'package:ibivibe/features/accounts/widgets/business_sections.dart';
@@ -18,8 +19,7 @@ class BusinessAccountContent extends StatelessWidget {
         SectionHeader(
           title: 'Dados da Empresa',
           seeAllText: 'Editar',
-          onSeeAllTap: () =>
-              redirectToUnderDevelopment(context, 'Dados da Empresa'),
+          onSeeAllTap: () => context.push('/app/businesses/manage'),
         ),
         BusinessDataSection(account: account),
 

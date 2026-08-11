@@ -21,7 +21,6 @@ class CityCard extends StatelessWidget {
         style: (style) => style.copyWith(
           contentStyle: (s) => s.copyWith(padding: const EdgeInsets.all(12)),
           decoration: style.decoration.copyWith(
-            color: context.theme.colors.secondary,
             border: Border.all(
               width: 1,
               color: context.theme.colors.border.withAlpha(190),

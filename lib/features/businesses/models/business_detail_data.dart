@@ -1,8 +1,6 @@
-import 'package:ibivibe/shared/models/business.dart';
-import 'package:ibivibe/shared/models/media.dart';
+import 'package:ibivibe/features/businesses/models/business_public_profile_model.dart';
 
 class BusinessDetailData {
-  final Business business;
-  final List<Media> media;
-  const BusinessDetailData({required this.business, required this.media});
+  final BusinessPublicProfileModel profile;
+  const BusinessDetailData({required this.profile});
 }

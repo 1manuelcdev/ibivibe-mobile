@@ -119,20 +119,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
             ],
           ),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView(
-                  controller: pageController,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    CredentialsStep(onNext: next),
-                    BasicInfoStep(onNext: next),
-                    // AccountTypeStep(onSubmit: _submit)
-                  ],
-                ),
-              ),
-            ],
+          child: Expanded(
+            child: PageView(
+              controller: pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                CredentialsStep(onNext: next),
+                BasicInfoStep(onNext: next),
+                // AccountTypeStep(onSubmit: _submit)
+              ],
+            ),
           ),
         ),
       ),

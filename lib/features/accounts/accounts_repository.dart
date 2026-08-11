@@ -9,7 +9,11 @@ abstract class AccountsRepository {
 
   Future<void> removeCachedAccount(String accountId);
 
+  /// Compatibilidade com consumidores antigos; não remove a conta do banco.
+  @Deprecated('Use removeCachedAccount or deleteAccountPermanently explicitly')
   Future<void> removeAccount(String accountId);
+
+  Future<void> deleteAccountPermanently(String accountId);
 
   Future<Account> updateAccount({
     required String accountId,

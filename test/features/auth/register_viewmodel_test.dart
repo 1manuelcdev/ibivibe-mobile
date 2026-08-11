@@ -121,9 +121,10 @@ void main() {
     });
 
     group('setSlug', () {
-      test('should reset slug availability', () {
+      test('should update slug and reset slug availability', () {
         final sut = createSut();
         sut.setSlug('johndoe');
+        expect(sut.state.formData.slug, 'johndoe');
         expect(sut.state.availability[AvailabilityField.slug]!.available, null);
         expect(sut.state.availability[AvailabilityField.slug]!.error, null);
         expect(sut.state.availability[AvailabilityField.slug]!.isChecking, false);
@@ -360,6 +361,19 @@ void main() {
         expect(captured.name, 'Jane Doe');
         expect(captured.email, 'jane@example.com');
         expect(captured.password, 'Password1!');
+      });
+
+      test('should omit an empty phone number from the request data', () {
+        final formData = RegisterFormData(
+          name: 'Jane Doe',
+          slug: 'janedoe',
+          displayName: 'Jane Doe',
+          email: 'jane@example.com',
+          password: 'Password1!',
+          confirmPassword: 'Password1!',
+        );
+
+        expect(formData.toJson(), isNot(contains('phone_number')));
       });
     });
 

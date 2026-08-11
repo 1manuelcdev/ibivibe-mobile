@@ -1,148 +1,85 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ibivibe/core/entities/entity_type.dart';
-import 'package:ibivibe/core/logger/logger.dart';
 import 'package:ibivibe/features/businesses/models/business_detail_data.dart';
-import 'package:ibivibe/features/businesses/viewmodels/business_detail_viewmodel.dart';
+import 'package:ibivibe/features/businesses/models/business_public_profile_model.dart';
 import 'package:ibivibe/features/businesses/providers/businesses_providers.dart';
-import 'package:ibivibe/features/medias/providers/medias_providers.dart';
-import 'package:ibivibe/shared/models/account.dart';
-import 'package:ibivibe/shared/models/account_type.dart';
-import 'package:ibivibe/shared/models/business.dart';
-import 'package:ibivibe/shared/models/media.dart';
-import 'package:ibivibe/shared/providers/accounts_viewmodel.dart';
+import 'package:ibivibe/features/businesses/viewmodels/business_detail_viewmodel.dart';
+import 'package:ibivibe/core/logger/logger.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../mocks/mocks.dart';
 
 void main() {
   late MockBusinessesRepository mockBusinessesRepo;
-  late MockMediasRepository mockMediasRepo;
   late MockLogger mockLogger;
 
-  final testAccount = Account(
-    id: '1',
-    email: 'test@test.com',
-    name: 'Test',
-    active: true,
-    isVerified: true,
-    createdAt: DateTime(2025),
-    updatedAt: DateTime(2025),
-    slug: 'test',
-    displayName: 'Test',
-    type: AccountType.personal,
-  );
-
-  final testBusiness = Business(
+  const testProfile = BusinessPublicProfileModel(
     id: 'b1',
     name: 'Business 1',
-    slug: 'business-1',
-    maxReachLevel: ReachLevel.local,
+    commercialName: 'Business 1',
+    bio: 'Descrição curta',
     tags: ['cat1'],
-    createdAt: DateTime(2025),
-  );
-
-  final testMedia = const Media(
-    id: 'm1',
-    entityType: EntityType.business,
-    entityId: 'b1',
-    mediaType: MediaType.image,
-    url: 'https://example.com/image.jpg',
-    isCover: true,
-    position: 0,
+    media: [
+      BusinessMediaModel(
+        id: 'm1',
+        url: 'https://example.com/image.jpg',
+        isCover: true,
+        position: 0,
+      ),
+    ],
   );
 
   setUp(() {
     mockBusinessesRepo = MockBusinessesRepository();
-    mockMediasRepo = MockMediasRepository();
     mockLogger = MockLogger();
-  });
-
-  setUpAll(() {
-    registerFallbackValue(EntityType.business);
   });
 
   ProviderContainer createContainer() {
     return ProviderContainer(
       overrides: [
-        accountsViewModelProvider.overrideWithValue(
-          AccountsData(activeAccount: testAccount),
-        ),
         businessesRepositoryProvider.overrideWithValue(mockBusinessesRepo),
-        mediasRepositoryProvider.overrideWithValue(mockMediasRepo),
         loggerProvider.overrideWithValue(mockLogger),
       ],
     );
   }
 
   group('business detail controller', () {
-    test('build returns null when no active account', () async {
-      final container = ProviderContainer(
-        overrides: [
-          accountsViewModelProvider.overrideWithValue(const AccountsData()),
-          businessesRepositoryProvider.overrideWithValue(mockBusinessesRepo),
-          mediasRepositoryProvider.overrideWithValue(mockMediasRepo),
-          loggerProvider.overrideWithValue(mockLogger),
-        ],
+    test('build returns the aggregated public profile', () async {
+      when(
+        () => mockBusinessesRepo.getPublicProfile('b1'),
+      ).thenAnswer((_) async => testProfile);
+
+      final container = createContainer();
+      final state = await container.read(
+        businessDetailViewModelProvider('b1').future,
       );
 
-      final state =
-          await container.read(businessDetailViewModelProvider('b1').future);
-      expect(state, isNull);
-
-      container.dispose();
-    });
-
-    test('build returns BusinessDetailData when business exists', () async {
-      when(() => mockBusinessesRepo.getBusinessById('b1'))
-          .thenAnswer((_) async => testBusiness);
-      when(() => mockMediasRepo.getEntityMedia(
-        entityType: any(named: 'entityType'),
-        entityId: any(named: 'entityId'),
-      )).thenAnswer((_) async => [testMedia]);
-
-      final container = createContainer();
-      final state =
-          await container.read(businessDetailViewModelProvider('b1').future);
-
       expect(state, isA<BusinessDetailData>());
-      expect(state!.business.id, 'b1');
-      expect(state.media.length, 1);
+      expect(state!.profile.id, 'b1');
+      expect(state.profile.commercialName, 'Business 1');
+      expect(state.profile.media, hasLength(1));
+      verify(() => mockBusinessesRepo.getPublicProfile('b1')).called(1);
 
       container.dispose();
     });
 
-    test('build returns null when business not found', () async {
-      when(() => mockBusinessesRepo.getBusinessById('999'))
-          .thenAnswer((_) async => null);
-      when(() => mockMediasRepo.getEntityMedia(
-        entityType: any(named: 'entityType'),
-        entityId: any(named: 'entityId'),
-      )).thenAnswer((_) async => []);
+    test('build handles a profile without media', () async {
+      const profile = BusinessPublicProfileModel(
+        id: 'b1',
+        name: 'Business 1',
+        commercialName: 'Business 1',
+      );
+      when(
+        () => mockBusinessesRepo.getPublicProfile('b1'),
+      ).thenAnswer((_) async => profile);
 
       final container = createContainer();
-      final state =
-          await container.read(businessDetailViewModelProvider('999').future);
+      final state = await container.read(
+        businessDetailViewModelProvider('b1').future,
+      );
 
-      expect(state, isNull);
-
-      container.dispose();
-    });
-
-    test('build handles empty media', () async {
-      when(() => mockBusinessesRepo.getBusinessById('b1'))
-          .thenAnswer((_) async => testBusiness);
-      when(() => mockMediasRepo.getEntityMedia(
-        entityType: any(named: 'entityType'),
-        entityId: any(named: 'entityId'),
-      )).thenAnswer((_) async => []);
-
-      final container = createContainer();
-      final state =
-          await container.read(businessDetailViewModelProvider('b1').future);
-
-      expect(state, isA<BusinessDetailData>());
-      expect(state!.media, isEmpty);
+      expect(state, isNotNull);
+      expect(state!.profile.media, isEmpty);
 
       container.dispose();
     });

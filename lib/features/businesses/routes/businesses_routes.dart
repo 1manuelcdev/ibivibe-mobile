@@ -3,14 +3,24 @@ import 'package:go_router/go_router.dart';
 import 'package:ibivibe/app/router/transitions/fade_through_page.dart';
 import 'package:ibivibe/app/router/transitions/shared_axis_page.dart';
 import 'package:ibivibe/features/businesses/screens/business_detail_screen.dart';
+import 'package:ibivibe/features/businesses/screens/business_data_edit_screen.dart';
 import 'package:ibivibe/features/businesses/screens/businesses_overview_screen.dart';
 
 final List<RouteBase> businessesRoutes = [
+  GoRoute(
+    path: '/app/businesses/manage',
+    pageBuilder: (context, state) => FadeThroughPage(
+      key: state.pageKey,
+      child: const BusinessDataEditScreen(),
+    ),
+  ),
   // ─── Businesses ─────────────────────────────────────────────────────
   GoRoute(
     path: '/app/businesses',
-    pageBuilder: (context, state) =>
-        FadeThroughPage(key: state.pageKey, child: const BusinessesOverviewScreen()),
+    pageBuilder: (context, state) => FadeThroughPage(
+      key: state.pageKey,
+      child: const BusinessesOverviewScreen(),
+    ),
     routes: [
       // ─── Businesses > :id ──────────────────────────────────────────────────
       GoRoute(

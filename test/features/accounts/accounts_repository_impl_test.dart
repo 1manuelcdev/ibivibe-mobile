@@ -136,7 +136,7 @@ void main() {
         () => mockLocalStorage.removeCachedAccount('1'),
       ).thenAnswer((_) async {});
 
-      await sut.removeAccount('1');
+      await sut.deleteAccountPermanently('1');
 
       verify(() => mockDio.delete('/accounts/1')).called(1);
       verify(() => mockLocalStorage.removeCachedAccount('1')).called(1);
@@ -154,7 +154,10 @@ void main() {
         ),
       );
 
-      expect(() => sut.removeAccount('1'), throwsA(isA<ServerException>()));
+      expect(
+        () => sut.deleteAccountPermanently('1'),
+        throwsA(isA<ServerException>()),
+      );
     });
   });
 

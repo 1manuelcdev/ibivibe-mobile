@@ -50,7 +50,7 @@ class _AccountSwitcherSheetContent extends ConsumerWidget {
           maxHeight: MediaQuery.of(context).size.height * 0.8,
         ),
         decoration: BoxDecoration(
-          color: context.theme.colors.secondary,
+          color: context.theme.colors.background,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border(
             top: BorderSide(color: context.theme.colors.border.withAlpha(180)),

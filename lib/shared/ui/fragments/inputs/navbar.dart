@@ -67,6 +67,7 @@ class Navbar extends ConsumerWidget {
       labelTextStyle: WidgetStateProperty.resolveWith((states) {
         final style = TextStyle(
           fontSize: 12,
+          fontWeight: .w500,
           color: states.contains(WidgetState.selected)
               ? theme.colors.foreground
               : theme.colors.mutedForeground,
@@ -100,7 +101,7 @@ class Navbar extends ConsumerWidget {
           child: NavigationBar(
             selectedIndex: index,
             height: 60,
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             onDestinationSelected: (i) {
               if (i == index) return;
 

@@ -42,3 +42,43 @@ class Account {
     this.gender,
   });
 }
+
+extension AccountCopyWith on Account {
+  Account copyWith({
+    String? id,
+    String? email,
+    String? phoneNumber,
+    String? name,
+    bool? active,
+    bool? isVerified,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    String? slug,
+    String? displayName,
+    String? bio,
+    String? avatarUrl,
+    AccountType? type,
+    AccountInterests? interests,
+    AccountBusiness? business,
+    Gender? gender,
+  }) {
+    return Account(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      name: name ?? this.name,
+      active: active ?? this.active,
+      isVerified: isVerified ?? this.isVerified,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      slug: slug ?? this.slug,
+      displayName: displayName ?? this.displayName,
+      bio: bio ?? this.bio,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      type: type ?? this.type,
+      interests: interests ?? this.interests,
+      business: business ?? this.business,
+      gender: gender ?? this.gender,
+    );
+  }
+}

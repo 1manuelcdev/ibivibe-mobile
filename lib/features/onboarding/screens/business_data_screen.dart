@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:ibivibe/core/preferences/user_preferences_state_provider.dart';
-import 'package:ibivibe/shared/models/city.dart';
+import 'package:ibivibe/features/auth/providers/auth_providers.dart';
+import 'package:ibivibe/shared/models/account.dart';
+import 'package:ibivibe/shared/models/account_type.dart';
+import 'package:ibivibe/shared/providers/accounts_viewmodel.dart';
 import 'package:ibivibe/features/onboarding/viewmodels/business_data_viewmodel.dart';
+import 'package:ibivibe/shared/models/city.dart';
+import 'package:ibivibe/shared/ui/fragments/toast/show_app_toast.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class BusinessDataScreen extends ConsumerStatefulWidget {
@@ -16,21 +23,71 @@ class BusinessDataScreen extends ConsumerStatefulWidget {
 }
 
 class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
-  // bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  String _name = '';
+  String _cnpj = '';
+  String? _headquartersCityId;
+  List<String> _branchCityIds = [];
+  bool _isSubmitting = false;
 
-  // TODO: terminar envio do form
-  // void _handleComplete() async {
-  //   setState(() => _isLoading = true);
-  //   try {
-  //     await ref.read(businessDataViewModelProvider.notifier).submit();
+  Future<void> _handleComplete() async {
+    if (_isSubmitting) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (_headquartersCityId == null) return;
 
-  //     if (mounted) context.push('/app/home');
-  //   } finally {
-  //     if (mounted) setState(() => _isLoading = false);
-  //   }
-  // }
+    setState(() => _isSubmitting = true);
 
-  void _handleComplete() {
+    final submitted = await ref
+        .read(businessDataViewModelProvider.notifier)
+        .submit(
+          name: _name.trim(),
+          cnpj: CNPJValidator.strip(_cnpj),
+          headquartersCityId: _headquartersCityId!,
+          branchCityIds: _branchCityIds,
+        );
+
+    if (!mounted) return;
+
+    if (!submitted) {
+      setState(() => _isSubmitting = false);
+      showAppToast(
+        context: context,
+        title: 'Não foi possível criar a empresa',
+        description: 'Tente novamente em alguns instantes.',
+      );
+      return;
+    }
+
+    // O backend promove a conta para business ao concluir o onboarding. O
+    // objeto mantido em memória ainda pode estar como personal, então
+    // sincronizamos a sessão antes de navegar para as telas da empresa.
+    try {
+      var account = await ref.read(authRepositoryProvider).getMe();
+      if (account.displayName.trim().isEmpty) {
+        account = account.copyWith(
+          displayName: _name.trim(),
+          type: AccountType.business,
+        );
+      }
+      await ref.read(accountsViewModelProvider.notifier).onAuthSuccess(account);
+    } catch (_) {
+      // A empresa já foi criada. Se o refresh falhar, ainda atualizamos a
+      // conta ativa e seu cache com os dados confirmados neste formulário.
+      final currentAccount = ref.read(accountsViewModelProvider).activeAccount;
+      if (currentAccount != null) {
+        await ref
+            .read(accountsViewModelProvider.notifier)
+            .onAuthSuccess(
+              currentAccount.copyWith(
+                displayName: _name.trim(),
+                type: AccountType.business,
+              ),
+            );
+      }
+    }
+
+    if (!mounted) return;
+
     if (widget.onComplete != null) {
       widget.onComplete!();
       return;
@@ -56,8 +113,14 @@ class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
         footer: Padding(
           padding: const EdgeInsets.all(16),
           child: FButton(
-            onPress: _handleComplete,
-            child: const Text('Concluir'),
+            onPress: _isSubmitting ? null : _handleComplete,
+            child: _isSubmitting
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Text('Concluir'),
           ),
         ),
         child: CustomScrollView(
@@ -78,7 +141,14 @@ class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
                     style: context.theme.typography.base,
                   ),
                   const SizedBox(height: 32),
-                  _CompanyForm(),
+                  _CompanyForm(
+                    formKey: _formKey,
+                    onNameChanged: (value) => _name = value,
+                    onCnpjChanged: (value) => _cnpj = value,
+                    onHeadquartersChanged: (value) =>
+                        _headquartersCityId = value,
+                    onBranchCitiesChanged: (value) => _branchCityIds = value,
+                  ),
                 ],
               ),
             ),
@@ -92,12 +162,25 @@ class _BusinessDataScreenState extends ConsumerState<BusinessDataScreen> {
 enum CompanyLocationType { onlyHeadquarter, haveBranches }
 
 class _CompanyForm extends ConsumerStatefulWidget {
+  const _CompanyForm({
+    required this.formKey,
+    required this.onNameChanged,
+    required this.onCnpjChanged,
+    required this.onHeadquartersChanged,
+    required this.onBranchCitiesChanged,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final ValueChanged<String> onNameChanged;
+  final ValueChanged<String> onCnpjChanged;
+  final ValueChanged<String?> onHeadquartersChanged;
+  final ValueChanged<List<String>> onBranchCitiesChanged;
+
   @override
   ConsumerState<_CompanyForm> createState() => _CompanyFormState();
 }
 
 class _CompanyFormState extends ConsumerState<_CompanyForm> {
-  final _formKey = GlobalKey<FormState>();
   final _locationType = ValueNotifier(CompanyLocationType.onlyHeadquarter);
 
   @override
@@ -111,19 +194,31 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
     final state = ref.watch(businessDataViewModelProvider);
 
     return Form(
-      key: _formKey,
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         spacing: 16,
         children: [
-          const FTextFormField(
-            control: FTextFieldControl.managed(),
-            label: FLabel(axis: Axis.vertical, child: Text('Nome da empresa')),
+          FTextFormField(
+            control: FTextFieldControl.managed(
+              onChange: (value) => widget.onNameChanged(value.text),
+            ),
+            label: const FLabel(
+              axis: Axis.vertical,
+              child: Text('Nome da empresa'),
+            ),
             hint: 'Nome fantasia',
             autovalidateMode: AutovalidateMode.onUnfocus,
-            // validator: (v) => authValidator.validateField(.name, v),
-            // onSubmit: (_) => _submit(),
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Informe o nome da empresa';
+              }
+              if (value.trim().length > 150) {
+                return 'Máximo de 150 caracteres';
+              }
+              return null;
+            },
           ),
 
           FSelectGroup<CompanyLocationType>(
@@ -135,6 +230,9 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
                 _locationType.value = value.isNotEmpty
                     ? value.first
                     : CompanyLocationType.onlyHeadquarter;
+                if (_locationType.value != CompanyLocationType.haveBranches) {
+                  widget.onBranchCitiesChanged([]);
+                }
               },
             ),
             label: const Text('A empresa possui filiais?'),
@@ -150,27 +248,60 @@ class _CompanyFormState extends ConsumerState<_CompanyForm> {
             ],
           ),
 
+          FTextFormField(
+            label: const FLabel(axis: Axis.vertical, child: Text('CNPJ')),
+            hint: '00.000.000/0000-00',
+            keyboardType: TextInputType.number,
+            inputFormatters: [_CnpjInputFormatter()],
+            control: FTextFieldControl.managed(
+              onChange: (value) => widget.onCnpjChanged(value.text),
+            ),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (value == null || value.trim().isEmpty) {
+                return 'Informe o CNPJ';
+              }
+              if (!CNPJValidator.isValid(value)) {
+                return 'CNPJ inválido';
+              }
+              return null;
+            },
+          ),
+
           state.when(
-            data: (data) =>
-                _CompanyHeadquarterLocationField(cities: data.cities),
+            data: (data) => _CompanyHeadquarterLocationField(
+              cities: data.cities,
+              onChanged: widget.onHeadquartersChanged,
+            ),
             error: (_, stack) => Text('error $stack'),
             loading: () => const Skeletonizer(
-              child: _CompanyHeadquarterLocationField(cities: []),
+              child: _CompanyHeadquarterLocationField(
+                cities: [],
+                onChanged: _ignoreCityChange,
+              ),
             ),
           ),
-          // _CompanyBranchesLocationField(
-          //   cities: state,
-          //   locationType: _locationType,
-          // ),
+          _CompanyBranchesLocationField(
+            cities: state.asData?.value.cities ?? const [],
+            locationType: _locationType,
+            onChanged: widget.onBranchCitiesChanged,
+          ),
         ],
       ),
     );
   }
+
+  static void _ignoreCityChange(String? _) {}
 }
 
 class _CompanyHeadquarterLocationField extends StatefulWidget {
   final List<City> cities;
-  const _CompanyHeadquarterLocationField({required this.cities});
+  final ValueChanged<String?> onChanged;
+
+  const _CompanyHeadquarterLocationField({
+    required this.cities,
+    required this.onChanged,
+  });
 
   @override
   State<_CompanyHeadquarterLocationField> createState() =>
@@ -184,33 +315,44 @@ class __CompanyHeadquarterLocationFieldState
     return FSelect<String>.searchBuilder(
       hint: 'Escolha uma cidade',
       label: const FLabel(axis: Axis.vertical, child: Text('Cidade da matriz')),
-      format: (s) => s,
+      control: FSelectControl.managed(onChange: widget.onChanged),
+      format: (id) => _cityName(id),
       clearable: true,
+      validator: (value) => value == null ? 'Informe a cidade da matriz' : null,
       filter: (query) => query.isEmpty
-          ? widget.cities.map((c) => c.name)
+          ? widget.cities.map((c) => c.id)
           : widget.cities
                 .where(
                   (c) => c.name.toLowerCase().startsWith(query.toLowerCase()),
                 )
-                .map((c) => c.name),
+                .map((c) => c.id),
       contentBuilder: (context, _, cities) => [
-        for (final city in cities)
+        for (final cityId in cities)
           .item(
-            title: Text(city, style: context.theme.typography.sm),
-            value: city,
+            title: Text(_cityName(cityId), style: context.theme.typography.sm),
+            value: cityId,
           ),
       ],
     );
+  }
+
+  String _cityName(String id) {
+    for (final city in widget.cities) {
+      if (city.id == id) return city.name;
+    }
+    return id;
   }
 }
 
 class _CompanyBranchesLocationField extends ConsumerStatefulWidget {
   final ValueNotifier locationType;
   final List<City> cities;
+  final ValueChanged<List<String>> onChanged;
 
   const _CompanyBranchesLocationField({
     required this.locationType,
     required this.cities,
+    required this.onChanged,
   });
 
   @override
@@ -231,25 +373,68 @@ class _CompanyBranchesLocationFieldState
                 axis: Axis.vertical,
                 child: Text('Cidades com filiais'),
               ),
-              format: Text.new,
+              control: FMultiValueControl.managed(
+                onChange: (values) => widget.onChanged(values.toList()),
+              ),
+              format: (id) => Text(_cityName(id)),
               filter: (query) => query.isEmpty
-                  ? widget.cities.map((c) => c.name)
+                  ? widget.cities.map((c) => c.id)
                   : widget.cities
                         .where(
                           (c) => c.name.toLowerCase().startsWith(
                             query.toLowerCase(),
                           ),
                         )
-                        .map((c) => c.name),
+                        .map((c) => c.id),
               contentBuilder: (context, _, cities) => [
-                for (final city in cities)
+                for (final cityId in cities)
                   .item(
-                    title: Text(city, style: context.theme.typography.sm),
-                    value: city,
+                    title: Text(
+                      _cityName(cityId),
+                      style: context.theme.typography.sm,
+                    ),
+                    value: cityId,
                   ),
               ],
             )
           : const SizedBox.shrink(),
     );
+  }
+
+  String _cityName(String id) {
+    for (final city in widget.cities) {
+      if (city.id == id) return city.name;
+    }
+    return id;
+  }
+}
+
+class _CnpjInputFormatter extends TextInputFormatter {
+  static final _nonDigits = RegExp(r'\D');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final rawDigits = newValue.text.replaceAll(_nonDigits, '');
+    final digits = rawDigits.substring(0, rawDigits.length.clamp(0, 14));
+
+    final formatted = _format(digits);
+    return TextEditingValue(
+      text: formatted,
+      selection: TextSelection.collapsed(offset: formatted.length),
+    );
+  }
+
+  String _format(String digits) {
+    final buffer = StringBuffer();
+    for (var i = 0; i < digits.length; i++) {
+      if (i == 2 || i == 5) buffer.write('.');
+      if (i == 8) buffer.write('/');
+      if (i == 12) buffer.write('-');
+      buffer.write(digits[i]);
+    }
+    return buffer.toString();
   }
 }
