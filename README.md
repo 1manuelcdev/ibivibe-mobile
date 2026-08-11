@@ -161,7 +161,7 @@ flutter pub run build_runner clean  # Limpar arquivos gerados
 
 # Análise & Testes
 flutter analyze                     # Análise estática
-flutter test                        # Rodar testes unitários
+flutter test                        # Testes unitários (concorrência segura)
 flutter test --coverage             # Testes com cobertura
 
 # Build para Produção
@@ -235,6 +235,12 @@ flutter test --coverage
 # Testes específicos
 flutter test test/features/auth_test.dart
 ```
+
+`tool/test_safe.sh` executa os testes com um processo por vez, timeout por
+teste e limites de CPU/memória no Linux. Isso evita que múltiplos compiladores
+Dart consumam toda a memória da máquina e encerrem o terminal ou o VS Code.
+Feche execuções de `flutter run`, debug e test watchers no VS Code antes de
+iniciar a suíte completa.
 
 ## 🐛 Debug & Logs
 

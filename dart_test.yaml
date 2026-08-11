@@ -1,0 +1,5 @@
+# Keep the default Flutter test command safe for this project.
+# Each test suite starts a Dart frontend compiler; parallel compilation can
+# exhaust the host memory and cause the OS to kill the terminal or IDE.
+concurrency: 1
+timeout: 60s
