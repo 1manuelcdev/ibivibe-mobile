@@ -63,12 +63,12 @@ class RegisterFormData {
       'slug': slug,
       'display_name': displayName,
       'email': email,
-      'phone_number': phoneNumber,
       'password': password,
       'password_confirm': confirmPassword,
       'bio': bio,
       'avatar_url': avatarUrl,
       'type': type.value,
+      if (phoneNumber.trim().isNotEmpty) 'phone_number': phoneNumber.trim(),
       if (businessData != null)
         'business_data': {
           'name': businessData!.name,
@@ -116,6 +116,8 @@ class RegisterFormData {
         return copyWith(name: value);
       case AuthFields.email:
         return copyWith(email: value);
+      case AuthFields.slug:
+        return copyWith(slug: value);
       case AuthFields.phoneNumber:
         return copyWith(phoneNumber: value);
       case AuthFields.password:
