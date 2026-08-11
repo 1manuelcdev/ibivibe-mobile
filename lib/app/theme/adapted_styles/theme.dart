@@ -16,18 +16,21 @@ import 'package:ibivibe/app/theme/adapted_styles/text_field_style.dart';
 import 'package:ibivibe/app/theme/adapted_styles/tile_group_style.dart';
 import 'package:ibivibe/app/theme/adapted_styles/tile_style.dart';
 
-const brandPrimaryLight = Color(0xFF376208);
-const brandPrimaryDark = Color(0xFFB9FF70);
-const darkAppBackground = Color(0xFF040404);
-const darkSurface = Color(0xFF121212);
-const darkMutedSurface = Color(0xFF1C1C1C);
+// Tokens sincronizados com a coleção FTheme do projeto Figma.
+const brandPrimaryLight = Color(0xFF1D5400);
+const brandPrimaryDark = Color(0xFF9FFF8B);
+const lightAppBackground = Color(0xFFFAFAFA);
+const darkAppBackground = Color(0xFF0A0A0A);
+const darkSurface = Color(0xFF27272A);
+const darkMutedSurface = Color(0xFF27272A);
+const darkBorder = Color(0xFF4D4D56);
 
 FThemeData customZincLight() {
   const colors = FColors(
     brightness: Brightness.light,
     systemOverlayStyle: SystemUiOverlayStyle.dark,
-    barrier: Color.fromARGB(160, 0, 0, 0),
-    background: Color(0xFFFFFFFF),
+    barrier: Color(0x00330000),
+    background: lightAppBackground,
     foreground: Color(0xFF09090B),
     primary: brandPrimaryLight,
     primaryForeground: Colors.white,
@@ -102,7 +105,7 @@ FThemeData customZincDark() {
   const colors = FColors(
     brightness: Brightness.dark,
     systemOverlayStyle: SystemUiOverlayStyle.light,
-    barrier: Color.fromARGB(160, 0, 0, 0),
+    barrier: Color(0x00330000),
     background: darkAppBackground,
     foreground: Color(0xFFFFFFFF),
     primary: brandPrimaryDark,
@@ -115,7 +118,7 @@ FThemeData customZincDark() {
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color.fromARGB(255, 232, 91, 91),
     errorForeground: Color(0xFFFAFAFA),
-    border: Color(0xFF363636),
+    border: darkBorder,
   );
 
   final typography = _typography(colors: colors);
@@ -211,7 +214,7 @@ FTypography _typography({
   xl2: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
-    fontSize: 24,
+    fontSize: 22,
     height: 1.35,
   ),
   xl3: TextStyle(
@@ -264,11 +267,11 @@ FStyle _style({
       ),
   focusedOutlineStyle: FFocusedOutlineStyle(
     color: colors.primary,
-    borderRadius: FLerpBorderRadius.circular(24),
+    borderRadius: FLerpBorderRadius.circular(32),
   ),
   iconStyle: IconThemeData(color: colors.primary, size: 20),
   tappableStyle: FTappableStyle(),
-  borderRadius: FLerpBorderRadius.circular(24),
+  borderRadius: FLerpBorderRadius.circular(32),
   borderWidth: 1,
   shadow: const [
     BoxShadow(color: Color(0x0d000000), offset: Offset(0, 1), blurRadius: 2),
