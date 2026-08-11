@@ -13,25 +13,25 @@ abstract class AuthRepository {
     required String value,
   });
 
-  Future<AuthResult> login({
-    required String email,
-    required String password,
-  });
+  Future<AuthResult> login({required String email, required String password});
 
-  Future<AuthResult> register({
-    required RegisterFormData registerFormData,
+  Future<AuthResult> register({required RegisterFormData registerFormData});
+
+  Future<void> requestPasswordReset({required String email});
+
+  Future<void> resetPassword({
+    required String token,
+    required String password,
+    required String passwordConfirmation,
   });
 
   Future<Account> getMe();
 
   Future<AuthResult> refreshTokens();
 
-  Future<GoogleAuthResult> loginWithGoogle({
-    required String idToken,
-  });
+  Future<GoogleAuthResult> loginWithGoogle({required String idToken});
 
-  Future<CompleteGoogleRegistrationResponse>
-  completeGoogleRegistration({
+  Future<CompleteGoogleRegistrationResponse> completeGoogleRegistration({
     required String tempToken,
     required String slug,
     required AccountType type,
