@@ -45,6 +45,12 @@ class AccountsRepositoryImpl
   }
 
   @override
+  @Deprecated('Use removeCachedAccount or deleteAccountPermanently explicitly')
+  Future<void> removeAccount(String accountId) {
+    return removeCachedAccount(accountId);
+  }
+
+  @override
   Future<void> deleteAccountPermanently(String accountId) async {
     try {
       await _dio.delete('/accounts/$accountId');
