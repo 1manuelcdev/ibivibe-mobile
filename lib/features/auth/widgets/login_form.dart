@@ -6,7 +6,6 @@ import 'package:ibivibe/features/auth/viewmodels/login_viewmodel.dart';
 import 'package:ibivibe/features/auth/login_state.dart';
 import 'package:ibivibe/shared/ui/forms/fields/email/email_field.dart';
 import 'package:ibivibe/shared/ui/fragments/toast/show_app_toast.dart';
-import 'package:ibivibe/shared/utils/show_todo_toast.dart';
 
 class LoginForm extends ConsumerStatefulWidget {
   final LoginViewModel controller;
@@ -103,9 +102,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
           FButton.raw(
             style: FButtonStyle.ghost(),
-            onPress: () {
-              showTodoToast(context, 'Recuperação de senha');
-            },
+            onPress: () => context.push('/auth/forgot-password'),
             child: Text(
               'Esqueci minha senha',
               style: context.theme.typography.sm,
